@@ -1,0 +1,16 @@
+{
+  "name": "belly-pork-brewing",
+  "version": "1.0.0",
+  "description": "Belly Pork Brewing Co. website",
+  "scripts": {
+    "dev": "npx serve public -p 3000",
+    "build": "echo 'Static site — no build step needed'",
+    "preview": "npx serve public -p 4000"
+  },
+  "devDependencies": {
+    "serve": "^14.2.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

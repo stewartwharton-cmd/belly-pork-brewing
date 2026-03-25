@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Belly Pork Brewing Co.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&family=Syne+Mono&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --magenta: #FF1DBC;
+      --magenta-dim: rgba(255,29,188,0.15);
+      --black: #080808;
+      --off-white: #F0EAE0;
+      --dark: #111111;
+      --mid: #1e1e1e;
+      --muted: rgba(240,234,224,0.5);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--off-white);
+      font-family: 'Syne', sans-serif;
+      overflow-x: hidden;
+    }
+
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--black); }
+    ::-webkit-scrollbar-thumb { background: var(--magenta); }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      inset: 0 0 auto 0;
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 3rem;
+      background: rgba(8,8,8,0.88);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--magenta-dim);
+    }
+
+    .nav-logo img {
+      height: 52px;
+      display: block;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--magenta); }
+
+    .nav-cta {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      background: var(--magenta);
+      color: var(--black);
+      padding: 0.6rem 1.4rem;
+      text-decoration: none;
+      font-weight: 700;
+      transition: opacity 0.2s;
+    }
+    .nav-cta:hover { opacity: 0.85; }
+
+    /* ─── HERO ─── */
+    .hero {
+      min-height: 100svh;
+      display: grid;
+      grid-template-columns: 55% 45%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .hero-left {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 9rem 4rem 6rem 5rem;
+      position: relative;
+      z-index: 10;
+    }
+
+    .hero-left::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 90% 80% at 20% 60%, rgba(255,29,188,0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-eyebrow {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--magenta);
+      margin-bottom: 1.4rem;
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards 0.3s;
+    }
+
+    .hero-h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(5.5rem, 9vw, 10rem);
+      line-height: 0.88;
+      letter-spacing: 0.01em;
+      margin-bottom: 2rem;
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards 0.5s;
+    }
+
+    .hero-h1 .outline {
+      -webkit-text-stroke: 2px var(--magenta);
+      color: transparent;
+      display: block;
+    }
+    .hero-h1 .solid { display: block; }
+
+    .hero-sub {
+      font-size: 1.05rem;
+      line-height: 1.75;
+      color: var(--muted);
+      max-width: 400px;
+      margin-bottom: 3rem;
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards 0.7s;
+    }
+    .hero-sub strong { color: var(--magenta); font-weight: 700; }
+
+    .hero-buttons {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards 0.9s;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      background: var(--magenta);
+      color: var(--black);
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 1rem 2.4rem;
+      text-decoration: none;
+      font-weight: 700;
+      transition: transform 0.18s, box-shadow 0.18s;
+    }
+    .btn-primary:hover {
+      transform: translate(-3px, -3px);
+      box-shadow: 5px 5px 0 var(--off-white);
+    }
+
+    .btn-ghost {
+      display: inline-block;
+      border: 1px solid rgba(240,234,224,0.25);
+      color: var(--off-white);
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 1rem 2.4rem;
+      text-decoration: none;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-ghost:hover { border-color: var(--magenta); color: var(--magenta); }
+
+    /* Right image panel */
+    .hero-right {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-right::before {
+      content: '';
+      position: absolute;
+      top: 0; bottom: 0; left: -50px;
+      width: 100px;
+      background: var(--black);
+      transform: skewX(-4deg);
+      z-index: 4;
+    }
+
+    .hero-right img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center center;
+      display: block;
+      opacity: 0;
+      animation: fadeIn 1.4s ease forwards 0.2s;
+    }
+
+    .hero-right::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 60% 50% at 60% 50%, rgba(255,29,188,0.1), transparent 70%);
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      z-index: 20;
+      opacity: 0;
+      animation: fadeIn 1s ease forwards 1.5s;
+    }
+    .scroll-hint span {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .scroll-line {
+      width: 40px;
+      height: 1px;
+      background: var(--magenta);
+      position: relative;
+      overflow: hidden;
+    }
+    .scroll-line::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--off-white);
+      animation: scanline 2s ease-in-out infinite;
+    }
+    @keyframes scanline {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(200%); }
+    }
+
+    /* ─── MARQUEE ─── */
+    .marquee-wrap {
+      background: var(--magenta);
+      overflow: hidden;
+      padding: 0.85rem 0;
+      position: relative;
+      z-index: 15;
+    }
+    .marquee-track {
+      display: flex;
+      width: max-content;
+      animation: marqueeScroll 20s linear infinite;
+    }
+    .marquee-track span {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1rem;
+      letter-spacing: 0.25em;
+      color: var(--black);
+      padding: 0 2rem;
+      white-space: nowrap;
+    }
+    .marquee-track .dot { color: rgba(0,0,0,0.35); }
+    @keyframes marqueeScroll {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* ─── SHARED ─── */
+    .section-label {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.38em;
+      text-transform: uppercase;
+      color: var(--magenta);
+      margin-bottom: 1.2rem;
+    }
+
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3rem, 5vw, 6rem);
+      line-height: 0.92;
+      margin-bottom: 1.5rem;
+    }
+
+    /* ─── ABOUT ─── */
+    .about {
+      padding: 9rem 5rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 7rem;
+      align-items: center;
+    }
+
+    .about-body {
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: var(--muted);
+      margin-bottom: 1.2rem;
+    }
+    .about-body strong { color: var(--off-white); font-weight: 700; }
+
+    .about-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.5rem;
+      margin-top: 3rem;
+      padding-top: 2.5rem;
+      border-top: 1px solid var(--magenta-dim);
+    }
+    .stat-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 3.8rem;
+      color: var(--magenta);
+      line-height: 1;
+      display: block;
+    }
+    .stat-label {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(240,234,224,0.35);
+      margin-top: 0.3rem;
+      display: block;
+    }
+
+    .about-card {
+      background: var(--mid);
+      border: 1px solid rgba(255,29,188,0.2);
+      padding: 4rem 3rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .about-card::before {
+      content: 'BREW';
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 10rem;
+      color: rgba(255,29,188,0.04);
+      position: absolute;
+      bottom: -1.5rem;
+      right: -1rem;
+      line-height: 1;
+      user-select: none;
+      pointer-events: none;
+    }
+    .about-card-quote {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.4rem;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+    }
+    .about-card-quote em { color: var(--magenta); font-style: normal; }
+    .about-card-sub {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      color: var(--muted);
+    }
+    .about-card-tag {
+      position: absolute;
+      bottom: -1px; right: -1px;
+      background: var(--magenta);
+      color: var(--black);
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 0.9rem;
+      letter-spacing: 0.15em;
+      padding: 0.6rem 1.2rem;
+    }
+
+    /* ─── BEERS ─── */
+    .beers {
+      padding: 9rem 5rem;
+      background: var(--dark);
+    }
+    .beers-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 4rem;
+      border-bottom: 1px solid var(--magenta-dim);
+      padding-bottom: 2rem;
+    }
+    .beers-note {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      color: var(--muted);
+      text-align: right;
+      max-width: 200px;
+      line-height: 1.6;
+    }
+
+    .beers-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--magenta-dim);
+    }
+
+    .beer-card {
+      background: var(--dark);
+      padding: 3rem 2.5rem;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.3s;
+    }
+    .beer-card:hover { background: var(--mid); }
+
+    .beer-style {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--magenta);
+      margin-bottom: 1rem;
+    }
+    .beer-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.8rem;
+      line-height: 1;
+      margin-bottom: 1.2rem;
+    }
+    .beer-desc {
+      font-size: 0.9rem;
+      line-height: 1.7;
+      color: var(--muted);
+      margin-bottom: 2rem;
+    }
+    .beer-abv {
+      display: inline-block;
+      border: 1px solid var(--magenta-dim);
+      color: var(--magenta);
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      padding: 0.4rem 0.9rem;
+    }
+    .beer-num {
+      position: absolute;
+      top: 1.5rem; right: 2rem;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 6rem;
+      color: rgba(255,29,188,0.04);
+      line-height: 1;
+      user-select: none;
+      transition: color 0.3s;
+    }
+    .beer-card:hover .beer-num { color: rgba(255,29,188,0.08); }
+    .beer-footer {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.15em;
+      color: rgba(240,234,224,0.28);
+      margin-top: 2.5rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid rgba(255,29,188,0.1);
+    }
+
+    /* ─── PROCESS ─── */
+    .process {
+      padding: 9rem 5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .process::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 100%, rgba(255,29,188,0.05), transparent 65%);
+      pointer-events: none;
+    }
+    .process-header {
+      text-align: center;
+      max-width: 600px;
+      margin: 0 auto 6rem;
+    }
+    .process-header p {
+      font-size: 1rem;
+      line-height: 1.75;
+      color: var(--muted);
+      margin-top: 1rem;
+    }
+    .process-steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      position: relative;
+    }
+    .process-steps::before {
+      content: '';
+      position: absolute;
+      top: 2.25rem;
+      left: 12.5%;
+      right: 12.5%;
+      height: 1px;
+      background: var(--magenta-dim);
+    }
+    .process-step {
+      padding: 0 2rem;
+      text-align: center;
+      position: relative;
+    }
+    .step-icon {
+      width: 4.5rem;
+      height: 4.5rem;
+      border: 1px solid rgba(255,29,188,0.3);
+      background: var(--dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.8rem;
+      color: var(--magenta);
+    }
+    .step-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.6rem;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.8rem;
+    }
+    .step-body {
+      font-size: 0.88rem;
+      line-height: 1.7;
+      color: var(--muted);
+    }
+
+    /* ─── GRAHAM ─── */
+    .graham {
+      padding: 9rem 5rem;
+      background: var(--dark);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8rem;
+      align-items: center;
+    }
+    .graham-visual {
+      aspect-ratio: 1;
+      background: var(--mid);
+      border: 1px solid var(--magenta-dim);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .graham-visual::before {
+      content: 'G';
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28rem;
+      color: rgba(255,29,188,0.04);
+      line-height: 1;
+      user-select: none;
+    }
+    .graham-badge {
+      position: absolute;
+      top: -1px; right: -1px;
+      background: var(--magenta);
+      color: var(--black);
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.15em;
+      padding: 0.5rem 1rem;
+    }
+    .graham-corner {
+      position: absolute;
+      bottom: 2rem; left: 2rem;
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      color: var(--muted);
+    }
+    .graham-body {
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: var(--muted);
+      margin-bottom: 1.2rem;
+    }
+    .graham-body strong { color: var(--off-white); }
+    .graham-quote {
+      margin-top: 2.5rem;
+      padding: 1.8rem 2rem;
+      border-left: 3px solid var(--magenta);
+      background: rgba(255,29,188,0.04);
+    }
+    .graham-quote p {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.6rem;
+      line-height: 1.15;
+      margin-bottom: 0.6rem;
+    }
+    .graham-quote span {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.22em;
+      color: var(--magenta);
+      text-transform: uppercase;
+    }
+
+    /* ─── NEWSLETTER ─── */
+    .newsletter {
+      padding: 7rem 5rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .newsletter::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 70% 100% at 50% 50%, rgba(255,29,188,0.07), transparent 65%);
+      pointer-events: none;
+    }
+    .newsletter .section-title { font-size: clamp(2.5rem, 4vw, 5rem); }
+    .newsletter > p {
+      color: var(--muted);
+      font-size: 1rem;
+      max-width: 460px;
+      margin: 1rem auto 3rem;
+      line-height: 1.7;
+    }
+    .newsletter-form {
+      display: flex;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+    .newsletter-form input {
+      flex: 1;
+      background: var(--mid);
+      border: 1px solid rgba(240,234,224,0.12);
+      border-right: none;
+      color: var(--off-white);
+      font-family: 'Syne', sans-serif;
+      font-size: 0.9rem;
+      padding: 1rem 1.4rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .newsletter-form input:focus { border-color: var(--magenta); }
+    .newsletter-form input::placeholder { color: rgba(240,234,224,0.3); }
+    .newsletter-form button {
+      background: var(--magenta);
+      color: var(--black);
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 1rem 1.8rem;
+      border: none;
+      cursor: pointer;
+      font-weight: 700;
+      transition: opacity 0.2s;
+    }
+    .newsletter-form button:hover { opacity: 0.85; }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--dark);
+      border-top: 1px solid var(--magenta-dim);
+      padding: 4rem 5rem 3rem;
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr;
+      gap: 4rem;
+    }
+    .footer-brand img {
+      height: 48px;
+      margin-bottom: 1.2rem;
+      display: block;
+    }
+    .footer-brand p {
+      font-size: 0.9rem;
+      line-height: 1.7;
+      color: var(--muted);
+      max-width: 280px;
+    }
+    .footer-col h4 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.1rem;
+      letter-spacing: 0.1em;
+      margin-bottom: 1.2rem;
+      color: var(--magenta);
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 0.6rem; }
+    .footer-col ul a {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-col ul a:hover { color: var(--off-white); }
+
+    .footer-bottom {
+      grid-column: 1 / -1;
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(240,234,224,0.06);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer-bottom p {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      color: rgba(240,234,224,0.25);
+    }
+    .footer-bottom span { color: var(--magenta); }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 900px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+
+      .hero { grid-template-columns: 1fr; grid-template-rows: auto 60vw; }
+      .hero-left { padding: 8rem 2rem 3rem; }
+      .hero-right::before { display: none; }
+      .scroll-hint { left: 2rem; }
+
+      .about, .graham { grid-template-columns: 1fr; gap: 3rem; padding: 5rem 2rem; }
+      .about-stats { grid-template-columns: repeat(3, 1fr); }
+
+      .beers, .process, .newsletter { padding: 5rem 2rem; }
+      .beers-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+      .beers-grid { grid-template-columns: 1fr; }
+
+      .process-steps { grid-template-columns: 1fr 1fr; gap: 3rem; }
+      .process-steps::before { display: none; }
+
+      footer { grid-template-columns: 1fr; padding: 3rem 2rem; gap: 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-logo">
+      <img
+        src="https://img1.wsimg.com/isteam/ip/c5f4da44-74a7-4ebd-b7a0-a83c516ecd85/Belly%20Pork%20Brewing-37b48db.PNG/:/rs=h:200,cg:true,m/qt=q:100/ll"
+        alt="Belly Pork Brewing"
+      />
+    </a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#beers">Beers</a></li>
+      <li><a href="#process">How We Brew</a></li>
+      <li><a href="#graham">Graham</a></li>
+    </ul>
+    <a href="#newsletter" class="nav-cta">Stay Updated</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-left">
+      <p class="hero-eyebrow">Craft Beer · Est. 2025 · Graham's Kitchen</p>
+      <h1 class="hero-h1">
+        <span class="solid">Belly</span>
+        <span class="solid">Pork</span>
+        <span class="outline">Brewing</span>
+      </h1>
+      <p class="hero-sub">
+        Independent craft beer born from passion, an obsession with pork scratchings, and
+        <strong>Graham's impeccable taste</strong>. Proper beers for proper people.
+      </p>
+      <div class="hero-buttons">
+        <a href="#beers" class="btn-primary">See the Beers</a>
+        <a href="#about" class="btn-ghost">Our Story</a>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <img
+        src="images/hero.png"
+        alt="Belly Pork Brewing mascot — a pig enjoying a well-earned pint"
+      />
+    </div>
+
+    <div class="scroll-hint">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee-wrap" aria-hidden="true">
+    <div class="marquee-track">
+      <span>BELLY PORK BREWING</span><span class="dot">&nbsp;✦&nbsp;</span>
+      <span>GRAHAM RECOMMENDS</span><span class="dot">&nbsp;✦&nbsp;</span>
+      <span>CRAFT BEER</span><span class="dot">&nbsp;✦&nbsp;</span>
+      <span>INDEPENDENT BREWERY</span><span class="dot">&nbsp;✦&nbsp;</span>
+      <span>BREWED WITH LOVE</span><span class="dot">&nbsp;✦&nbsp;</span>
+      <span>BELLY PORK BREWING</span><span class="dot">&nbsp;✦&nbsp;</span>
+      <span>GRAHAM RECOMMENDS</span><span class="dot">&nbsp;✦&nbsp;</span>
+      <span>CRAFT BEER</span><span class="dot">&nbsp;✦&nbsp;</span>
+      <span>INDEPENDENT BREWERY</span><span class="dot">&nbsp;✦&nbsp;</span>
+      <span>BREWED WITH LOVE</span><span class="dot">&nbsp;✦&nbsp;</span>
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <section class="about" id="about">
+    <div>
+      <p class="section-label">// Who We Are</p>
+      <h2 class="section-title">Beer Made<br>with Gut<br>Feeling</h2>
+      <p class="about-body">
+        Belly Pork Brewing started the way all great things do — in a kitchen,
+        with <strong>way too much enthusiasm</strong> and not nearly enough equipment.
+        A passion project turned proper brewery, and we're just getting started.
+      </p>
+      <p class="about-body">
+        Every batch is brewed small, tasted often, and approved by Graham before it ever
+        reaches a glass. No shortcuts. No compromises. No corporate nonsense.
+        Just honest, flavour-first craft beer.
+      </p>
+      <div class="about-stats">
+        <div>
+          <span class="stat-num">100%</span>
+          <span class="stat-label">Independent</span>
+        </div>
+        <div>
+          <span class="stat-num">∞</span>
+          <span class="stat-label">Taste Tests</span>
+        </div>
+        <div>
+          <span class="stat-num">1</span>
+          <span class="stat-label">Graham</span>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="about-card">
+        <p class="about-card-quote">
+          "If Graham<br>doesn't like it,<br><em>it doesn't ship.</em>"
+        </p>
+        <p class="about-card-sub">— The Belly Pork Quality Charter, Article 1</p>
+        <div class="about-card-tag">GRAHAM APPROVED</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BEERS -->
+  <section class="beers" id="beers">
+    <div class="beers-header">
+      <div>
+        <p class="section-label">// On The Tap List</p>
+        <h2 class="section-title">The Beers</h2>
+      </div>
+      <p class="beers-note">More brews coming.<br>Watch this space.</p>
+    </div>
+
+    <div class="beers-grid">
+      <div class="beer-card">
+        <div class="beer-num">01</div>
+        <p class="beer-style">Pale Ale</p>
+        <h3 class="beer-name">Snout &amp;<br>About</h3>
+        <p class="beer-desc">Crisp, citrus-forward and dangerously drinkable. The session ale that started it all — light on the palate, heavy on the satisfaction.</p>
+        <span class="beer-abv">4.2% ABV</span>
+        <p class="beer-footer">Graham's rating: ★★★★★</p>
+      </div>
+
+      <div class="beer-card">
+        <div class="beer-num">02</div>
+        <p class="beer-style">Stout</p>
+        <h3 class="beer-name">Black<br>Belly</h3>
+        <p class="beer-desc">Dark as midnight, smooth as silk. Roasted malt with a whisper of chocolate and enough body to warm you from the inside out.</p>
+        <span class="beer-abv">5.8% ABV</span>
+        <p class="beer-footer">Graham's rating: ★★★★★</p>
+      </div>
+
+      <div class="beer-card">
+        <div class="beer-num">03</div>
+        <p class="beer-style">IPA</p>
+        <h3 class="beer-name">Pig Out<br>IPA</h3>
+        <p class="beer-desc">Bold hops, tropical fruit, a bitter finish that lingers just long enough to make you reach for another. Unapologetically punchy.</p>
+        <span class="beer-abv">6.4% ABV</span>
+        <p class="beer-footer">Graham's rating: ★★★★★</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section class="process" id="process">
+    <div class="process-header">
+      <p class="section-label">// How We Do It</p>
+      <h2 class="section-title">From Grain<br>to Glass</h2>
+      <p>Small-batch, hands-on brewing. Every step matters, every decision is deliberate, and every pint is tasted before it leaves our hands.</p>
+    </div>
+
+    <div class="process-steps">
+      <div class="process-step">
+        <div class="step-icon">01</div>
+        <h3 class="step-title">Malt</h3>
+        <p class="step-body">Quality malted barley and specialty grains form the backbone of every brew we make.</p>
+      </div>
+      <div class="process-step">
+        <div class="step-icon">02</div>
+        <h3 class="step-title">Mash</h3>
+        <p class="step-body">Grain meets hot water in the mash tun, converting starches into fermentable sugars.</p>
+      </div>
+      <div class="process-step">
+        <div class="step-icon">03</div>
+        <h3 class="step-title">Boil</h3>
+        <p class="step-body">Hops go in at exactly the right moment — bitterness, aroma, flavour. Timing is everything.</p>
+      </div>
+      <div class="process-step">
+        <div class="step-icon">04</div>
+        <h3 class="step-title">Graham</h3>
+        <p class="step-body">The final and most critical step. If it doesn't pass Graham, it doesn't pass us.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- GRAHAM -->
+  <section class="graham" id="graham">
+    <div class="graham-visual">
+      <div class="graham-badge">The Man. The Myth.</div>
+      <div class="graham-corner">Chief Tasting Officer</div>
+    </div>
+
+    <div>
+      <p class="section-label">// Meet The Brewer</p>
+      <h2 class="section-title">Graham<br>Recommends</h2>
+      <p class="graham-body">
+        Every great brewery has a story, and ours starts with <strong>Graham</strong>.
+        Part brewer, part quality controller, full-time philosopher of flavour —
+        Graham is the reason Belly Pork Brewing exists.
+      </p>
+      <p class="graham-body">
+        What started as a kitchen experiment quickly became something bigger.
+        Armed with a homebrew kit, an encyclopaedic knowledge of beer, and an
+        insatiable drive to get it <strong>exactly right</strong>, Graham set about
+        crafting beers he'd actually want to drink.
+      </p>
+      <p class="graham-body">
+        The result? A growing range of honest, flavourful craft beers that carry
+        his personal stamp of approval on every single batch.
+      </p>
+      <div class="graham-quote">
+        <p>"If it's not good enough for my glass, it's not good enough for yours."</p>
+        <span>— Graham, Founder &amp; Head of Taste</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEWSLETTER -->
+  <section class="newsletter" id="newsletter">
+    <p class="section-label">// Stay In The Loop</p>
+    <h2 class="section-title">New Brews.<br>First.</h2>
+    <p>Be the first to know when something new rolls out of the brewery. No spam — just beer news straight from Graham's desk.</p>
+    <div class="newsletter-form">
+      <input type="email" placeholder="your@email.com" aria-label="Email address" />
+      <button type="button">Sign Up</button>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-brand">
+      <img
+        src="https://img1.wsimg.com/isteam/ip/c5f4da44-74a7-4ebd-b7a0-a83c516ecd85/Belly%20Pork%20Brewing-37b48db.PNG/:/rs=h:200,cg:true,m/qt=q:100/ll"
+        alt="Belly Pork Brewing"
+      />
+      <p>Independent craft beer from Graham's kitchen to your glass. One batch at a time.</p>
+    </div>
+
+    <div class="footer-col">
+      <h4>Navigate</h4>
+      <ul>
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#beers">The Beers</a></li>
+        <li><a href="#process">How We Brew</a></li>
+        <li><a href="#graham">Graham</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h4>Connect</h4>
+      <ul>
+        <li><a href="https://bellyporkbrewing.com" target="_blank" rel="noopener">bellyporkbrewing.com</a></li>
+        <li><a href="#newsletter">Newsletter</a></li>
+        <li><a href="#">Instagram</a></li>
+        <li><a href="#">Facebook</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2025 Belly Pork Brewing Co. — All Rights Reserved.</p>
+      <p>Made with <span>♥</span> and too many taste tests by Graham.</p>
+    </div>
+  </footer>
+
+</body>
+</html>
