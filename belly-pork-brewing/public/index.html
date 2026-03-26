@@ -214,12 +214,35 @@
 
     .hero-right img {
       width: 100%;
-      height: 100%;
+      height: 140%;
       object-fit: cover;
       object-position: center center;
       display: block;
       opacity: 0;
       animation: fadeIn 1.4s ease forwards 0.2s;
+      will-change: transform;
+    }
+
+    /* Parallax background shapes */
+    .hero-shape {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      will-change: transform;
+    }
+    .hero-shape-1 {
+      width: 700px; height: 700px;
+      top: -200px; left: -200px;
+      background: radial-gradient(circle, rgba(255,29,188,0.13) 0%, transparent 60%);
+      filter: blur(60px);
+      z-index: 1;
+    }
+    .hero-shape-2 {
+      width: 500px; height: 500px;
+      bottom: -100px; right: 5%;
+      background: radial-gradient(circle, rgba(255,29,188,0.10) 0%, transparent 60%);
+      filter: blur(50px);
+      z-index: 1;
     }
 
     .hero-right::after {
@@ -614,6 +637,199 @@
       letter-spacing: 0.15em;
       color: rgba(240,234,224,0.28);
       margin-top: 0.55rem;
+    }
+
+    /* ─── QUIZ ─── */
+    .quiz-section {
+      background: var(--dark);
+      padding: 7rem 5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .quiz-section::before {
+      content: '';
+      position: absolute;
+      top: -250px; right: -250px;
+      width: 700px; height: 700px;
+      background: radial-gradient(circle, rgba(255,29,188,0.07) 0%, transparent 60%);
+      filter: blur(60px);
+      pointer-events: none;
+    }
+    .quiz-inner {
+      max-width: 820px;
+      margin: 0 auto;
+    }
+    .quiz-header {
+      text-align: center;
+      margin-bottom: 3.5rem;
+    }
+    .quiz-intro {
+      color: var(--muted);
+      font-size: 1rem;
+      margin-top: 0.8rem;
+    }
+    .quiz-body {
+      background: var(--black);
+      border: 1px solid rgba(255,29,188,0.14);
+      padding: 2.8rem 3rem;
+    }
+    .quiz-progress {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 2.8rem;
+    }
+    .quiz-pip {
+      height: 3px;
+      flex: 1;
+      background: rgba(255,29,188,0.18);
+      transition: background 0.4s ease;
+    }
+    .quiz-pip.active { background: rgba(255,29,188,0.6); }
+    .quiz-pip.done   { background: var(--magenta); }
+    .quiz-questions  { min-height: 260px; }
+    .quiz-q {
+      display: none;
+    }
+    .quiz-q.active {
+      display: block;
+      animation: quizSlideIn 0.32s ease forwards;
+    }
+    @keyframes quizSlideIn {
+      from { opacity: 0; transform: translateX(20px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+    .quiz-q-label {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--magenta);
+      margin-bottom: 0.7rem;
+    }
+    .quiz-q-text {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(1.9rem, 4vw, 2.8rem);
+      letter-spacing: 0.02em;
+      line-height: 1;
+      margin-bottom: 1.8rem;
+      color: var(--off-white);
+    }
+    .quiz-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.7rem;
+    }
+    .quiz-option {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      background: var(--mid);
+      border: 1px solid rgba(255,29,188,0.12);
+      color: var(--off-white);
+      padding: 1rem 1.2rem;
+      cursor: pointer;
+      text-align: left;
+      transition: border-color 0.15s ease, background 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;
+      font-family: 'Syne', sans-serif;
+      font-size: 0.9rem;
+      line-height: 1.35;
+    }
+    .quiz-option:hover {
+      border-color: rgba(255,29,188,0.55);
+      background: rgba(255,29,188,0.07);
+    }
+    .quiz-option:active {
+      transform: scale(0.96);
+    }
+    .quiz-option.selected {
+      border-color: var(--magenta);
+      background: rgba(255,29,188,0.13);
+      box-shadow: 0 0 0 1px var(--magenta);
+    }
+    .quiz-option.selected .quiz-opt-icon {
+      transform: scale(1.2);
+    }
+    .quiz-opt-icon {
+      font-size: 1.5rem;
+      flex-shrink: 0;
+      line-height: 1;
+      transition: transform 0.15s ease;
+    }
+    .quiz-opt-text {
+      flex: 1;
+    }
+    /* Result panel */
+    .quiz-result {
+      display: none;
+      animation: quizSlideIn 0.4s ease forwards;
+    }
+    .quiz-result.visible {
+      display: block;
+    }
+    .quiz-result-bubble {
+      display: flex;
+      gap: 1.2rem;
+      align-items: flex-start;
+      background: var(--mid);
+      border: 1px solid rgba(255,29,188,0.2);
+      padding: 1.6rem;
+      margin-bottom: 1.6rem;
+    }
+    .quiz-result-avatar {
+      width: 42px; height: 42px;
+      border-radius: 50%;
+      background: var(--magenta);
+      color: var(--black);
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.4rem;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .quiz-result-meta {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.58rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--magenta);
+      margin-bottom: 0.55rem;
+    }
+    .quiz-result-text {
+      font-size: 0.95rem;
+      line-height: 1.75;
+      color: var(--off-white);
+      min-height: 1.75rem;
+    }
+    .quiz-typing-dot {
+      display: inline-block;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--magenta);
+      animation: typingBounce 1s infinite;
+      margin-right: 3px;
+      vertical-align: middle;
+    }
+    .quiz-typing-dot:nth-child(2) { animation-delay: 0.2s; }
+    .quiz-typing-dot:nth-child(3) { animation-delay: 0.4s; }
+    .quiz-retake {
+      background: none;
+      border: 1px solid rgba(240,234,224,0.18);
+      color: var(--muted);
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 0.65rem 1.4rem;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .quiz-retake:hover {
+      border-color: var(--magenta);
+      color: var(--magenta);
+    }
+    @media (max-width: 720px) {
+      .quiz-section { padding: 5rem 1.5rem; }
+      .quiz-body    { padding: 2rem 1.4rem; }
+      .quiz-options { grid-template-columns: 1fr; }
     }
 
     /* ─── PROCESS ─── */
@@ -1242,6 +1458,8 @@
 
   <!-- HERO -->
   <section class="hero">
+    <div class="hero-shape hero-shape-1" aria-hidden="true"></div>
+    <div class="hero-shape hero-shape-2" aria-hidden="true"></div>
     <div class="hero-left">
       <p class="hero-eyebrow">Craft Beer · Est. 2024 · Graham's Kitchen</p>
       <h1 class="hero-h1">
@@ -1250,7 +1468,7 @@
         <span class="outline">Brewing</span>
       </h1>
       <p class="hero-sub">
-        Independent craft beer born from passion, an obsession with pork scratchings, and
+        Independent craft beer born from passion, an obsession with vapes, and
         <strong>Graham's impeccable taste</strong>. Proper beers for proper people.
       </p>
       <div class="hero-buttons">
@@ -1450,6 +1668,113 @@
       </div>
 
     </div>
+  </section>
+
+  <!-- QUIZ -->
+  <section class="quiz-section" id="quiz">
+    <div class="quiz-inner">
+
+      <div class="quiz-header">
+        <p class="section-label">Find Your Pint</p>
+        <h2 class="section-title">What's Your Brew?</h2>
+        <p class="quiz-intro">Three questions. Graham picks your pint.</p>
+      </div>
+
+      <div class="quiz-body">
+
+        <div class="quiz-progress" role="progressbar" aria-label="Quiz progress">
+          <div class="quiz-pip active" data-pip="0"></div>
+          <div class="quiz-pip"        data-pip="1"></div>
+          <div class="quiz-pip"        data-pip="2"></div>
+        </div>
+
+        <div class="quiz-questions">
+
+          <div class="quiz-q active" data-q="0">
+            <p class="quiz-q-label">Question 1 of 3</p>
+            <h3 class="quiz-q-text">How's the evening looking?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-val="Sofa. Literally not moving.">
+                <span class="quiz-opt-icon">🛋️</span>
+                <span class="quiz-opt-text">Sofa. Literally not moving.</span>
+              </button>
+              <button class="quiz-option" data-val="Out with whoever's about">
+                <span class="quiz-opt-icon">🍺</span>
+                <span class="quiz-opt-text">Out with whoever's about</span>
+              </button>
+              <button class="quiz-option" data-val="Keeping it civilised">
+                <span class="quiz-opt-icon">😌</span>
+                <span class="quiz-opt-text">Keeping it civilised</span>
+              </button>
+              <button class="quiz-option" data-val="No plan. Chaos mode.">
+                <span class="quiz-opt-icon">🔥</span>
+                <span class="quiz-opt-text">No plan. Chaos mode.</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="quiz-q" data-q="1">
+            <p class="quiz-q-label">Question 2 of 3</p>
+            <h3 class="quiz-q-text">What are you after from your pint?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-val="Something tropical and hazy">
+                <span class="quiz-opt-icon">🥭</span>
+                <span class="quiz-opt-text">Something tropical and hazy</span>
+              </button>
+              <button class="quiz-option" data-val="Clean, citrusy, refreshing">
+                <span class="quiz-opt-icon">🍊</span>
+                <span class="quiz-opt-text">Clean, citrusy, refreshing</span>
+              </button>
+              <button class="quiz-option" data-val="Big bitterness, no messing">
+                <span class="quiz-opt-icon">😤</span>
+                <span class="quiz-opt-text">Big bitterness, no messing</span>
+              </button>
+              <button class="quiz-option" data-val="Whatever hits first, honestly">
+                <span class="quiz-opt-icon">🤷</span>
+                <span class="quiz-opt-text">Whatever hits first, honestly</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="quiz-q" data-q="2">
+            <p class="quiz-q-label">Question 3 of 3</p>
+            <h3 class="quiz-q-text">How many are you having tonight?</h3>
+            <div class="quiz-options">
+              <button class="quiz-option" data-val="Just the one (definitely)">
+                <span class="quiz-opt-icon">☝️</span>
+                <span class="quiz-opt-text">Just the one (definitely)</span>
+              </button>
+              <button class="quiz-option" data-val="Two or three, sensibly">
+                <span class="quiz-opt-icon">✌️</span>
+                <span class="quiz-opt-text">Two or three, sensibly</span>
+              </button>
+              <button class="quiz-option" data-val="Already lost count">
+                <span class="quiz-opt-icon">🌀</span>
+                <span class="quiz-opt-text">Already lost count</span>
+              </button>
+              <button class="quiz-option" data-val="Why are you asking">
+                <span class="quiz-opt-icon">💀</span>
+                <span class="quiz-opt-text">Why are you asking</span>
+              </button>
+            </div>
+          </div>
+
+        </div><!-- /.quiz-questions -->
+
+        <div class="quiz-result" aria-live="polite">
+          <div class="quiz-result-bubble">
+            <div class="quiz-result-avatar">G</div>
+            <div>
+              <p class="quiz-result-meta">Graham · Head of Taste</p>
+              <p class="quiz-result-text"></p>
+            </div>
+          </div>
+          <button class="quiz-retake">Take it again</button>
+        </div>
+
+      </div><!-- /.quiz-body -->
+
+    </div><!-- /.quiz-inner -->
   </section>
 
   <!-- PROCESS -->
@@ -1723,6 +2048,7 @@
         '.about .section-label', '.about .section-title',
         '.about-body', '.about-stats',
         '.beers .section-label', '.beers .section-title', '.beers-note',
+        '.quiz-section .section-label', '.quiz-section .section-title', '.quiz-intro', '.quiz-body',
         '.process .section-label', '.process .section-title',
         '.graham .section-label', '.graham .section-title',
         '.graham-body', '.graham-quote', '.graham-visual',
@@ -1836,6 +2162,157 @@
     mobileNav.querySelectorAll('a').forEach(link => {
       link.addEventListener('click', () => toggleMenu(false));
     });
+
+    // ─── Quiz ───
+    (function () {
+      const pips      = document.querySelectorAll('.quiz-pip');
+      const questions = document.querySelectorAll('.quiz-q');
+      const resultEl  = document.querySelector('.quiz-result');
+      const resultTxt = document.querySelector('.quiz-result-text');
+      const retakeBtn = document.querySelector('.quiz-retake');
+
+      const answers = [];
+
+      function setPips(active) {
+        pips.forEach((pip, i) => {
+          pip.classList.toggle('done',   i < active);
+          pip.classList.toggle('active', i === active);
+        });
+      }
+
+      function advance(qIndex, val) {
+        answers[qIndex] = val;
+
+        // Brief pause so the selected state is visible before transition
+        setTimeout(function () {
+          questions[qIndex].classList.remove('active');
+
+          if (qIndex < questions.length - 1) {
+            questions[qIndex + 1].classList.add('active');
+            setPips(qIndex + 1);
+          } else {
+            // All done — fill pips and show result
+            pips.forEach(function (p) { p.classList.add('done'); p.classList.remove('active'); });
+            showResult();
+          }
+        }, 260);
+      }
+
+      questions.forEach(function (qEl) {
+        var qIndex = +qEl.dataset.q;
+        qEl.querySelectorAll('.quiz-option').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            if (btn.classList.contains('selected')) return; // already picked
+            qEl.querySelectorAll('.quiz-option').forEach(function (b) { b.classList.remove('selected'); });
+            btn.classList.add('selected');
+            advance(qIndex, btn.dataset.val);
+          });
+        });
+      });
+
+      function showResult() {
+        resultEl.classList.add('visible');
+        resultTxt.innerHTML =
+          '<span class="quiz-typing-dot"></span>' +
+          '<span class="quiz-typing-dot"></span>' +
+          '<span class="quiz-typing-dot"></span>';
+
+        var msg =
+          'Someone just took the "What\'s Your Brew?" quiz on the Belly Pork Brewing website. ' +
+          'Here\'s what they said:\n\n' +
+          '- Evening plans: ' + answers[0] + '\n' +
+          '- What they want from their pint: ' + answers[1] + '\n' +
+          '- How many they\'re having: ' + answers[2] + '\n\n' +
+          'Recommend one of your beers and tell them why it\'s right for them. ' +
+          'Keep it to two or three sentences — be Graham about it.';
+
+        fetch('/.netlify/functions/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ messages: [{ role: 'user', content: msg }] }),
+        })
+          .then(function (res) {
+            if (res.status === 404) throw new Error('FUNCTION_NOT_FOUND');
+            if (!res.ok) throw new Error('HTTP_' + res.status);
+            return res.json();
+          })
+          .then(function (data) {
+            resultTxt.textContent = data.reply || "Right. Just get the Narcoleptic NEIPA and stop overthinking it.";
+          })
+          .catch(function (err) {
+            if (err.message === 'FUNCTION_NOT_FOUND') {
+              resultTxt.textContent = "Can't reach me right now boy — run netlify dev if you're testing locally.";
+            } else {
+              resultTxt.textContent = "Something went sideways. But honestly just go for the Narcoleptic NEIPA — you can't go wrong.";
+            }
+          });
+      }
+
+      retakeBtn.addEventListener('click', function () {
+        answers.length = 0;
+        questions.forEach(function (q) { q.classList.remove('active'); });
+        questions[0].classList.add('active');
+        document.querySelectorAll('.quiz-option').forEach(function (b) { b.classList.remove('selected'); });
+        resultEl.classList.remove('visible');
+        setPips(0);
+      });
+
+      setPips(0);
+    }());
+
+    // ─── Hero parallax ───
+    (function () {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      const hero   = document.querySelector('.hero');
+      const pigImg = document.querySelector('.hero-right img');
+      const shape1 = document.querySelector('.hero-shape-1');
+      const shape2 = document.querySelector('.hero-shape-2');
+
+      if (!hero || !pigImg || !shape1 || !shape2) return;
+
+      // Centre the oversized image so it fills the container top and bottom
+      function getInitPigOffset() {
+        const container = pigImg.parentElement;
+        // image is 140% of container height — excess is 40%, split 20% top/bottom
+        return -(container.offsetHeight * 0.20);
+      }
+
+      let initPigOffset = getInitPigOffset();
+      pigImg.style.transform = 'translateY(' + initPigOffset + 'px)';
+
+      let ticking = false;
+      let lastY   = 0;
+
+      function update() {
+        const heroBottom = hero.offsetTop + hero.offsetHeight;
+        if (lastY > heroBottom) { ticking = false; return; } // hero offscreen
+
+        // Pig: scrolls at ~70% of page speed (translateY counteracts 30% of scroll)
+        const pigOffset = initPigOffset + lastY * 0.30;
+        // Shapes: scrolls at ~82–88% of page speed (barely drift)
+        const s1Offset  = lastY * 0.12;
+        const s2Offset  = lastY * 0.18;
+
+        pigImg.style.transform = 'translateY(' + pigOffset + 'px)';
+        shape1.style.transform = 'translateY(' + s1Offset  + 'px)';
+        shape2.style.transform = 'translateY(' + s2Offset  + 'px)';
+
+        ticking = false;
+      }
+
+      window.addEventListener('scroll', function () {
+        lastY = window.scrollY;
+        if (!ticking) { requestAnimationFrame(update); ticking = true; }
+      }, { passive: true });
+
+      // Recalculate init offset on resize
+      window.addEventListener('resize', function () {
+        initPigOffset = getInitPigOffset();
+        lastY = window.scrollY;
+        requestAnimationFrame(update);
+      }, { passive: true });
+    }());
   </script>
 
 </body>
