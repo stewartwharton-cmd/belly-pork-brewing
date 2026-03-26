@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tap Room — Belly Pork Brewing Co.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&family=Syne+Mono&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --magenta: #FF1DBC;
+      --magenta-dim: rgba(255,29,188,0.15);
+      --black: #080808;
+      --off-white: #F0EAE0;
+      --dark: #111111;
+      --mid: #1e1e1e;
+      --muted: rgba(240,234,224,0.5);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--off-white);
+      font-family: 'Syne', sans-serif;
+      overflow-x: hidden;
+    }
+
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--black); }
+    ::-webkit-scrollbar-thumb { background: var(--magenta); }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      inset: 0 0 auto 0;
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 3rem;
+      background: rgba(8,8,8,0.88);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--magenta-dim);
+    }
+
+    .nav-logo img {
+      height: 52px;
+      display: block;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover,
+    .nav-links a.active { color: var(--magenta); }
+
+    .nav-cta {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      background: var(--magenta);
+      color: var(--black);
+      padding: 0.6rem 1.4rem;
+      text-decoration: none;
+      font-weight: 700;
+      transition: opacity 0.2s;
+    }
+    .nav-cta:hover { opacity: 0.85; }
+
+    /* ─── HAMBURGER / MOBILE MENU ─── */
+    .nav-burger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.4rem;
+      z-index: 300;
+    }
+    .nav-burger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--off-white);
+      transition: transform 0.3s ease, opacity 0.3s ease, background 0.2s;
+    }
+    .nav-burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-burger.open span:nth-child(2) { opacity: 0; }
+    .nav-burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .nav-burger.open span { background: var(--magenta); }
+
+    .nav-mobile {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 250;
+      background: rgba(8,8,8,0.97);
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2.5rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .nav-mobile.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .nav-mobile-close {
+      position: absolute;
+      top: 1.4rem;
+      right: 1.5rem;
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 1.6rem;
+      cursor: pointer;
+      line-height: 1;
+      transition: color 0.2s;
+    }
+    .nav-mobile-close:hover { color: var(--magenta); }
+    .nav-mobile a {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.5rem, 8vw, 4rem);
+      letter-spacing: 0.08em;
+      color: var(--off-white);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-mobile a:hover { color: var(--magenta); }
+    .nav-mobile .nav-mobile-cta {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.8rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      background: var(--magenta);
+      color: var(--black);
+      padding: 0.9rem 2rem;
+      font-weight: 700;
+      margin-top: 1rem;
+    }
+
+    /* ─── PAGE HEADER ─── */
+    .page-header {
+      padding: 14rem 5rem 8rem;
+      position: relative;
+      overflow: hidden;
+      border-bottom: 1px solid var(--magenta-dim);
+    }
+    .page-header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 70% 60% at 30% 60%, rgba(255,29,188,0.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .page-header-bg-text {
+      position: absolute;
+      right: -0.02em;
+      bottom: -0.15em;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(8rem, 18vw, 20rem);
+      line-height: 1;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(255,29,188,0.08);
+      pointer-events: none;
+      user-select: none;
+    }
+    .page-header .section-label {
+      margin-bottom: 1.2rem;
+    }
+    .page-header h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(5rem, 10vw, 11rem);
+      line-height: 0.88;
+      letter-spacing: 0.01em;
+      position: relative;
+      z-index: 2;
+    }
+    .page-header h1 .outline {
+      -webkit-text-stroke: 2px var(--magenta);
+      color: transparent;
+      display: block;
+    }
+    .page-header h1 .solid { display: block; }
+    .page-header-sub {
+      margin-top: 2rem;
+      font-size: 1.05rem;
+      line-height: 1.75;
+      color: var(--muted);
+      max-width: 480px;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* ─── MARQUEE ─── */
+    .marquee-wrap {
+      background: var(--magenta);
+      overflow: hidden;
+      padding: 0.85rem 0;
+    }
+    .marquee-track {
+      display: flex;
+      width: max-content;
+      animation: marqueeScroll 22s linear infinite;
+    }
+    .marquee-track span {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1rem;
+      letter-spacing: 0.25em;
+      color: var(--black);
+      padding: 0 2rem;
+      white-space: nowrap;
+    }
+    .marquee-track .dot { color: rgba(0,0,0,0.35); }
+    @keyframes marqueeScroll {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* ─── SHARED ─── */
+    .section-label {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.38em;
+      text-transform: uppercase;
+      color: var(--magenta);
+      margin-bottom: 1.2rem;
+    }
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3rem, 5vw, 6rem);
+      line-height: 0.92;
+      margin-bottom: 1.5rem;
+    }
+
+    /* ─── HOURS ─── */
+    .hours-section {
+      padding: 8rem 5rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 7rem;
+      align-items: start;
+    }
+    .hours-intro p {
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+    .hours-intro p strong { color: var(--off-white); }
+    .hours-note {
+      margin-top: 2rem;
+      padding: 1.2rem 1.6rem;
+      border-left: 2px solid var(--magenta);
+      background: var(--magenta-dim);
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      line-height: 1.7;
+      color: var(--off-white);
+    }
+
+    .hours-table {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .hours-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.1rem 0;
+      border-bottom: 1px solid rgba(240,234,224,0.07);
+      gap: 1rem;
+    }
+    .hours-row:first-child { border-top: 1px solid rgba(240,234,224,0.07); }
+    .hours-day {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      min-width: 140px;
+    }
+    .hours-time {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.4rem;
+      letter-spacing: 0.06em;
+      color: var(--off-white);
+      text-align: right;
+    }
+    .hours-time.closed {
+      color: rgba(240,234,224,0.2);
+      font-size: 1rem;
+      font-family: 'Syne Mono', monospace;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+    .hours-row.today .hours-day {
+      color: var(--magenta);
+    }
+    .hours-row.today .hours-time {
+      color: var(--magenta);
+    }
+    .today-badge {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      background: var(--magenta);
+      color: var(--black);
+      padding: 0.2rem 0.5rem;
+      font-weight: 700;
+      margin-left: 0.6rem;
+      vertical-align: middle;
+    }
+
+    /* ─── MAP ─── */
+    .map-section {
+      padding: 0 5rem 8rem;
+    }
+    .map-section .section-label { margin-bottom: 0.6rem; }
+    .map-section .section-title { margin-bottom: 2.5rem; }
+    .map-wrapper {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 7;
+      background: var(--mid);
+      border: 1px solid var(--magenta-dim);
+      overflow: hidden;
+    }
+    .map-wrapper iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+      filter: grayscale(1) invert(1) hue-rotate(180deg) brightness(0.85) contrast(0.9);
+    }
+    .map-overlay-corner {
+      position: absolute;
+      bottom: 1.5rem;
+      left: 1.5rem;
+      background: rgba(8,8,8,0.92);
+      border: 1px solid var(--magenta-dim);
+      padding: 1.2rem 1.6rem;
+      backdrop-filter: blur(12px);
+      z-index: 10;
+    }
+    .map-overlay-corner h3 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.4rem;
+      letter-spacing: 0.06em;
+      color: var(--magenta);
+      margin-bottom: 0.3rem;
+    }
+    .map-overlay-corner p {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--dark);
+      border-top: 1px solid var(--magenta-dim);
+      padding: 4rem 5rem 3rem;
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr;
+      gap: 4rem;
+    }
+    .footer-brand img {
+      height: 48px;
+      margin-bottom: 1.2rem;
+      display: block;
+    }
+    .footer-brand p {
+      font-size: 0.9rem;
+      line-height: 1.7;
+      color: var(--muted);
+      max-width: 280px;
+    }
+    .footer-col h4 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.1rem;
+      letter-spacing: 0.1em;
+      margin-bottom: 1.2rem;
+      color: var(--magenta);
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 0.6rem; }
+    .footer-col ul a {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-col ul a:hover { color: var(--off-white); }
+    .footer-bottom {
+      grid-column: 1 / -1;
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(240,234,224,0.06);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer-bottom p {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      color: rgba(240,234,224,0.25);
+    }
+    .footer-bottom span { color: var(--magenta); }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .fade-up {
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards;
+    }
+    .fade-up:nth-child(1) { animation-delay: 0.2s; }
+    .fade-up:nth-child(2) { animation-delay: 0.4s; }
+    .fade-up:nth-child(3) { animation-delay: 0.6s; }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 900px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      .nav-cta { display: none; }
+      .nav-burger { display: flex; }
+      .nav-mobile { display: flex; }
+
+      .page-header { padding: 10rem 2rem 5rem; }
+      .page-header-bg-text { font-size: 22vw; }
+
+      .hours-section { grid-template-columns: 1fr; gap: 3rem; padding: 5rem 2rem; }
+      .map-section { padding: 0 2rem 5rem; }
+      .map-wrapper { aspect-ratio: 4 / 3; }
+
+      footer { grid-template-columns: 1fr; padding: 3rem 2rem; gap: 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="index.html" class="nav-logo">
+      <img
+        src="https://img1.wsimg.com/isteam/ip/c5f4da44-74a7-4ebd-b7a0-a83c516ecd85/Belly%20Pork%20Brewing-37b48db.PNG/:/rs=h:200,cg:true,m/qt=q:100/ll"
+        alt="Belly Pork Brewing"
+      />
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html#about">About</a></li>
+      <li><a href="index.html#beers">Beers</a></li>
+      <li><a href="index.html#process">How We Brew</a></li>
+      <li><a href="index.html#graham">Graham</a></li>
+      <li><a href="taproom.html" class="active">Tap Room</a></li>
+    </ul>
+    <a href="index.html#newsletter" class="nav-cta">Stay Updated</a>
+    <button class="nav-burger" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- MOBILE NAV -->
+  <div class="nav-mobile" id="nav-mobile" aria-hidden="true">
+    <button class="nav-mobile-close" aria-label="Close menu">&#x2715;</button>
+    <a href="index.html#about">About</a>
+    <a href="index.html#beers">Beers</a>
+    <a href="index.html#process">How We Brew</a>
+    <a href="index.html#graham">Graham</a>
+    <a href="taproom.html">Tap Room</a>
+    <a href="index.html#newsletter" class="nav-mobile-cta">Stay Updated</a>
+  </div>
+
+  <!-- PAGE HEADER -->
+  <header class="page-header">
+    <p class="section-label fade-up">// Visit Us</p>
+    <h1 class="fade-up">
+      <span class="solid">The</span>
+      <span class="outline">Tap</span>
+      <span class="solid">Room</span>
+    </h1>
+    <p class="page-header-sub fade-up">
+      Pull up a stool, pour yourself something cold, and let Graham tell you exactly what you should have ordered.
+      We're open most of the week — come and find out why.
+    </p>
+    <div class="page-header-bg-text" aria-hidden="true">TAP</div>
+  </header>
+
+  <!-- MARQUEE -->
+  <div class="marquee-wrap" aria-hidden="true">
+    <div class="marquee-track">
+      <span>BELLY PORK TAP ROOM</span><span class="dot">&nbsp;✦&nbsp;</span>
+      <span>COLD BEER</span><span class="dot">&nbsp;✦&nbsp;</span>
+      <span>GOOD TIMES</span><span class="dot">&nbsp;✦&nbsp;</span>
+      <span>GRAHAM APPROVED</span><span class="dot">&nbsp;✦&nbsp;</span>
+      <span>WALK-INS WELCOME</span><span class="dot">&nbsp;✦&nbsp;</span>
+      <span>BELLY PORK TAP ROOM</span><span class="dot">&nbsp;✦&nbsp;</span>
+      <span>COLD BEER</span><span class="dot">&nbsp;✦&nbsp;</span>
+      <span>GOOD TIMES</span><span class="dot">&nbsp;✦&nbsp;</span>
+      <span>GRAHAM APPROVED</span><span class="dot">&nbsp;✦&nbsp;</span>
+      <span>WALK-INS WELCOME</span><span class="dot">&nbsp;✦&nbsp;</span>
+    </div>
+  </div>
+
+  <!-- OPENING HOURS -->
+  <section class="hours-section" id="hours">
+    <div class="hours-intro">
+      <p class="section-label">// When We're Open</p>
+      <h2 class="section-title">Opening<br>Hours</h2>
+      <p>We're not open every hour of the day — we're busy brewing. But when we are open, <strong>we're really open.</strong> Proper pints, no rush, good chat.</p>
+      <p>Walk-ins are always welcome. If you're coming with a large group, give us a shout first so Graham can mentally prepare.</p>
+      <div class="hours-note">
+        Bank holidays and special events may affect hours.<br>
+        Follow us on social or sign up to the newsletter for updates.
+      </div>
+    </div>
+
+    <div class="hours-table" id="hours-table">
+      <div class="hours-row" data-day="1">
+        <span class="hours-day">Monday</span>
+        <span class="hours-time closed">Closed</span>
+      </div>
+      <div class="hours-row" data-day="2">
+        <span class="hours-day">Tuesday</span>
+        <span class="hours-time closed">Closed</span>
+      </div>
+      <div class="hours-row" data-day="3">
+        <span class="hours-day">Wednesday</span>
+        <span class="hours-time">4pm – 10pm</span>
+      </div>
+      <div class="hours-row" data-day="4">
+        <span class="hours-day">Thursday</span>
+        <span class="hours-time">4pm – 10pm</span>
+      </div>
+      <div class="hours-row" data-day="5">
+        <span class="hours-day">Friday</span>
+        <span class="hours-time">3pm – 11pm</span>
+      </div>
+      <div class="hours-row" data-day="6">
+        <span class="hours-day">Saturday</span>
+        <span class="hours-time">12pm – 11pm</span>
+      </div>
+      <div class="hours-row" data-day="0">
+        <span class="hours-day">Sunday</span>
+        <span class="hours-time">12pm – 8pm</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAP -->
+  <section class="map-section" id="find-us">
+    <p class="section-label">// Find Us</p>
+    <h2 class="section-title">Where<br>We Are</h2>
+
+    <div class="map-wrapper">
+      <!--
+        REPLACE the src below with your actual Google Maps embed URL.
+        In Google Maps: search your address → Share → Embed a map → copy the src.
+        Or use an OpenStreetMap iframe from openstreetmap.org.
+      -->
+      <iframe
+        src="https://www.openstreetmap.org/export/embed.html?bbox=-2.0%2C53.4%2C-1.9%2C53.45&amp;layer=mapnik"
+        allowfullscreen
+        loading="lazy"
+        title="Belly Pork Brewing Tap Room location"
+      ></iframe>
+
+      <div class="map-overlay-corner">
+        <h3>Belly Pork Brewing</h3>
+        <p>
+          <!-- UPDATE with your actual address -->
+          123 Brewery Lane<br>
+          Your Town, AB1 2CD<br>
+          United Kingdom
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-brand">
+      <img
+        src="https://img1.wsimg.com/isteam/ip/c5f4da44-74a7-4ebd-b7a0-a83c516ecd85/Belly%20Pork%20Brewing-37b48db.PNG/:/rs=h:200,cg:true,m/qt=q:100/ll"
+        alt="Belly Pork Brewing"
+      />
+      <p>Independent craft beer from Graham's kitchen to your glass. One batch at a time.</p>
+    </div>
+
+    <div class="footer-col">
+      <h4>Navigate</h4>
+      <ul>
+        <li><a href="index.html#about">About Us</a></li>
+        <li><a href="index.html#beers">The Beers</a></li>
+        <li><a href="index.html#process">How We Brew</a></li>
+        <li><a href="index.html#graham">Graham</a></li>
+        <li><a href="taproom.html">Tap Room</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h4>Connect</h4>
+      <ul>
+        <li><a href="https://bellyporkbrewing.com" target="_blank" rel="noopener">bellyporkbrewing.com</a></li>
+        <li><a href="index.html#newsletter">Newsletter</a></li>
+        <li><a href="#">Instagram</a></li>
+        <li><a href="#">Facebook</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2024 Belly Pork Brewing Co. — All Rights Reserved.</p>
+      <p>Powered by <span>vapes</span> and Graham's questionable decisions.</p>
+    </div>
+  </footer>
+
+  <script>
+    // ─── Highlight today's row ───
+    const today = new Date().getDay();
+    const todayRow = document.querySelector(`.hours-row[data-day="${today}"]`);
+    if (todayRow) {
+      todayRow.classList.add('today');
+      const dayEl = todayRow.querySelector('.hours-day');
+      const badge = document.createElement('span');
+      badge.className = 'today-badge';
+      badge.textContent = 'Today';
+      dayEl.appendChild(badge);
+    }
+
+    // ─── Mobile menu ───
+    const burger = document.querySelector('.nav-burger');
+    const mobileNav = document.getElementById('nav-mobile');
+
+    function toggleMenu(open) {
+      burger.classList.toggle('open', open);
+      burger.setAttribute('aria-expanded', open);
+      mobileNav.classList.toggle('open', open);
+      mobileNav.setAttribute('aria-hidden', !open);
+      document.body.style.overflow = open ? 'hidden' : '';
+    }
+
+    burger.addEventListener('click', () => {
+      toggleMenu(!burger.classList.contains('open'));
+    });
+
+    document.querySelector('.nav-mobile-close').addEventListener('click', () => toggleMenu(false));
+
+    mobileNav.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => toggleMenu(false));
+    });
+  </script>
+
+</body>
+</html>

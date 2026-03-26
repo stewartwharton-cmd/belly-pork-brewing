@@ -428,13 +428,38 @@
     }
 
     .beer-card {
-      background: var(--dark);
-      padding: 3rem 2.5rem;
-      position: relative;
-      overflow: hidden;
-      transition: background 0.3s;
+      perspective: 1000px;
+      cursor: pointer;
+      min-height: 420px;
     }
-    .beer-card:hover { background: var(--mid); }
+    .beer-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      min-height: 420px;
+      transform-style: preserve-3d;
+      transition: transform 0.65s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .beer-card.flipped .beer-card-inner {
+      transform: rotateY(180deg);
+    }
+    .beer-card-front,
+    .beer-card-back {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      padding: 3rem 2.5rem;
+      display: flex;
+      flex-direction: column;
+    }
+    .beer-card-front { background: var(--dark); }
+    .beer-card-back {
+      background: var(--mid);
+      transform: rotateY(180deg);
+      border: 1px solid var(--magenta-dim);
+      justify-content: space-between;
+    }
 
     .beer-style {
       font-family: 'Syne Mono', monospace;
@@ -454,7 +479,7 @@
       font-size: 0.9rem;
       line-height: 1.7;
       color: var(--muted);
-      margin-bottom: 2rem;
+      margin-bottom: auto;
     }
     .beer-abv {
       display: inline-block;
@@ -464,6 +489,7 @@
       font-size: 0.7rem;
       letter-spacing: 0.2em;
       padding: 0.4rem 0.9rem;
+      margin-top: 2rem;
     }
     .beer-num {
       position: absolute;
@@ -473,17 +499,121 @@
       color: rgba(255,29,188,0.04);
       line-height: 1;
       user-select: none;
-      transition: color 0.3s;
     }
-    .beer-card:hover .beer-num { color: rgba(255,29,188,0.08); }
-    .beer-footer {
+    .beer-flip-hint {
       font-family: 'Syne Mono', monospace;
-      font-size: 0.68rem;
+      font-size: 0.6rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(240,234,224,0.2);
+      margin-top: 1.4rem;
+    }
+
+    /* Back face */
+    .beer-back-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.6rem;
+      letter-spacing: 0.06em;
+      color: var(--magenta);
+      margin-bottom: 1.6rem;
+    }
+    .tasting-notes {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      flex: 1;
+    }
+    .tasting-row {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+    .tasting-label {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.58rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--magenta);
+    }
+    .tasting-value {
+      font-size: 0.88rem;
+      line-height: 1.5;
+      color: var(--muted);
+    }
+    .beer-back-footer {
+      margin-top: 1.6rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--magenta-dim);
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(240,234,224,0.2);
+    }
+
+    /* ─── RATING WIDGET ─── */
+    .rating-widget {
+      margin-top: 1.2rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--magenta-dim);
+    }
+    .rating-widget-label {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.58rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--magenta);
+      margin-bottom: 0.75rem;
+    }
+    .rating-glasses {
+      display: flex;
+      gap: 0.35rem;
+      align-items: flex-end;
+    }
+    .rating-glass {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.15rem;
+      color: rgba(240,234,224,0.18);
+      transition: color 0.15s, transform 0.15s;
+      width: 30px;
+      flex-shrink: 0;
+    }
+    .rating-glass svg {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .rating-glass .glass-body {
+      transition: fill 0.15s;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.5;
+      stroke-linejoin: round;
+    }
+    .rating-glass .glass-foam {
+      transition: fill 0.15s;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.5;
+      stroke-linecap: round;
+    }
+    .rating-glass.lit {
+      color: var(--magenta);
+      transform: translateY(-3px);
+    }
+    .rating-glass.lit .glass-body { fill: rgba(255,29,188,0.25); }
+    .rating-glass.set {
+      color: var(--magenta);
+    }
+    .rating-glass.set .glass-body { fill: rgba(255,29,188,0.25); }
+    .rating-text {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.62rem;
       letter-spacing: 0.15em;
       color: rgba(240,234,224,0.28);
-      margin-top: 2.5rem;
-      padding-top: 1.2rem;
-      border-top: 1px solid rgba(255,29,188,0.1);
+      margin-top: 0.55rem;
     }
 
     /* ─── PROCESS ─── */
@@ -739,6 +869,229 @@
     }
     .footer-bottom span { color: var(--magenta); }
 
+    /* ─── CHAT WIDGET ─── */
+    #chat-widget {
+      position: fixed;
+      bottom: 1.8rem;
+      right: 1.8rem;
+      z-index: 500;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0.75rem;
+    }
+
+    #chat-panel {
+      width: 360px;
+      background: var(--dark);
+      border: 1px solid var(--magenta-dim);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,29,188,0.08);
+      opacity: 0;
+      transform: translateY(12px) scale(0.97);
+      pointer-events: none;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+      transform-origin: bottom right;
+    }
+    #chat-panel.open {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: all;
+    }
+
+    #chat-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1.2rem;
+      background: var(--mid);
+      border-bottom: 1px solid var(--magenta-dim);
+      flex-shrink: 0;
+    }
+    .chat-header-info {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .chat-avatar {
+      width: 36px;
+      height: 36px;
+      background: var(--magenta);
+      color: var(--black);
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .chat-header-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.1rem;
+      letter-spacing: 0.06em;
+      color: var(--off-white);
+      line-height: 1.1;
+    }
+    .chat-header-sub {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.58rem;
+      letter-spacing: 0.15em;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+    #chat-close {
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 1rem;
+      cursor: pointer;
+      padding: 0.25rem;
+      transition: color 0.2s;
+      line-height: 1;
+    }
+    #chat-close:hover { color: var(--magenta); }
+
+    #chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1.2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+      max-height: 380px;
+      min-height: 200px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--magenta) var(--black);
+    }
+    #chat-messages::-webkit-scrollbar { width: 3px; }
+    #chat-messages::-webkit-scrollbar-track { background: var(--black); }
+    #chat-messages::-webkit-scrollbar-thumb { background: var(--magenta); }
+
+    .chat-msg {
+      display: flex;
+      flex-direction: column;
+      max-width: 88%;
+    }
+    .chat-msg.graham { align-self: flex-start; }
+    .chat-msg.user { align-self: flex-end; }
+    .chat-msg-name {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.58rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--magenta);
+      margin-bottom: 0.3rem;
+    }
+    .chat-msg p {
+      font-size: 0.88rem;
+      line-height: 1.6;
+      padding: 0.7rem 1rem;
+    }
+    .chat-msg.graham p {
+      background: var(--mid);
+      color: var(--off-white);
+      border: 1px solid rgba(255,29,188,0.1);
+    }
+    .chat-msg.user p {
+      background: var(--magenta);
+      color: var(--black);
+      font-weight: 600;
+    }
+
+    /* Typing dots */
+    .chat-msg.typing p {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+      min-width: 44px;
+    }
+    .chat-msg.typing p span {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      background: var(--magenta);
+      border-radius: 50%;
+      animation: typingBounce 1.2s ease-in-out infinite;
+    }
+    .chat-msg.typing p span:nth-child(2) { animation-delay: 0.2s; }
+    .chat-msg.typing p span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes typingBounce {
+      0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+      30% { transform: translateY(-5px); opacity: 1; }
+    }
+
+    #chat-input-row {
+      display: flex;
+      border-top: 1px solid var(--magenta-dim);
+      flex-shrink: 0;
+    }
+    #chat-input {
+      flex: 1;
+      background: var(--black);
+      border: none;
+      color: var(--off-white);
+      font-family: 'Syne', sans-serif;
+      font-size: 0.88rem;
+      padding: 0.9rem 1rem;
+      outline: none;
+    }
+    #chat-input::placeholder { color: rgba(240,234,224,0.25); }
+    #chat-send {
+      background: var(--magenta);
+      border: none;
+      color: var(--black);
+      padding: 0 1.1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      transition: opacity 0.2s;
+      flex-shrink: 0;
+    }
+    #chat-send:hover { opacity: 0.85; }
+    #chat-send:disabled { opacity: 0.4; cursor: not-allowed; }
+    #chat-send svg { width: 18px; height: 18px; display: block; }
+
+    #chat-toggle {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: var(--magenta);
+      color: var(--black);
+      border: none;
+      padding: 0.7rem 1.3rem 0.7rem 1rem;
+      cursor: pointer;
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-weight: 700;
+      box-shadow: 0 8px 32px rgba(255,29,188,0.35);
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    #chat-toggle:hover { opacity: 0.9; transform: translateY(-2px); }
+    #chat-toggle svg { width: 18px; height: 24px; flex-shrink: 0; }
+    #chat-toggle .toggle-close { display: none; }
+    #chat-toggle.open .toggle-open { display: none; }
+    #chat-toggle.open .toggle-close { display: inline; }
+
+    @media (max-width: 900px) {
+      #chat-widget { bottom: 1.2rem; right: 1.2rem; }
+      #chat-panel { width: calc(100vw - 2.4rem); }
+    }
+
+    /* ─── SCROLL REVEAL ─── */
+    [data-reveal] {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    [data-reveal].revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
     /* ─── ANIMATIONS ─── */
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(28px); }
@@ -749,10 +1102,90 @@
       to   { opacity: 1; }
     }
 
+    /* ─── HAMBURGER / MOBILE MENU ─── */
+    .nav-burger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.4rem;
+      z-index: 300;
+    }
+    .nav-burger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--off-white);
+      transition: transform 0.3s ease, opacity 0.3s ease, background 0.2s;
+    }
+    .nav-burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-burger.open span:nth-child(2) { opacity: 0; }
+    .nav-burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .nav-burger.open span { background: var(--magenta); }
+
+    .nav-mobile {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 250;
+      background: rgba(8,8,8,0.97);
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2.5rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .nav-mobile.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .nav-mobile a {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.5rem, 8vw, 4rem);
+      letter-spacing: 0.08em;
+      color: var(--off-white);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-mobile a:hover { color: var(--magenta); }
+    .nav-mobile-close {
+      position: absolute;
+      top: 1.4rem;
+      right: 1.5rem;
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 1.6rem;
+      cursor: pointer;
+      line-height: 1;
+      transition: color 0.2s;
+    }
+    .nav-mobile-close:hover { color: var(--magenta); }
+
+    .nav-mobile .nav-mobile-cta {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.8rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      background: var(--magenta);
+      color: var(--black);
+      padding: 0.9rem 2rem;
+      font-weight: 700;
+      margin-top: 1rem;
+    }
+
     /* ─── RESPONSIVE ─── */
     @media (max-width: 900px) {
       nav { padding: 1rem 1.5rem; }
       .nav-links { display: none; }
+      .nav-cta { display: none; }
+      .nav-burger { display: flex; }
+      .nav-mobile { display: flex; }
 
       .hero { grid-template-columns: 1fr; grid-template-rows: auto 60vw; }
       .hero-left { padding: 8rem 2rem 3rem; }
@@ -788,14 +1221,29 @@
       <li><a href="#beers">Beers</a></li>
       <li><a href="#process">How We Brew</a></li>
       <li><a href="#graham">Graham</a></li>
+      <li><a href="taproom.html">Tap Room</a></li>
     </ul>
     <a href="#newsletter" class="nav-cta">Stay Updated</a>
+    <button class="nav-burger" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
   </nav>
+
+  <!-- MOBILE NAV -->
+  <div class="nav-mobile" id="nav-mobile" aria-hidden="true">
+    <button class="nav-mobile-close" aria-label="Close menu">&#x2715;</button>
+    <a href="#about" class="nav-mobile-link">About</a>
+    <a href="#beers" class="nav-mobile-link">Beers</a>
+    <a href="#process" class="nav-mobile-link">How We Brew</a>
+    <a href="#graham" class="nav-mobile-link">Graham</a>
+    <a href="taproom.html" class="nav-mobile-link">Tap Room</a>
+    <a href="#newsletter" class="nav-mobile-cta">Stay Updated</a>
+  </div>
 
   <!-- HERO -->
   <section class="hero">
     <div class="hero-left">
-      <p class="hero-eyebrow">Craft Beer · Est. 2025 · Graham's Kitchen</p>
+      <p class="hero-eyebrow">Craft Beer · Est. 2024 · Graham's Kitchen</p>
       <h1 class="hero-h1">
         <span class="solid">Belly</span>
         <span class="solid">Pork</span>
@@ -831,12 +1279,12 @@
       <span>GRAHAM RECOMMENDS</span><span class="dot">&nbsp;✦&nbsp;</span>
       <span>CRAFT BEER</span><span class="dot">&nbsp;✦&nbsp;</span>
       <span>INDEPENDENT BREWERY</span><span class="dot">&nbsp;✦&nbsp;</span>
-      <span>BREWED WITH LOVE</span><span class="dot">&nbsp;✦&nbsp;</span>
+      <span>POWERED BY VAPES</span><span class="dot">&nbsp;✦&nbsp;</span>
       <span>BELLY PORK BREWING</span><span class="dot">&nbsp;✦&nbsp;</span>
       <span>GRAHAM RECOMMENDS</span><span class="dot">&nbsp;✦&nbsp;</span>
       <span>CRAFT BEER</span><span class="dot">&nbsp;✦&nbsp;</span>
       <span>INDEPENDENT BREWERY</span><span class="dot">&nbsp;✦&nbsp;</span>
-      <span>BREWED WITH LOVE</span><span class="dot">&nbsp;✦&nbsp;</span>
+      <span>POWERED BY VAPES</span><span class="dot">&nbsp;✦&nbsp;</span>
     </div>
   </div>
 
@@ -844,16 +1292,18 @@
   <section class="about" id="about">
     <div>
       <p class="section-label">// Who We Are</p>
-      <h2 class="section-title">Beer Made<br>with Gut<br>Feeling</h2>
+      <h2 class="section-title">Beer Made<br>with Rural<br>Class</h2>
       <p class="about-body">
-        Belly Pork Brewing started the way all great things do — in a kitchen,
-        with <strong>way too much enthusiasm</strong> and not nearly enough equipment.
-        A passion project turned proper brewery, and we're just getting started.
+        Three lads. Rural Suffolk. Friends since school.
+        <strong style="color:var(--magenta)">Never really grew up</strong> — just swapped messing about for making beer.
       </p>
       <p class="about-body">
-        Every batch is brewed small, tasted often, and approved by Graham before it ever
-        reaches a glass. No shortcuts. No compromises. No corporate nonsense.
-        Just honest, flavour-first craft beer.
+        We've always loved a good pint, and we've put the time in to know what makes one.
+        Now we brew the kind of beer we actually want to drink.
+        No nonsense. No pretending. If it's not spot on, it doesn't leave the brewery.
+      </p>
+      <p class="about-body">
+        <strong>Graham's the final say. Graham recommends.</strong> Just ask Graham.
       </p>
       <div class="about-stats">
         <div>
@@ -893,32 +1343,112 @@
     </div>
 
     <div class="beers-grid">
-      <div class="beer-card">
-        <div class="beer-num">01</div>
-        <p class="beer-style">Pale Ale</p>
-        <h3 class="beer-name">Snout &amp;<br>About</h3>
-        <p class="beer-desc">Crisp, citrus-forward and dangerously drinkable. The session ale that started it all — light on the palate, heavy on the satisfaction.</p>
-        <span class="beer-abv">4.2% ABV</span>
-        <p class="beer-footer">Graham's rating: ★★★★★</p>
+
+      <div class="beer-card" data-beer="narcoleptic-neipa">
+        <div class="beer-card-inner">
+          <div class="beer-card-front">
+            <div class="beer-num">01</div>
+            <p class="beer-style">DIPA</p>
+            <h3 class="beer-name">Narcoleptic<br>NEIPA</h3>
+            <p class="beer-desc">Where it all started. The strongest gear in the range — hazy, heavy, and guaranteed to put you to sleep. Don't make plans after this one.</p>
+            <span class="beer-abv">8.4% ABV</span>
+            <p class="beer-flip-hint">Tap for tasting notes →</p>
+          </div>
+          <div class="beer-card-back">
+            <p class="beer-back-title">Tasting Notes</p>
+            <div class="tasting-notes">
+              <div class="tasting-row">
+                <span class="tasting-label">Appearance</span>
+                <span class="tasting-value">Hazy golden orange, thick and unfiltered</span>
+              </div>
+              <div class="tasting-row">
+                <span class="tasting-label">Aroma</span>
+                <span class="tasting-value">Mango, passionfruit, peach, dank resin</span>
+              </div>
+              <div class="tasting-row">
+                <span class="tasting-label">Taste</span>
+                <span class="tasting-value">Tropical fruit bomb, pillowy soft, lingering warmth that earns its 8.4%</span>
+              </div>
+              <div class="tasting-row">
+                <span class="tasting-label">Pairs with</span>
+                <span class="tasting-value">A good sofa and absolutely no plans</span>
+              </div>
+            </div>
+            <p class="beer-back-footer">Graham's rating: ★★★★★ &nbsp;·&nbsp; Tap to flip back</p>
+          </div>
+        </div>
       </div>
 
-      <div class="beer-card">
-        <div class="beer-num">02</div>
-        <p class="beer-style">Stout</p>
-        <h3 class="beer-name">Black<br>Belly</h3>
-        <p class="beer-desc">Dark as midnight, smooth as silk. Roasted malt with a whisper of chocolate and enough body to warm you from the inside out.</p>
-        <span class="beer-abv">5.8% ABV</span>
-        <p class="beer-footer">Graham's rating: ★★★★★</p>
+      <div class="beer-card" data-beer="reverse-weave">
+        <div class="beer-card-inner">
+          <div class="beer-card-front">
+            <div class="beer-num">02</div>
+            <p class="beer-style">Pale Ale</p>
+            <h3 class="beer-name">Reverse<br>Weave</h3>
+            <p class="beer-desc">Don't conform to the vertical — think horizontal. A smooth, easy-drinking pale that does things its own way.</p>
+            <span class="beer-abv">5.7% ABV</span>
+            <p class="beer-flip-hint">Tap for tasting notes →</p>
+          </div>
+          <div class="beer-card-back">
+            <p class="beer-back-title">Tasting Notes</p>
+            <div class="tasting-notes">
+              <div class="tasting-row">
+                <span class="tasting-label">Appearance</span>
+                <span class="tasting-value">Pale golden with a light, inviting haze</span>
+              </div>
+              <div class="tasting-row">
+                <span class="tasting-label">Aroma</span>
+                <span class="tasting-value">Citrus blossom, white peach, fresh cut grass</span>
+              </div>
+              <div class="tasting-row">
+                <span class="tasting-label">Taste</span>
+                <span class="tasting-value">Soft biscuity malt, gentle hop bite, clean and crisp finish</span>
+              </div>
+              <div class="tasting-row">
+                <span class="tasting-label">Pairs with</span>
+                <span class="tasting-value">Whatever you fancy — it's that kind of beer</span>
+              </div>
+            </div>
+            <p class="beer-back-footer">Graham's rating: ★★★★★ &nbsp;·&nbsp; Tap to flip back</p>
+          </div>
+        </div>
       </div>
 
-      <div class="beer-card">
-        <div class="beer-num">03</div>
-        <p class="beer-style">IPA</p>
-        <h3 class="beer-name">Pig Out<br>IPA</h3>
-        <p class="beer-desc">Bold hops, tropical fruit, a bitter finish that lingers just long enough to make you reach for another. Unapologetically punchy.</p>
-        <span class="beer-abv">6.4% ABV</span>
-        <p class="beer-footer">Graham's rating: ★★★★★</p>
+      <div class="beer-card" data-beer="fanny-buffet">
+        <div class="beer-card-inner">
+          <div class="beer-card-front">
+            <div class="beer-num">03</div>
+            <p class="beer-style">West Coast</p>
+            <h3 class="beer-name">Fanny<br>Buffet</h3>
+            <p class="beer-desc">Don't choose one — take the lot. A West Coast IPA loaded with everything, for people who don't believe in moderation.</p>
+            <span class="beer-abv">5.7% ABV</span>
+            <p class="beer-flip-hint">Tap for tasting notes →</p>
+          </div>
+          <div class="beer-card-back">
+            <p class="beer-back-title">Tasting Notes</p>
+            <div class="tasting-notes">
+              <div class="tasting-row">
+                <span class="tasting-label">Appearance</span>
+                <span class="tasting-value">Clear amber gold, bright and confident</span>
+              </div>
+              <div class="tasting-row">
+                <span class="tasting-label">Aroma</span>
+                <span class="tasting-value">Pine resin, grapefruit peel, orange zest</span>
+              </div>
+              <div class="tasting-row">
+                <span class="tasting-label">Taste</span>
+                <span class="tasting-value">Bold bitterness up front, dry finish, loads of character all the way through</span>
+              </div>
+              <div class="tasting-row">
+                <span class="tasting-label">Pairs with</span>
+                <span class="tasting-value">Everything on the menu, obviously</span>
+              </div>
+            </div>
+            <p class="beer-back-footer">Graham's rating: ★★★★★ &nbsp;·&nbsp; Tap to flip back</p>
+          </div>
+        </div>
       </div>
+
     </div>
   </section>
 
@@ -970,14 +1500,16 @@
         Graham is the reason Belly Pork Brewing exists.
       </p>
       <p class="graham-body">
-        What started as a kitchen experiment quickly became something bigger.
-        Armed with a homebrew kit, an encyclopaedic knowledge of beer, and an
-        insatiable drive to get it <strong>exactly right</strong>, Graham set about
-        crafting beers he'd actually want to drink.
+        Graham's a bit of a mystery. No one's quite sure where he came from,
+        but everyone knows one thing — <strong>his standards are high, and he doesn't let much pass.</strong>
       </p>
       <p class="graham-body">
-        The result? A growing range of honest, flavourful craft beers that carry
-        his personal stamp of approval on every single batch.
+        We don't put anything in front of you unless it's been through him first.
+        Tasted, judged, and held to account.
+      </p>
+      <p class="graham-body">
+        And when it's right? He always slaps his lips.
+        That's how you know it's made the cut.
       </p>
       <div class="graham-quote">
         <p>"If it's not good enough for my glass, it's not good enough for yours."</p>
@@ -1028,10 +1560,283 @@
     </div>
 
     <div class="footer-bottom">
-      <p>© 2025 Belly Pork Brewing Co. — All Rights Reserved.</p>
-      <p>Made with <span>♥</span> and too many taste tests by Graham.</p>
+      <p>© 2024 Belly Pork Brewing Co. — All Rights Reserved.</p>
+      <p>Powered by <span>vapes</span> and Graham's questionable decisions.</p>
     </div>
   </footer>
+
+  <!-- CHAT WIDGET -->
+  <div id="chat-widget">
+
+    <div id="chat-panel" aria-hidden="true" aria-label="Chat with Graham">
+      <div id="chat-header">
+        <div class="chat-header-info">
+          <div class="chat-avatar">G</div>
+          <div>
+            <p class="chat-header-name">Graham</p>
+            <p class="chat-header-sub">Head of Taste · Belly Pork Brewing</p>
+          </div>
+        </div>
+        <button id="chat-close" aria-label="Close chat">&#x2715;</button>
+      </div>
+      <div id="chat-messages" role="log" aria-live="polite"></div>
+      <div id="chat-input-row">
+        <input id="chat-input" type="text" placeholder="Ask Graham anything..." autocomplete="off" />
+        <button id="chat-send" aria-label="Send message">
+          <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 10 L17 10 M11 4 L17 10 L11 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <button id="chat-toggle" aria-expanded="false" aria-controls="chat-panel">
+      <svg viewBox="0 0 20 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M2 6 L18 6 L15.5 26 C15.5 26.8 14.8 27.5 14 27.5 L6 27.5 C5.2 27.5 4.5 26.8 4.5 26 Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="rgba(0,0,0,0.25)"/>
+        <path d="M2 6 C7 10 13 10 18 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <span class="toggle-open">Chat with Graham</span>
+      <span class="toggle-close">Close</span>
+    </button>
+
+  </div>
+
+  <script>
+    // ─── Chat widget ───
+    (function () {
+      const toggle   = document.getElementById('chat-toggle');
+      const panel    = document.getElementById('chat-panel');
+      const closeBtn = document.getElementById('chat-close');
+      const messages = document.getElementById('chat-messages');
+      const input    = document.getElementById('chat-input');
+      const sendBtn  = document.getElementById('chat-send');
+
+      let history = [];
+      let isOpen  = false;
+
+      function openPanel() {
+        isOpen = true;
+        panel.classList.add('open');
+        toggle.classList.add('open');
+        panel.setAttribute('aria-hidden', 'false');
+        toggle.setAttribute('aria-expanded', 'true');
+        if (messages.children.length === 0) {
+          addMsg('graham', "Alright boy, what do you want to know? Ask me about the beers, the tap room, anything. I'm about two pints in so keep it straightforward.");
+        }
+        input.focus();
+      }
+
+      function closePanel() {
+        isOpen = false;
+        panel.classList.remove('open');
+        toggle.classList.remove('open');
+        panel.setAttribute('aria-hidden', 'true');
+        toggle.setAttribute('aria-expanded', 'false');
+      }
+
+      toggle.addEventListener('click', () => isOpen ? closePanel() : openPanel());
+      closeBtn.addEventListener('click', closePanel);
+
+      function addMsg(role, text) {
+        const wrap = document.createElement('div');
+        wrap.className = 'chat-msg ' + role;
+        if (role === 'graham') {
+          wrap.innerHTML = '<p class="chat-msg-name">Graham</p><p>' + text + '</p>';
+        } else {
+          wrap.innerHTML = '<p>' + text + '</p>';
+        }
+        messages.appendChild(wrap);
+        messages.scrollTop = messages.scrollHeight;
+        return wrap;
+      }
+
+      function addTyping() {
+        const wrap = document.createElement('div');
+        wrap.className = 'chat-msg graham typing';
+        wrap.innerHTML = '<p class="chat-msg-name">Graham</p><p><span></span><span></span><span></span></p>';
+        messages.appendChild(wrap);
+        messages.scrollTop = messages.scrollHeight;
+        return wrap;
+      }
+
+      async function send() {
+        const text = input.value.trim();
+        if (!text || sendBtn.disabled) return;
+
+        input.value = '';
+        sendBtn.disabled = true;
+        input.disabled = true;
+
+        addMsg('user', text);
+        history.push({ role: 'user', content: text });
+
+        const typing = addTyping();
+
+        try {
+          const res = await fetch('/.netlify/functions/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ messages: history }),
+          });
+
+          if (res.status === 404) {
+            throw new Error('FUNCTION_NOT_FOUND');
+          }
+
+          if (!res.ok) {
+            const errText = await res.text().catch(() => '');
+            throw new Error('HTTP_' + res.status + (errText ? ': ' + errText : ''));
+          }
+
+          const data = await res.json();
+          const reply = data.reply || "Something went wrong boy. Try again.";
+
+          typing.remove();
+          addMsg('graham', reply);
+          history.push({ role: 'assistant', content: reply });
+        } catch (err) {
+          console.error('[Graham chat error]', err);
+          typing.remove();
+
+          if (err.message === 'FUNCTION_NOT_FOUND') {
+            addMsg('graham', "Can't reach me right now boy. If you're testing locally, run <code>netlify dev</code> instead of <code>npx serve</code>.");
+          } else if (err.message && err.message.includes('HTTP_5')) {
+            addMsg('graham', "Something went wrong on my end boy. Check that OPENAI_API_KEY is set in your Netlify environment variables, then redeploy.");
+          } else {
+            addMsg('graham', "Lost me there boy — check the browser console (F12) for the actual error.");
+          }
+        }
+
+        sendBtn.disabled = false;
+        input.disabled = false;
+        input.focus();
+      }
+
+      sendBtn.addEventListener('click', send);
+      input.addEventListener('keydown', e => { if (e.key === 'Enter') send(); });
+    })();
+
+    // ─── Scroll reveal ───
+    (function () {
+      // Individual elements that reveal one at a time
+      const singles = [
+        '.about .section-label', '.about .section-title',
+        '.about-body', '.about-stats',
+        '.beers .section-label', '.beers .section-title', '.beers-note',
+        '.process .section-label', '.process .section-title',
+        '.graham .section-label', '.graham .section-title',
+        '.graham-body', '.graham-quote', '.graham-visual',
+        '.newsletter .section-label', '.newsletter .section-title',
+        '.newsletter > p:not(.section-label)', '.newsletter-form',
+      ];
+
+      singles.forEach(selector => {
+        document.querySelectorAll(selector).forEach(el => {
+          el.setAttribute('data-reveal', '');
+        });
+      });
+
+      // Staggered groups — each item gets an increasing delay
+      [
+        document.querySelectorAll('.beer-card'),
+        document.querySelectorAll('.process-step'),
+        document.querySelectorAll('.footer-brand, .footer-col'),
+      ].forEach(group => {
+        group.forEach((el, i) => {
+          el.setAttribute('data-reveal', '');
+          el.style.transitionDelay = `${i * 0.12}s`;
+        });
+      });
+
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('revealed');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12 });
+
+      document.querySelectorAll('[data-reveal]').forEach(el => observer.observe(el));
+    })();
+
+    // ─── Rating widget ───
+    (function () {
+      const pintSVG = `<svg viewBox="0 0 20 30" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path class="glass-body" d="M2 6 L18 6 L15.5 26 C15.5 26.8 14.8 27.5 14 27.5 L6 27.5 C5.2 27.5 4.5 26.8 4.5 26 Z"/>
+        <path class="glass-foam" d="M2 6 C7 10 13 10 18 6"/>
+      </svg>`;
+
+      document.querySelectorAll('.beer-card[data-beer]').forEach(card => {
+        const id = card.dataset.beer;
+        const footer = card.querySelector('.beer-back-footer');
+        const saved = parseInt(localStorage.getItem('bpb-rating-' + id)) || 0;
+
+        const widget = document.createElement('div');
+        widget.className = 'rating-widget';
+        widget.innerHTML = `
+          <p class="rating-widget-label">Your Rating</p>
+          <div class="rating-glasses">
+            ${[1,2,3,4,5].map(n => `
+              <button class="rating-glass${n <= saved ? ' set' : ''}" data-val="${n}" aria-label="Rate ${n} out of 5 pints">
+                ${pintSVG}
+              </button>`).join('')}
+          </div>
+          <p class="rating-text">${saved ? saved + ' / 5 pints' : 'Tap a glass to rate'}</p>`;
+
+        footer.before(widget);
+
+        const glasses = widget.querySelectorAll('.rating-glass');
+        const ratingText = widget.querySelector('.rating-text');
+
+        glasses.forEach(g => {
+          g.addEventListener('mouseenter', () => {
+            const val = parseInt(g.dataset.val);
+            glasses.forEach(x => x.classList.toggle('lit', parseInt(x.dataset.val) <= val));
+          });
+          g.addEventListener('mouseleave', () => {
+            glasses.forEach(x => x.classList.remove('lit'));
+          });
+          g.addEventListener('click', e => {
+            e.stopPropagation(); // don't flip the card
+            const val = parseInt(g.dataset.val);
+            localStorage.setItem('bpb-rating-' + id, val);
+            glasses.forEach(x => x.classList.toggle('set', parseInt(x.dataset.val) <= val));
+            ratingText.textContent = val + ' / 5 pints';
+          });
+        });
+
+        // stop card-flip when tapping anywhere on the rating widget
+        widget.addEventListener('click', e => e.stopPropagation());
+      });
+    })();
+
+    // ─── Beer card flip ───
+    document.querySelectorAll('.beer-card').forEach(card => {
+      card.addEventListener('click', () => card.classList.toggle('flipped'));
+    });
+
+    const burger = document.querySelector('.nav-burger');
+    const mobileNav = document.getElementById('nav-mobile');
+
+    function toggleMenu(open) {
+      burger.classList.toggle('open', open);
+      burger.setAttribute('aria-expanded', open);
+      mobileNav.classList.toggle('open', open);
+      mobileNav.setAttribute('aria-hidden', !open);
+      document.body.style.overflow = open ? 'hidden' : '';
+    }
+
+    burger.addEventListener('click', () => {
+      toggleMenu(!burger.classList.contains('open'));
+    });
+
+    document.querySelector('.nav-mobile-close').addEventListener('click', () => toggleMenu(false));
+
+    mobileNav.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => toggleMenu(false));
+    });
+  </script>
 
 </body>
 </html>

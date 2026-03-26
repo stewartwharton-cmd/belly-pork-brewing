@@ -2,6 +2,9 @@
   publish = "public"
   command = "echo 'Static site — nothing to build'"
 
+[functions]
+  directory = "netlify/functions"
+
 [[headers]]
   for = "/*"
   [headers.values]
