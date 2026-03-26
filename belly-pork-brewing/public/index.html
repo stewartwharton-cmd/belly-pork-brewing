@@ -214,35 +214,12 @@
 
     .hero-right img {
       width: 100%;
-      height: 140%;
+      height: 100%;
       object-fit: cover;
       object-position: center center;
       display: block;
       opacity: 0;
       animation: fadeIn 1.4s ease forwards 0.2s;
-      will-change: transform;
-    }
-
-    /* Parallax background shapes */
-    .hero-shape {
-      position: absolute;
-      border-radius: 50%;
-      pointer-events: none;
-      will-change: transform;
-    }
-    .hero-shape-1 {
-      width: 700px; height: 700px;
-      top: -200px; left: -200px;
-      background: radial-gradient(circle, rgba(255,29,188,0.13) 0%, transparent 60%);
-      filter: blur(60px);
-      z-index: 1;
-    }
-    .hero-shape-2 {
-      width: 500px; height: 500px;
-      bottom: -100px; right: 5%;
-      background: radial-gradient(circle, rgba(255,29,188,0.10) 0%, transparent 60%);
-      filter: blur(50px);
-      z-index: 1;
     }
 
     .hero-right::after {
@@ -1458,9 +1435,7 @@
 
   <!-- HERO -->
   <section class="hero">
-    <div class="hero-shape hero-shape-1" aria-hidden="true"></div>
-    <div class="hero-shape hero-shape-2" aria-hidden="true"></div>
-    <div class="hero-left">
+<div class="hero-left">
       <p class="hero-eyebrow">Craft Beer · Est. 2024 · Graham's Kitchen</p>
       <h1 class="hero-h1">
         <span class="solid">Belly</span>
@@ -2260,59 +2235,6 @@
       setPips(0);
     }());
 
-    // ─── Hero parallax ───
-    (function () {
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-      const hero   = document.querySelector('.hero');
-      const pigImg = document.querySelector('.hero-right img');
-      const shape1 = document.querySelector('.hero-shape-1');
-      const shape2 = document.querySelector('.hero-shape-2');
-
-      if (!hero || !pigImg || !shape1 || !shape2) return;
-
-      // Centre the oversized image so it fills the container top and bottom
-      function getInitPigOffset() {
-        const container = pigImg.parentElement;
-        // image is 140% of container height — excess is 40%, split 20% top/bottom
-        return -(container.offsetHeight * 0.20);
-      }
-
-      let initPigOffset = getInitPigOffset();
-      pigImg.style.transform = 'translateY(' + initPigOffset + 'px)';
-
-      let ticking = false;
-      let lastY   = 0;
-
-      function update() {
-        const heroBottom = hero.offsetTop + hero.offsetHeight;
-        if (lastY > heroBottom) { ticking = false; return; } // hero offscreen
-
-        // Pig: scrolls at ~70% of page speed (translateY counteracts 30% of scroll)
-        const pigOffset = initPigOffset + lastY * 0.30;
-        // Shapes: scrolls at ~82–88% of page speed (barely drift)
-        const s1Offset  = lastY * 0.12;
-        const s2Offset  = lastY * 0.18;
-
-        pigImg.style.transform = 'translateY(' + pigOffset + 'px)';
-        shape1.style.transform = 'translateY(' + s1Offset  + 'px)';
-        shape2.style.transform = 'translateY(' + s2Offset  + 'px)';
-
-        ticking = false;
-      }
-
-      window.addEventListener('scroll', function () {
-        lastY = window.scrollY;
-        if (!ticking) { requestAnimationFrame(update); ticking = true; }
-      }, { passive: true });
-
-      // Recalculate init offset on resize
-      window.addEventListener('resize', function () {
-        initPigOffset = getInitPigOffset();
-        lastY = window.scrollY;
-        requestAnimationFrame(update);
-      }, { passive: true });
-    }());
   </script>
 
 </body>
