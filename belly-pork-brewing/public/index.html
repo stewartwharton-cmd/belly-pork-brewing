@@ -1062,6 +1062,31 @@
     }
     .footer-bottom span { color: var(--magenta); }
 
+    /* ─── HERO BUBBLES ─── */
+    .hero-bubbles {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 4;
+      overflow: hidden;
+    }
+
+    .bubble {
+      position: absolute;
+      bottom: -24px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 30%, rgba(255,255,255,0.22), rgba(255,255,255,0.04));
+      border: 1px solid rgba(255,255,255,0.14);
+      animation: bubbleRise linear infinite;
+    }
+
+    @keyframes bubbleRise {
+      0%   { transform: translateY(0);      opacity: 0;    }
+      8%   { opacity: 0.55; }
+      88%  { opacity: 0.25; }
+      100% { transform: translateY(-105vh); opacity: 0;    }
+    }
+
     /* ─── CHAT WIDGET ─── */
     #chat-widget {
       position: fixed;
@@ -1072,6 +1097,7 @@
       flex-direction: column;
       align-items: flex-end;
       gap: 0.75rem;
+      pointer-events: none;
     }
 
     #chat-panel {
@@ -1091,7 +1117,7 @@
     #chat-panel.open {
       opacity: 1;
       transform: translateY(0) scale(1);
-      pointer-events: all;
+      pointer-events: auto;
     }
 
     #chat-header {
@@ -1262,6 +1288,7 @@
       font-weight: 700;
       box-shadow: 0 8px 32px rgba(255,29,188,0.35);
       transition: opacity 0.2s, transform 0.2s;
+      pointer-events: auto;
     }
     #chat-toggle:hover { opacity: 0.9; transform: translateY(-2px); }
     #chat-toggle svg { width: 18px; height: 24px; flex-shrink: 0; }
@@ -1329,13 +1356,6 @@
       align-items: center;
       justify-content: center;
       gap: 2.5rem;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s ease;
-    }
-    .nav-mobile.open {
-      opacity: 1;
-      pointer-events: all;
     }
     .nav-mobile a {
       font-family: 'Bebas Neue', sans-serif;
@@ -1378,7 +1398,6 @@
       .nav-links { display: none; }
       .nav-cta { display: none; }
       .nav-burger { display: flex; }
-      .nav-mobile { display: flex; }
 
       .hero { grid-template-columns: 1fr; grid-template-rows: auto 60vw; }
       .hero-left { padding: 8rem 2rem 3rem; }
@@ -1437,6 +1456,29 @@
 
   <!-- HERO -->
   <section class="hero">
+
+    <!-- Beer bubbles — CSS animation only, contained within hero overflow:hidden -->
+    <div class="hero-bubbles" aria-hidden="true">
+      <span class="bubble" style="left:4%;  width:6px; height:6px; animation-duration:8s;  animation-delay:-2s;"></span>
+      <span class="bubble" style="left:11%; width:10px;height:10px;animation-duration:11s; animation-delay:-7s;"></span>
+      <span class="bubble" style="left:18%; width:5px; height:5px; animation-duration:6s;  animation-delay:-1s;"></span>
+      <span class="bubble" style="left:25%; width:14px;height:14px;animation-duration:13s; animation-delay:-9s;"></span>
+      <span class="bubble" style="left:32%; width:7px; height:7px; animation-duration:7s;  animation-delay:-4s;"></span>
+      <span class="bubble" style="left:38%; width:9px; height:9px; animation-duration:10s; animation-delay:-11s;"></span>
+      <span class="bubble" style="left:45%; width:5px; height:5px; animation-duration:6s;  animation-delay:-5s;"></span>
+      <span class="bubble" style="left:52%; width:12px;height:12px;animation-duration:12s; animation-delay:-3s;"></span>
+      <span class="bubble" style="left:59%; width:6px; height:6px; animation-duration:8s;  animation-delay:-8s;"></span>
+      <span class="bubble" style="left:65%; width:8px; height:8px; animation-duration:9s;  animation-delay:-6s;"></span>
+      <span class="bubble" style="left:72%; width:16px;height:16px;animation-duration:14s; animation-delay:-2s;"></span>
+      <span class="bubble" style="left:78%; width:5px; height:5px; animation-duration:5s;  animation-delay:-10s;"></span>
+      <span class="bubble" style="left:84%; width:9px; height:9px; animation-duration:9s;  animation-delay:-7s;"></span>
+      <span class="bubble" style="left:91%; width:7px; height:7px; animation-duration:7s;  animation-delay:-3s;"></span>
+      <span class="bubble" style="left:21%; width:11px;height:11px;animation-duration:13s; animation-delay:-5s;"></span>
+      <span class="bubble" style="left:56%; width:4px; height:4px; animation-duration:5s;  animation-delay:-12s;"></span>
+      <span class="bubble" style="left:70%; width:7px; height:7px; animation-duration:9s;  animation-delay:-1s;"></span>
+      <span class="bubble" style="left:40%; width:5px; height:5px; animation-duration:7s;  animation-delay:-6s;"></span>
+    </div>
+
 <div class="hero-left">
       <p class="hero-eyebrow">Craft Beer · Est. 2024 · Graham's Kitchen</p>
       <h1 class="hero-h1">
@@ -2123,15 +2165,17 @@
     const mobileNav = document.getElementById('nav-mobile');
 
     function toggleMenu(open) {
+      mobileNav.style.display = open ? 'flex' : 'none';
+      const chatWidget = document.getElementById('chat-widget');
+      if (chatWidget) chatWidget.style.zIndex = open ? '0' : '';
       burger.classList.toggle('open', open);
-      burger.setAttribute('aria-expanded', open);
-      mobileNav.classList.toggle('open', open);
-      mobileNav.setAttribute('aria-hidden', !open);
+      burger.setAttribute('aria-expanded', String(open));
+      mobileNav.setAttribute('aria-hidden', String(!open));
       document.body.style.overflow = open ? 'hidden' : '';
     }
 
     burger.addEventListener('click', () => {
-      toggleMenu(!burger.classList.contains('open'));
+      toggleMenu(mobileNav.style.display !== 'flex');
     });
 
     document.querySelector('.nav-mobile-close').addEventListener('click', () => toggleMenu(false));

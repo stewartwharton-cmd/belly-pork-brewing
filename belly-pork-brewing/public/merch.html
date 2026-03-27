@@ -117,13 +117,6 @@
       align-items: center;
       justify-content: center;
       gap: 2.5rem;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s ease;
-    }
-    .nav-mobile.open {
-      opacity: 1;
-      pointer-events: all;
     }
     .nav-mobile-close {
       position: absolute;
@@ -845,9 +838,10 @@
     @media (max-width: 1024px) {
       .merch-hero { min-height: 65vh; }
       .merch-hero-content { padding: 0 3rem 3.5rem; }
-      .merch-section { grid-template-columns: 1fr; gap: 3rem; padding: 6rem 3rem; }
-      .merch-preview { position: static; }
-      .mockup-stage { max-width: 260px; }
+      .merch-section { grid-template-columns: 1fr; gap: 2rem; padding: 6rem 3rem; }
+      .merch-preview { position: static; order: -1; }
+      .merch-configurator { order: 1; }
+      .mockup-stage { max-width: 240px; }
       .order-inner { grid-template-columns: 1fr; gap: 3rem; }
     }
 
@@ -855,14 +849,16 @@
       .nav-links { display: none; }
       .nav-cta { display: none; }
       .nav-burger { display: flex; }
-      .nav-mobile { display: flex; }
 
       .merch-hero { min-height: 60vh; }
       .merch-hero-content { padding: 0 2rem 3rem; }
       .merch-hero-h1 { font-size: clamp(4rem, 13vw, 6rem); }
       .merch-hero-graham { font-size: clamp(2.2rem, 8vw, 3.5rem); right: 3%; bottom: 25%; }
-      .merch-section { padding: 4rem 2rem; }
-      .design-grid { grid-template-columns: repeat(3, 1fr); gap: 0.5rem; }
+      .merch-section { padding: 3rem 1.5rem; gap: 1.5rem; }
+      .mockup-stage { max-width: 200px; }
+      .design-grid { grid-template-columns: repeat(6, 1fr); gap: 0.4rem; }
+      .design-option { padding: 0.25rem; }
+      .design-option .design-num { font-size: 0.45rem; }
       .product-tabs { flex-wrap: wrap; }
       .order-section { padding: 4rem 2rem; }
       .form-row { grid-template-columns: 1fr; }
@@ -880,6 +876,7 @@
       flex-direction: column;
       align-items: flex-end;
       gap: 0.75rem;
+      pointer-events: none;
     }
     #chat-panel {
       width: 460px;
@@ -898,7 +895,7 @@
     #chat-panel.open {
       opacity: 1;
       transform: translateY(0) scale(1);
-      pointer-events: all;
+      pointer-events: auto;
     }
     #chat-header {
       display: flex;
@@ -983,6 +980,7 @@
       letter-spacing: 0.18em; text-transform: uppercase; font-weight: 700;
       box-shadow: 0 8px 32px rgba(255,29,188,0.35);
       transition: opacity 0.2s, transform 0.2s;
+      pointer-events: auto;
     }
     #chat-toggle:hover { opacity: 0.9; transform: translateY(-2px); }
     #chat-toggle svg { width: 18px; height: 24px; flex-shrink: 0; }
@@ -1159,7 +1157,7 @@
         </div>
       </div>
 
-      <!-- Design placement (t-shirt only) -->
+      <!-- Design placement (t-shirt + sweatshirt) -->
       <div class="placement-group" id="design-placement-group">
         <p class="config-label">// 05 — Design Placement</p>
         <div class="placement-options">
@@ -1184,9 +1182,9 @@
         </div>
         <p class="config-label" style="margin-bottom:0.6rem">// Text Position</p>
         <div class="text-position-options">
-          <button class="text-pos-btn active" data-pos="chest">Chest</button>
-          <button class="text-pos-btn" data-pos="back">Back</button>
-          <button class="text-pos-btn" data-pos="sleeve" id="sleeve-btn">Sleeve</button>
+          <button class="text-pos-btn" data-pos="top">Top</button>
+          <button class="text-pos-btn active" data-pos="middle">Middle</button>
+          <button class="text-pos-btn" data-pos="bottom">Bottom</button>
         </div>
       </div>
 
@@ -1444,6 +1442,92 @@
           />
         </svg>
 
+        <!-- Sweatshirt BACK SVG -->
+        <svg id="svg-sweatshirt-back" class="mockup-svg" viewBox="0 0 200 234" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <clipPath id="sweatshirt-back-body-clip">
+              <rect x="38" y="72" width="124" height="130"/>
+            </clipPath>
+            <filter id="sweatshirt-back-shadow">
+              <feDropShadow dx="0" dy="6" stdDeviation="11" flood-color="rgba(0,0,0,0.6)"/>
+            </filter>
+            <linearGradient id="sweatshirt-back-lat" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%"   stop-color="rgba(0,0,0,0.30)"/>
+              <stop offset="20%"  stop-color="rgba(0,0,0,0.07)"/>
+              <stop offset="50%"  stop-color="rgba(255,255,255,0.04)"/>
+              <stop offset="80%"  stop-color="rgba(0,0,0,0.07)"/>
+              <stop offset="100%" stop-color="rgba(0,0,0,0.30)"/>
+            </linearGradient>
+            <linearGradient id="sweatshirt-back-vert" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%"   stop-color="rgba(255,255,255,0.08)"/>
+              <stop offset="35%"  stop-color="rgba(255,255,255,0)"/>
+              <stop offset="100%" stop-color="rgba(0,0,0,0.16)"/>
+            </linearGradient>
+          </defs>
+          <!-- Flat back neckline -->
+          <path id="sweatshirt-back-fill"
+            d="M 76 20 C 88 24 112 24 124 20
+               L 148 22 L 192 12 L 196 60 L 160 70
+               L 158 214 L 42 214
+               L 40 70 L 4 60 L 8 12 L 52 22 Z"
+            fill="#1e1e1e" filter="url(#sweatshirt-back-shadow)"
+          />
+          <path d="M 8 12 L 4 60 L 40 70 L 52 28 Z" fill="rgba(0,0,0,0.18)"/>
+          <path d="M 192 12 L 196 60 L 160 70 L 148 28 Z" fill="rgba(0,0,0,0.18)"/>
+          <path d="M 76 20 C 88 24 112 24 124 20 L 148 22 L 192 12 L 196 60 L 160 70 L 158 214 L 42 214 L 40 70 L 4 60 L 8 12 L 52 22 Z" fill="url(#sweatshirt-back-lat)"/>
+          <path d="M 76 20 C 88 24 112 24 124 20 L 148 22 L 192 12 L 196 60 L 160 70 L 158 214 L 42 214 L 40 70 L 4 60 L 8 12 L 52 22 Z" fill="url(#sweatshirt-back-vert)"/>
+          <!-- Shoulder seam lines -->
+          <line x1="76" y1="20" x2="40" y2="70" stroke="rgba(0,0,0,0.3)" stroke-width="1.2"/>
+          <line x1="124" y1="20" x2="160" y2="70" stroke="rgba(0,0,0,0.3)" stroke-width="1.2"/>
+          <line x1="76" y1="20" x2="40" y2="70" stroke="rgba(255,255,255,0.05)" stroke-width="0.6" stroke-dasharray="3 2"/>
+          <line x1="124" y1="20" x2="160" y2="70" stroke="rgba(255,255,255,0.05)" stroke-width="0.6" stroke-dasharray="3 2"/>
+          <!-- Flat back neck band -->
+          <path d="M 78 21 C 90 25 110 25 122 21"
+            fill="none" stroke="rgba(0,0,0,0.45)" stroke-width="9" stroke-linecap="round"/>
+          <path d="M 78 21 C 90 25 110 25 122 21"
+            fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="7" stroke-linecap="round"/>
+          <path d="M 78 21 C 90 25 110 25 122 21"
+            fill="none" stroke="rgba(0,0,0,0.25)" stroke-width="2" stroke-linecap="round"
+            stroke-dasharray="2.2 2"/>
+          <!-- Centre back seam -->
+          <line x1="100" y1="24" x2="100" y2="214" stroke="rgba(0,0,0,0.12)" stroke-width="1"/>
+          <!-- Left cuff -->
+          <path d="M 4 52 L 4 60 L 40 70 L 40 61 Z" fill="rgba(0,0,0,0.35)"/>
+          <line x1="4" y1="52" x2="40" y2="61" stroke="rgba(0,0,0,0.4)" stroke-width="1.2"/>
+          <line x1="4" y1="54" x2="40" y2="63" stroke="rgba(255,255,255,0.06)" stroke-width="0.7" stroke-dasharray="2 1.8"/>
+          <!-- Right cuff -->
+          <path d="M 196 52 L 196 60 L 160 70 L 160 61 Z" fill="rgba(0,0,0,0.35)"/>
+          <line x1="196" y1="52" x2="160" y2="61" stroke="rgba(0,0,0,0.4)" stroke-width="1.2"/>
+          <line x1="196" y1="54" x2="160" y2="63" stroke="rgba(255,255,255,0.06)" stroke-width="0.7" stroke-dasharray="2 1.8"/>
+          <!-- Ribbed hem -->
+          <rect x="42" y="204" width="116" height="10" fill="rgba(0,0,0,0.32)"/>
+          <line x1="42" y1="204" x2="158" y2="204" stroke="rgba(0,0,0,0.4)" stroke-width="1.2"/>
+          <line x1="42" y1="206" x2="158" y2="206" stroke="rgba(255,255,255,0.06)" stroke-width="0.7" stroke-dasharray="2 1.8"/>
+          <line x1="42" y1="208" x2="158" y2="208" stroke="rgba(255,255,255,0.06)" stroke-width="0.7" stroke-dasharray="2 1.8"/>
+          <!-- Side seam shadows -->
+          <rect x="40" y="70" width="5" height="144" fill="rgba(0,0,0,0.15)"/>
+          <rect x="155" y="70" width="5" height="144" fill="rgba(0,0,0,0.15)"/>
+          <!-- Design image (back) -->
+          <image id="sweatshirt-back-design"
+            href="images/design1.png"
+            x="52" y="82" width="96" height="80"
+            clip-path="url(#sweatshirt-back-body-clip)"
+            preserveAspectRatio="xMidYMid meet"
+            display="none"
+          />
+          <text id="sweatshirt-back-text"
+            x="100" y="148" text-anchor="middle"
+            font-family="'Bebas Neue', sans-serif" font-size="10"
+            fill="#FF1DBC" letter-spacing="1.5" display="none"></text>
+          <path id="sweatshirt-back-outline"
+            d="M 76 20 C 88 24 112 24 124 20 L 148 22 L 192 12 L 196 60 L 160 70 L 158 214 L 42 214 L 40 70 L 4 60 L 8 12 L 52 22 Z"
+            fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="1"
+          />
+          <text x="100" y="13" text-anchor="middle"
+            font-family="'Syne Mono', monospace" font-size="5.5"
+            fill="rgba(255,29,188,0.4)" letter-spacing="2">BACK VIEW</text>
+        </svg>
+
         <!-- Snapback Cap SVG (5-panel, curved dome) -->
         <svg id="svg-cap" class="mockup-svg" viewBox="0 0 200 148" xmlns="http://www.w3.org/2000/svg">
           <defs>
@@ -1688,7 +1772,7 @@
       tshirtView: 'front',
       designPlacement: 'front',
       customText: '',
-      textPosition: 'chest'
+      textPosition: 'middle'
     };
 
     const SIZES_STANDARD = ['S', 'M', 'L', 'XL', 'XXL'];
@@ -1701,12 +1785,12 @@
 
     // ─── Apply garment colour ───
     function applyColour(colourValue, colourName) {
-      ['tshirt-fill', 'tshirt-back-fill', 'sweatshirt-fill', 'cap-fill', 'cap-fill2'].forEach(id => {
+      ['tshirt-fill', 'tshirt-back-fill', 'sweatshirt-fill', 'sweatshirt-back-fill', 'cap-fill', 'cap-fill2'].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.setAttribute('fill', colourValue);
       });
       const stroke = outlineStroke(colourName);
-      ['tshirt-outline', 'tshirt-back-outline', 'sweatshirt-outline', 'cap-outline'].forEach(id => {
+      ['tshirt-outline', 'tshirt-back-outline', 'sweatshirt-outline', 'sweatshirt-back-outline', 'cap-outline'].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.setAttribute('stroke', stroke);
       });
@@ -1715,29 +1799,35 @@
     // ─── Apply design image to all SVGs, then enforce placement visibility ───
     function applyDesign(designNum) {
       const src = `images/design${designNum}.png`;
-      ['tshirt-design', 'tshirt-back-design', 'sweatshirt-design', 'cap-design'].forEach(id => {
+      ['tshirt-design', 'tshirt-back-design', 'sweatshirt-design', 'sweatshirt-back-design', 'cap-design'].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.setAttribute('href', src);
       });
       applyPlacement();
     }
 
-    // ─── Show/hide design image per placement (t-shirt only) ───
+    // ─── Show/hide design image per placement (t-shirt + sweatshirt) ───
     function applyPlacement() {
-      const front = document.getElementById('tshirt-design');
-      const back  = document.getElementById('tshirt-back-design');
-      if (!front || !back) return;
-      front.setAttribute('display', state.designPlacement === 'back'  ? 'none' : 'inline');
-      back.setAttribute('display',  state.designPlacement === 'front' ? 'none' : 'inline');
+      [['tshirt-design', 'tshirt-back-design'], ['sweatshirt-design', 'sweatshirt-back-design']].forEach(([fId, bId]) => {
+        const f = document.getElementById(fId);
+        const b = document.getElementById(bId);
+        if (f) f.setAttribute('display', state.designPlacement === 'back'  ? 'none' : 'inline');
+        if (b) b.setAttribute('display', state.designPlacement === 'front' ? 'none' : 'inline');
+      });
     }
 
     // ─── Switch active product SVG ───
     function applyProduct(product) {
       document.querySelectorAll('.mockup-svg').forEach(el => el.classList.remove('active'));
+      // Reset to front view on product switch
+      state.tshirtView = 'front';
+      document.querySelectorAll('.view-toggle-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.view === 'front');
+      });
 
-      if (product === 'tshirt') {
-        const id = state.tshirtView === 'back' ? 'svg-tshirt-back' : 'svg-tshirt';
-        document.getElementById(id).classList.add('active');
+      if (product === 'tshirt' || product === 'sweatshirt') {
+        const prefix = product === 'tshirt' ? 'svg-tshirt' : 'svg-sweatshirt';
+        document.getElementById(prefix).classList.add('active');
         document.getElementById('view-toggle').classList.add('visible');
         document.getElementById('design-placement-group').classList.add('visible');
       } else {
@@ -1750,22 +1840,35 @@
       applyCustomText(state.customText);
     }
 
-    // ─── Toggle t-shirt front/back view ───
+    // ─── Toggle front/back view (t-shirt + sweatshirt) ───
     function applyView(view) {
       state.tshirtView = view;
       document.querySelectorAll('.view-toggle-btn').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.view === view);
       });
-      document.getElementById('svg-tshirt').classList.toggle('active', view === 'front');
-      document.getElementById('svg-tshirt-back').classList.toggle('active', view === 'back');
+      if (state.product === 'tshirt') {
+        document.getElementById('svg-tshirt').classList.toggle('active', view === 'front');
+        document.getElementById('svg-tshirt-back').classList.toggle('active', view === 'back');
+      } else if (state.product === 'sweatshirt') {
+        document.getElementById('svg-sweatshirt').classList.toggle('active', view === 'front');
+        document.getElementById('svg-sweatshirt-back').classList.toggle('active', view === 'back');
+      }
+      applyCustomText(state.customText);
     }
+
+    // ─── Y positions for text by product/view and top/middle/bottom ───
+    const TEXT_Y = {
+      'tshirt-front-text':     { top: 92,  middle: 142, bottom: 200 },
+      'tshirt-back-text':      { top: 92,  middle: 147, bottom: 200 },
+      'sweatshirt-front-text': { top: 100, middle: 148, bottom: 198 },
+      'sweatshirt-back-text':  { top: 100, middle: 148, bottom: 198 },
+      'cap-text':              { top: 38,  middle: 56,  bottom: 75  },
+    };
 
     // ─── Custom text: update SVG text elements ───
     function applyCustomText(text) {
       state.customText = text;
-      const allIds = ['tshirt-front-text', 'tshirt-sleeve-text', 'tshirt-back-text',
-                      'sweatshirt-front-text', 'cap-text'];
-      allIds.forEach(id => {
+      Object.keys(TEXT_Y).concat(['tshirt-sleeve-text']).forEach(id => {
         const el = document.getElementById(id);
         if (el) { el.textContent = ''; el.setAttribute('display', 'none'); }
       });
@@ -1773,23 +1876,23 @@
       if (!text) { syncUI(); return; }
       const upper = text.toUpperCase();
 
+      let activeId = null;
       if (state.product === 'tshirt') {
-        if (state.textPosition === 'chest') {
-          const el = document.getElementById('tshirt-front-text');
-          if (el) { el.textContent = upper; el.setAttribute('display', 'inline'); }
-        } else if (state.textPosition === 'back') {
-          const el = document.getElementById('tshirt-back-text');
-          if (el) { el.textContent = upper; el.setAttribute('display', 'inline'); }
-        } else if (state.textPosition === 'sleeve') {
-          const el = document.getElementById('tshirt-sleeve-text');
-          if (el) { el.textContent = upper; el.setAttribute('display', 'inline'); }
-        }
+        activeId = state.tshirtView === 'back' ? 'tshirt-back-text' : 'tshirt-front-text';
       } else if (state.product === 'sweatshirt') {
-        const el = document.getElementById('sweatshirt-front-text');
-        if (el) { el.textContent = upper; el.setAttribute('display', 'inline'); }
+        activeId = state.tshirtView === 'back' ? 'sweatshirt-back-text' : 'sweatshirt-front-text';
       } else if (state.product === 'cap') {
-        const el = document.getElementById('cap-text');
-        if (el) { el.textContent = upper; el.setAttribute('display', 'inline'); }
+        activeId = 'cap-text';
+      }
+
+      if (activeId) {
+        const el = document.getElementById(activeId);
+        if (el) {
+          const yVal = (TEXT_Y[activeId] || {})[state.textPosition] || TEXT_Y[activeId].middle;
+          el.setAttribute('y', yVal);
+          el.textContent = upper;
+          el.setAttribute('display', 'inline');
+        }
       }
       syncUI();
     }
@@ -1800,31 +1903,19 @@
       document.querySelectorAll('.text-pos-btn').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.pos === pos);
       });
-      // For t-shirt: auto-flip view to match text position
-      if (state.product === 'tshirt') {
-        applyView(pos === 'back' ? 'back' : 'front');
-      }
       applyCustomText(state.customText);
     }
 
     // ─── Show/hide text position buttons per product ───
     function updateTextPositionButtons(product) {
-      const sleeveBtn = document.getElementById('sleeve-btn');
-      const backBtn   = document.querySelector('.text-pos-btn[data-pos="back"]');
-      if (sleeveBtn) sleeveBtn.classList.toggle('hidden', product !== 'tshirt');
-      if (backBtn)   backBtn.classList.toggle('hidden', product === 'cap');
-
-      // Cap: force chest position
-      if (product === 'cap' && state.textPosition !== 'chest') {
-        applyTextPosition('chest');
-      }
+      // All three positions (top/middle/bottom) work for all products — nothing to hide
     }
 
     // ─── Sync preview label + order summary + hidden form fields ───
     function syncUI() {
       const productNames = { tshirt: 'T-Shirt', sweatshirt: 'Sweatshirt', cap: 'Cap' };
       const placementNames = { front: 'Front', back: 'Back', both: 'Front & Back' };
-      const posNames = { chest: 'Chest', back: 'Back', sleeve: 'Sleeve' };
+      const posNames = { top: 'Top', middle: 'Middle', bottom: 'Bottom' };
       const pName = productNames[state.product];
 
       document.getElementById('preview-label-design').textContent = `Design ${state.design}`;
@@ -1839,7 +1930,7 @@
 
       const placementRow = document.getElementById('sum-placement-row');
       if (placementRow) {
-        placementRow.style.display = state.product === 'tshirt' ? '' : 'none';
+        placementRow.style.display = (state.product === 'tshirt' || state.product === 'sweatshirt') ? '' : 'none';
         document.getElementById('sum-placement').textContent = placementNames[state.designPlacement];
       }
 
@@ -1850,7 +1941,7 @@
       document.getElementById('form-custom-text').value = state.customText;
       document.getElementById('form-text-position').value = state.customText ? posNames[state.textPosition] : 'None';
       document.getElementById('form-placement').value =
-        state.product === 'tshirt' ? placementNames[state.designPlacement] : 'N/A';
+        (state.product === 'tshirt' || state.product === 'sweatshirt') ? placementNames[state.designPlacement] : 'N/A';
     }
 
     // ─── Size button renderer ───
@@ -1953,14 +2044,16 @@
     const mobileNav = document.getElementById('nav-mobile');
 
     function toggleMenu(open) {
+      mobileNav.style.display = open ? 'flex' : 'none';
+      const chatWidget = document.getElementById('chat-widget');
+      if (chatWidget) chatWidget.style.zIndex = open ? '0' : '';
       burger.classList.toggle('open', open);
-      mobileNav.classList.toggle('open', open);
-      mobileNav.setAttribute('aria-hidden', String(!open));
       burger.setAttribute('aria-expanded', String(open));
+      mobileNav.setAttribute('aria-hidden', String(!open));
       document.body.style.overflow = open ? 'hidden' : '';
     }
 
-    burger.addEventListener('click', () => toggleMenu(!burger.classList.contains('open')));
+    burger.addEventListener('click', () => toggleMenu(mobileNav.style.display !== 'flex'));
     document.querySelector('.nav-mobile-close').addEventListener('click', () => toggleMenu(false));
     mobileNav.querySelectorAll('a').forEach(link => link.addEventListener('click', () => toggleMenu(false)));
 

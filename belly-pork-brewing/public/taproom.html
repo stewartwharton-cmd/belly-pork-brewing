@@ -117,13 +117,6 @@
       align-items: center;
       justify-content: center;
       gap: 2.5rem;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s ease;
-    }
-    .nav-mobile.open {
-      opacity: 1;
-      pointer-events: all;
     }
     .nav-mobile-close {
       position: absolute;
@@ -455,7 +448,6 @@
       .nav-links { display: none; }
       .nav-cta { display: none; }
       .nav-burger { display: flex; }
-      .nav-mobile { display: flex; }
 
       .page-header { padding: 10rem 2rem 5rem; }
       .page-header-bg-text { font-size: 22vw; }
@@ -666,15 +658,15 @@
     const mobileNav = document.getElementById('nav-mobile');
 
     function toggleMenu(open) {
+      mobileNav.style.display = open ? 'flex' : 'none';
       burger.classList.toggle('open', open);
-      burger.setAttribute('aria-expanded', open);
-      mobileNav.classList.toggle('open', open);
-      mobileNav.setAttribute('aria-hidden', !open);
+      burger.setAttribute('aria-expanded', String(open));
+      mobileNav.setAttribute('aria-hidden', String(!open));
       document.body.style.overflow = open ? 'hidden' : '';
     }
 
     burger.addEventListener('click', () => {
-      toggleMenu(!burger.classList.contains('open'));
+      toggleMenu(mobileNav.style.display !== 'flex');
     });
 
     document.querySelector('.nav-mobile-close').addEventListener('click', () => toggleMenu(false));
