@@ -1,0 +1,1606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Merch — Belly Pork Brewing Co.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&family=Syne+Mono&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --magenta: #FF1DBC;
+      --magenta-dim: rgba(255,29,188,0.15);
+      --black: #080808;
+      --off-white: #F0EAE0;
+      --dark: #111111;
+      --mid: #1e1e1e;
+      --muted: rgba(240,234,224,0.5);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--off-white);
+      font-family: 'Syne', sans-serif;
+      overflow-x: hidden;
+    }
+
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--black); }
+    ::-webkit-scrollbar-thumb { background: var(--magenta); }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      inset: 0 0 auto 0;
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 3rem;
+      background: rgba(8,8,8,0.88);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--magenta-dim);
+    }
+
+    .nav-logo img {
+      height: 52px;
+      display: block;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover,
+    .nav-links a.active { color: var(--magenta); }
+
+    .nav-cta {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      background: var(--magenta);
+      color: var(--black);
+      padding: 0.6rem 1.4rem;
+      text-decoration: none;
+      font-weight: 700;
+      transition: opacity 0.2s;
+    }
+    .nav-cta:hover { opacity: 0.85; }
+
+    /* ─── HAMBURGER / MOBILE MENU ─── */
+    .nav-burger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.4rem;
+      z-index: 300;
+    }
+    .nav-burger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--off-white);
+      transition: transform 0.3s ease, opacity 0.3s ease, background 0.2s;
+    }
+    .nav-burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-burger.open span:nth-child(2) { opacity: 0; }
+    .nav-burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .nav-burger.open span { background: var(--magenta); }
+
+    .nav-mobile {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 250;
+      background: rgba(8,8,8,0.97);
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2.5rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .nav-mobile.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .nav-mobile-close {
+      position: absolute;
+      top: 1.4rem;
+      right: 1.5rem;
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 1.6rem;
+      cursor: pointer;
+      line-height: 1;
+      transition: color 0.2s;
+    }
+    .nav-mobile-close:hover { color: var(--magenta); }
+    .nav-mobile a {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.5rem, 8vw, 4rem);
+      letter-spacing: 0.08em;
+      color: var(--off-white);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-mobile a:hover { color: var(--magenta); }
+    .nav-mobile .nav-mobile-cta {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.8rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      background: var(--magenta);
+      color: var(--black);
+      padding: 0.9rem 2rem;
+      font-weight: 700;
+      margin-top: 1rem;
+    }
+
+    /* ─── PAGE HEADER ─── */
+    .page-header {
+      padding: 14rem 5rem 8rem;
+      position: relative;
+      overflow: hidden;
+      border-bottom: 1px solid var(--magenta-dim);
+    }
+    .page-header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 70% 60% at 30% 60%, rgba(255,29,188,0.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .page-header-bg-text {
+      position: absolute;
+      right: -0.02em;
+      bottom: -0.15em;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(8rem, 18vw, 20rem);
+      line-height: 1;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(255,29,188,0.08);
+      pointer-events: none;
+      user-select: none;
+    }
+    .page-header .section-label { margin-bottom: 1.2rem; }
+    .page-header h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(5rem, 10vw, 11rem);
+      line-height: 0.88;
+      letter-spacing: 0.01em;
+      position: relative;
+      z-index: 2;
+    }
+    .page-header h1 .outline {
+      -webkit-text-stroke: 2px var(--magenta);
+      color: transparent;
+      display: block;
+    }
+    .page-header h1 .solid { display: block; }
+    .page-header-sub {
+      margin-top: 2rem;
+      font-size: 1.05rem;
+      line-height: 1.75;
+      color: var(--muted);
+      max-width: 480px;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* ─── MARQUEE ─── */
+    .marquee-wrap {
+      background: var(--magenta);
+      overflow: hidden;
+      padding: 0.85rem 0;
+    }
+    .marquee-track {
+      display: flex;
+      width: max-content;
+      animation: marqueeScroll 22s linear infinite;
+    }
+    .marquee-track span {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1rem;
+      letter-spacing: 0.25em;
+      color: var(--black);
+      padding: 0 2rem;
+      white-space: nowrap;
+    }
+    .marquee-track .dot { color: rgba(0,0,0,0.35); }
+    @keyframes marqueeScroll {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* ─── SHARED ─── */
+    .section-label {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.38em;
+      text-transform: uppercase;
+      color: var(--magenta);
+      margin-bottom: 1.2rem;
+    }
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3rem, 5vw, 6rem);
+      line-height: 0.92;
+      margin-bottom: 1.5rem;
+    }
+
+    /* ─── MERCH CONFIGURATOR ─── */
+    .merch-section {
+      display: grid;
+      grid-template-columns: 1fr 1.1fr;
+      gap: 5rem;
+      padding: 8rem 5rem;
+      align-items: start;
+    }
+
+    .merch-preview {
+      position: sticky;
+      top: 7rem;
+    }
+
+    .mockup-stage {
+      position: relative;
+      max-width: 320px;
+      margin: 0 auto;
+    }
+
+    .mockup-svg {
+      width: 100%;
+      height: auto;
+      display: none;
+      filter: drop-shadow(0 12px 40px rgba(0,0,0,0.6));
+    }
+    .mockup-svg.active { display: block; }
+
+    .preview-label {
+      text-align: center;
+      margin-top: 1.5rem;
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .preview-label strong {
+      color: var(--magenta);
+      display: block;
+      font-size: 0.8rem;
+      margin-bottom: 0.3rem;
+    }
+
+    /* ─── CONFIG GROUPS ─── */
+    .config-group {
+      margin-bottom: 2.5rem;
+    }
+    .config-label {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--magenta);
+      margin-bottom: 1rem;
+    }
+
+    /* Product tabs */
+    .product-tabs {
+      display: flex;
+      gap: 0.6rem;
+    }
+    .product-tab {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding: 0.65rem 1.4rem;
+      background: transparent;
+      border: 1px solid rgba(240,234,224,0.15);
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .product-tab:hover { border-color: var(--magenta); color: var(--off-white); }
+    .product-tab.active {
+      background: var(--magenta);
+      border-color: var(--magenta);
+      color: var(--black);
+      font-weight: 700;
+    }
+
+    /* Design grid */
+    .design-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.8rem;
+    }
+    .design-option {
+      aspect-ratio: 1;
+      background: var(--mid);
+      border: 2px solid transparent;
+      padding: 0.5rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .design-option:hover { border-color: rgba(255,29,188,0.4); }
+    .design-option.active { border-color: var(--magenta); }
+    .design-option img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+    .design-option .design-num {
+      position: absolute;
+      bottom: 3px;
+      right: 5px;
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.55rem;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+    }
+
+    /* Colour swatches */
+    .colour-row {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+    }
+    .colour-swatches {
+      display: flex;
+      gap: 0.7rem;
+    }
+    .colour-swatch {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+    }
+    .colour-swatch:hover { transform: scale(1.12); }
+    .colour-swatch.active {
+      outline: 2px solid var(--magenta);
+      outline-offset: 2px;
+    }
+    .colour-swatch[data-colour="black"] { background: #1e1e1e; border-color: rgba(240,234,224,0.2); }
+    .colour-swatch[data-colour="white"] { background: #e8dfd0; }
+    .colour-swatch[data-colour="magenta"] { background: #FF1DBC; }
+    .colour-name-label {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--off-white);
+    }
+
+    /* Size buttons */
+    .size-options {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .size-btn {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      width: 48px;
+      height: 48px;
+      background: transparent;
+      border: 1px solid rgba(240,234,224,0.15);
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .size-btn:hover { border-color: var(--magenta); color: var(--off-white); }
+    .size-btn.active {
+      background: var(--magenta);
+      border-color: var(--magenta);
+      color: var(--black);
+      font-weight: 700;
+    }
+    .size-btn.one-size { width: auto; padding: 0 1.2rem; }
+
+    /* Order CTA */
+    .order-cta-wrap {
+      margin-top: 1rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(240,234,224,0.08);
+    }
+    .order-cta-wrap p {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 1rem;
+      line-height: 1.6;
+    }
+    .btn-primary {
+      display: inline-block;
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      background: var(--magenta);
+      color: var(--black);
+      padding: 1rem 2.2rem;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: opacity 0.2s;
+    }
+    .btn-primary:hover { opacity: 0.85; }
+
+    /* ─── ORDER SECTION ─── */
+    .order-section {
+      padding: 8rem 5rem;
+      background: var(--dark);
+      border-top: 1px solid var(--magenta-dim);
+    }
+
+    .order-inner {
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: 6rem;
+      align-items: start;
+    }
+
+    .order-intro { margin-top: 1.5rem; }
+    .order-intro p {
+      font-size: 0.95rem;
+      line-height: 1.8;
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+    .order-intro p strong { color: var(--off-white); }
+
+    /* Order summary card */
+    .order-summary {
+      margin-top: 2rem;
+      padding: 1.4rem 1.6rem;
+      border: 1px solid var(--magenta-dim);
+      background: var(--magenta-dim);
+    }
+    .order-summary-title {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--magenta);
+      margin-bottom: 1rem;
+    }
+    .order-summary-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid rgba(240,234,224,0.07);
+      font-size: 0.85rem;
+    }
+    .order-summary-row:last-child { border-bottom: none; }
+    .order-summary-row span:first-child {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .order-summary-row span:last-child { color: var(--off-white); font-weight: 600; }
+
+    /* Order form */
+    .order-form { display: flex; flex-direction: column; gap: 1.2rem; }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+    }
+
+    .form-group { display: flex; flex-direction: column; gap: 0.5rem; }
+    .form-group label {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--magenta);
+    }
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      background: var(--mid);
+      border: 1px solid rgba(240,234,224,0.1);
+      color: var(--off-white);
+      padding: 0.9rem 1rem;
+      font-family: 'Syne', sans-serif;
+      font-size: 0.9rem;
+      width: 100%;
+      transition: border-color 0.2s;
+      resize: vertical;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: var(--magenta);
+    }
+    .form-group input::placeholder,
+    .form-group textarea::placeholder { color: var(--muted); }
+    .form-group textarea { min-height: 90px; }
+
+    .form-submit {
+      margin-top: 0.5rem;
+    }
+    .form-submit .btn-primary { width: 100%; text-align: center; }
+
+    .form-note {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.15em;
+      line-height: 1.7;
+      color: var(--muted);
+      text-align: center;
+      margin-top: 0.5rem;
+    }
+
+    /* Success message */
+    .form-success {
+      display: none;
+      padding: 2rem;
+      border: 1px solid var(--magenta);
+      background: var(--magenta-dim);
+      text-align: center;
+    }
+    .form-success h3 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.5rem;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.8rem;
+    }
+    .form-success p {
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.7;
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 4rem;
+      padding: 5rem 5rem 3rem;
+      border-top: 1px solid rgba(240,234,224,0.06);
+    }
+    .footer-brand img { height: 48px; margin-bottom: 1.2rem; display: block; }
+    .footer-brand p {
+      font-size: 0.85rem;
+      line-height: 1.75;
+      color: var(--muted);
+      max-width: 280px;
+    }
+    .footer-col h4 {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--magenta);
+      margin-bottom: 1.2rem;
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 0.6rem; }
+    .footer-col ul a {
+      font-size: 0.88rem;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-col ul a:hover { color: var(--off-white); }
+    .footer-bottom {
+      grid-column: 1 / -1;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(240,234,224,0.06);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .footer-bottom p {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.15em;
+      color: rgba(240,234,224,0.25);
+      text-transform: uppercase;
+    }
+    .footer-bottom span { color: var(--magenta); }
+
+    /* ─── FRONT/BACK TOGGLE ─── */
+    .view-toggle {
+      display: none;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+    .view-toggle.visible { display: flex; }
+    .view-toggle-btn {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 0.45rem 1.3rem;
+      background: var(--mid);
+      border: 1px solid rgba(240,234,224,0.12);
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .view-toggle-btn:first-child { border-right: none; }
+    .view-toggle-btn.active {
+      background: var(--black);
+      color: var(--magenta);
+      border-color: var(--magenta);
+    }
+
+    /* ─── DESIGN PLACEMENT (T-SHIRT) ─── */
+    .placement-group { display: none; margin-bottom: 2.5rem; }
+    .placement-group.visible { display: block; }
+    .placement-options { display: flex; gap: 0.5rem; }
+    .placement-btn {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 0.55rem 1rem;
+      background: transparent;
+      border: 1px solid rgba(240,234,224,0.15);
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .placement-btn:hover { border-color: var(--magenta); color: var(--off-white); }
+    .placement-btn.active {
+      background: var(--magenta);
+      border-color: var(--magenta);
+      color: var(--black);
+      font-weight: 700;
+    }
+
+    /* ─── CUSTOM TEXT ─── */
+    .text-input-wrap { position: relative; margin-bottom: 0.8rem; }
+    .text-input-wrap input {
+      width: 100%;
+      background: var(--mid);
+      border: 1px solid rgba(240,234,224,0.1);
+      color: var(--off-white);
+      padding: 0.85rem 3.5rem 0.85rem 1rem;
+      font-family: 'Syne', sans-serif;
+      font-size: 0.9rem;
+      transition: border-color 0.2s;
+    }
+    .text-input-wrap input:focus { outline: none; border-color: var(--magenta); }
+    .text-input-wrap input::placeholder { color: var(--muted); }
+    .text-char-count {
+      position: absolute;
+      right: 0.8rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.58rem;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      pointer-events: none;
+    }
+    .text-position-options { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .text-pos-btn {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 0.5rem 0.9rem;
+      background: transparent;
+      border: 1px solid rgba(240,234,224,0.15);
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .text-pos-btn:hover { border-color: var(--magenta); color: var(--off-white); }
+    .text-pos-btn.active {
+      background: var(--magenta-dim);
+      border-color: var(--magenta);
+      color: var(--magenta);
+    }
+    .text-pos-btn.hidden { display: none; }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 1024px) {
+      .merch-section { grid-template-columns: 1fr; gap: 3rem; padding: 6rem 3rem; }
+      .merch-preview { position: static; }
+      .mockup-stage { max-width: 260px; }
+      .order-inner { grid-template-columns: 1fr; gap: 3rem; }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .nav-cta { display: none; }
+      .nav-burger { display: flex; }
+      .nav-mobile { display: flex; }
+
+      .page-header { padding: 10rem 2rem 5rem; }
+      .merch-section { padding: 4rem 2rem; }
+      .design-grid { grid-template-columns: repeat(3, 1fr); gap: 0.5rem; }
+      .product-tabs { flex-wrap: wrap; }
+      .order-section { padding: 4rem 2rem; }
+      .form-row { grid-template-columns: 1fr; }
+      footer { grid-template-columns: 1fr; padding: 3rem 2rem; gap: 2rem; }
+      .footer-bottom { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="index.html" class="nav-logo">
+      <img
+        src="https://img1.wsimg.com/isteam/ip/c5f4da44-74a7-4ebd-b7a0-a83c516ecd85/Belly%20Pork%20Brewing-37b48db.PNG/:/rs=h:200,cg:true,m/qt=q:100/ll"
+        alt="Belly Pork Brewing"
+      />
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html#about">About</a></li>
+      <li><a href="index.html#beers">Beers</a></li>
+      <li><a href="index.html#process">How We Brew</a></li>
+      <li><a href="index.html#graham">Graham</a></li>
+      <li><a href="taproom.html">Tap Room</a></li>
+      <li><a href="merch.html" class="active">Merch</a></li>
+    </ul>
+    <a href="index.html#newsletter" class="nav-cta">Stay Updated</a>
+    <button class="nav-burger" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- MOBILE NAV -->
+  <div class="nav-mobile" id="nav-mobile" aria-hidden="true">
+    <button class="nav-mobile-close" aria-label="Close menu">&#x2715;</button>
+    <a href="index.html#about">About</a>
+    <a href="index.html#beers">Beers</a>
+    <a href="index.html#process">How We Brew</a>
+    <a href="index.html#graham">Graham</a>
+    <a href="taproom.html">Tap Room</a>
+    <a href="merch.html">Merch</a>
+    <a href="index.html#newsletter" class="nav-mobile-cta">Stay Updated</a>
+  </div>
+
+  <!-- PAGE HEADER -->
+  <header class="page-header">
+    <p class="section-label">// Wear The Brand</p>
+    <h1>
+      <span class="solid">Belly</span>
+      <span class="outline">Pork</span>
+      <span class="solid">Merch</span>
+    </h1>
+    <p class="page-header-sub">
+      No middle men. No inflated prices. Just proper Belly Pork gear made to order.
+      Pick your product, choose your design, and we'll sort the rest.
+    </p>
+    <div class="page-header-bg-text" aria-hidden="true">MERCH</div>
+  </header>
+
+  <!-- MARQUEE -->
+  <div class="marquee-wrap" aria-hidden="true">
+    <div class="marquee-track">
+      <span>BELLY PORK MERCH</span><span class="dot">&nbsp;✦&nbsp;</span>
+      <span>MADE TO ORDER</span><span class="dot">&nbsp;✦&nbsp;</span>
+      <span>WEAR THE BRAND</span><span class="dot">&nbsp;✦&nbsp;</span>
+      <span>GRAHAM APPROVED FIT</span><span class="dot">&nbsp;✦&nbsp;</span>
+      <span>LIMITED RUNS</span><span class="dot">&nbsp;✦&nbsp;</span>
+      <span>BELLY PORK MERCH</span><span class="dot">&nbsp;✦&nbsp;</span>
+      <span>MADE TO ORDER</span><span class="dot">&nbsp;✦&nbsp;</span>
+      <span>WEAR THE BRAND</span><span class="dot">&nbsp;✦&nbsp;</span>
+      <span>GRAHAM APPROVED FIT</span><span class="dot">&nbsp;✦&nbsp;</span>
+      <span>LIMITED RUNS</span><span class="dot">&nbsp;✦&nbsp;</span>
+    </div>
+  </div>
+
+  <!-- MERCH CONFIGURATOR -->
+  <section class="merch-section" id="configure">
+
+    <!-- LEFT: OPTIONS -->
+    <div class="merch-configurator">
+
+      <!-- Product type -->
+      <div class="config-group">
+        <p class="config-label">// 01 — Choose Product</p>
+        <div class="product-tabs">
+          <button class="product-tab active" data-product="tshirt">T-Shirt</button>
+          <button class="product-tab" data-product="hoodie">Hoodie</button>
+          <button class="product-tab" data-product="cap">Cap</button>
+        </div>
+      </div>
+
+      <!-- Design selector -->
+      <div class="config-group">
+        <p class="config-label">// 02 — Choose Design</p>
+        <div class="design-grid">
+          <button class="design-option active" data-design="1" aria-label="Design 1">
+            <img src="images/design1.png" alt="Design 1" />
+            <span class="design-num">01</span>
+          </button>
+          <button class="design-option" data-design="2" aria-label="Design 2">
+            <img src="images/design2.png" alt="Design 2" />
+            <span class="design-num">02</span>
+          </button>
+          <button class="design-option" data-design="3" aria-label="Design 3">
+            <img src="images/design3.png" alt="Design 3" />
+            <span class="design-num">03</span>
+          </button>
+          <button class="design-option" data-design="4" aria-label="Design 4">
+            <img src="images/design4.png" alt="Design 4" />
+            <span class="design-num">04</span>
+          </button>
+          <button class="design-option" data-design="5" aria-label="Design 5">
+            <img src="images/design5.png" alt="Design 5" />
+            <span class="design-num">05</span>
+          </button>
+          <button class="design-option" data-design="6" aria-label="Design 6">
+            <img src="images/design6.png" alt="Design 6" />
+            <span class="design-num">06</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Colour selector -->
+      <div class="config-group">
+        <p class="config-label">// 03 — Choose Colour</p>
+        <div class="colour-row">
+          <div class="colour-swatches">
+            <button class="colour-swatch active" data-colour="black" data-colour-value="#1e1e1e" data-colour-name="Black" aria-label="Black"></button>
+            <button class="colour-swatch" data-colour="white" data-colour-value="#e8dfd0" data-colour-name="White" aria-label="White"></button>
+            <button class="colour-swatch" data-colour="magenta" data-colour-value="#FF1DBC" data-colour-name="Magenta" aria-label="Magenta"></button>
+          </div>
+          <span class="colour-name-label" id="colour-name-display">Black</span>
+        </div>
+      </div>
+
+      <!-- Size selector -->
+      <div class="config-group">
+        <p class="config-label">// 04 — Choose Size</p>
+        <div class="size-options" id="size-options">
+          <button class="size-btn" data-size="S">S</button>
+          <button class="size-btn active" data-size="M">M</button>
+          <button class="size-btn" data-size="L">L</button>
+          <button class="size-btn" data-size="XL">XL</button>
+          <button class="size-btn" data-size="XXL">XXL</button>
+        </div>
+      </div>
+
+      <!-- Design placement (t-shirt only) -->
+      <div class="placement-group" id="design-placement-group">
+        <p class="config-label">// 05 — Design Placement</p>
+        <div class="placement-options">
+          <button class="placement-btn active" data-placement="front">Front</button>
+          <button class="placement-btn" data-placement="back">Back</button>
+          <button class="placement-btn" data-placement="both">Front &amp; Back</button>
+        </div>
+      </div>
+
+      <!-- Custom text -->
+      <div class="config-group">
+        <p class="config-label">// 06 — Custom Text <span style="font-weight:400;color:var(--muted)">(optional)</span></p>
+        <div class="text-input-wrap">
+          <input
+            type="text"
+            id="custom-text-input"
+            maxlength="20"
+            placeholder="e.g. BELLY PORK CREW"
+            autocomplete="off"
+          />
+          <span class="text-char-count" id="text-char-count">0/20</span>
+        </div>
+        <p class="config-label" style="margin-bottom:0.6rem">// Text Position</p>
+        <div class="text-position-options">
+          <button class="text-pos-btn active" data-pos="chest">Chest</button>
+          <button class="text-pos-btn" data-pos="back">Back</button>
+          <button class="text-pos-btn" data-pos="sleeve" id="sleeve-btn">Sleeve</button>
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <div class="order-cta-wrap">
+        <p>Happy with your choices? Scroll down to place your order request — no payment needed up front, we'll be in touch to confirm.</p>
+        <a href="#order" class="btn-primary">Place Order Request</a>
+      </div>
+
+    </div>
+
+    <!-- RIGHT: MOCKUP PREVIEW -->
+    <div class="merch-preview">
+      <div class="mockup-stage">
+
+        <!-- FRONT/BACK TOGGLE (t-shirt only) -->
+        <div class="view-toggle" id="view-toggle">
+          <button class="view-toggle-btn active" data-view="front">&#9664; Front</button>
+          <button class="view-toggle-btn" data-view="back">Back &#9654;</button>
+        </div>
+
+        <!-- T-Shirt FRONT SVG -->
+        <svg id="svg-tshirt" class="mockup-svg active" viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <clipPath id="tshirt-body-clip">
+              <rect x="43" y="74" width="114" height="146"/>
+            </clipPath>
+            <filter id="tshirt-shadow">
+              <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="rgba(0,0,0,0.5)"/>
+            </filter>
+            <linearGradient id="tshirt-shine" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="rgba(255,255,255,0.07)"/>
+              <stop offset="60%" stop-color="rgba(255,255,255,0)"/>
+            </linearGradient>
+          </defs>
+          <path id="tshirt-fill"
+            d="M 63 12 C 71 26 100 30 100 30 C 100 30 129 26 137 12 L 153 22 L 196 14 L 200 66 L 157 76 L 157 218 L 43 218 L 43 76 L 0 66 L 4 14 Z"
+            fill="#1e1e1e" filter="url(#tshirt-shadow)"
+          />
+          <path d="M 63 12 C 71 26 100 30 100 30 C 100 30 129 26 137 12 L 153 22 L 196 14 L 200 66 L 157 76 L 157 218 L 43 218 L 43 76 L 0 66 L 4 14 Z" fill="url(#tshirt-shine)"/>
+          <image id="tshirt-design"
+            href="images/design1.png"
+            x="56" y="84" width="88" height="88"
+            clip-path="url(#tshirt-body-clip)"
+            preserveAspectRatio="xMidYMid meet"
+          />
+          <!-- Chest text -->
+          <text id="tshirt-front-text"
+            x="100" y="106" text-anchor="middle"
+            font-family="'Bebas Neue', sans-serif" font-size="9"
+            fill="#FF1DBC" letter-spacing="1.5" display="none"></text>
+          <!-- Left sleeve text (rotated along sleeve) -->
+          <text id="tshirt-sleeve-text"
+            x="26" y="45" text-anchor="middle"
+            font-family="'Bebas Neue', sans-serif" font-size="6.5"
+            fill="#FF1DBC" letter-spacing="1"
+            transform="rotate(-75 26 45)" display="none"></text>
+          <path id="tshirt-outline"
+            d="M 63 12 C 71 26 100 30 100 30 C 100 30 129 26 137 12 L 153 22 L 196 14 L 200 66 L 157 76 L 157 218 L 43 218 L 43 76 L 0 66 L 4 14 Z"
+            fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"
+          />
+        </svg>
+
+        <!-- T-Shirt BACK SVG -->
+        <svg id="svg-tshirt-back" class="mockup-svg" viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <clipPath id="tshirt-back-clip">
+              <rect x="43" y="74" width="114" height="146"/>
+            </clipPath>
+            <filter id="tshirt-back-shadow">
+              <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="rgba(0,0,0,0.5)"/>
+            </filter>
+            <linearGradient id="tshirt-back-shine" x1="1" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="rgba(255,255,255,0.07)"/>
+              <stop offset="60%" stop-color="rgba(255,255,255,0)"/>
+            </linearGradient>
+          </defs>
+          <!-- Back neckline is flatter/higher -->
+          <path id="tshirt-back-fill"
+            d="M 70 16 C 82 22 118 22 130 16 L 153 22 L 196 14 L 200 66 L 157 76 L 157 218 L 43 218 L 43 76 L 0 66 L 4 14 Z"
+            fill="#1e1e1e" filter="url(#tshirt-back-shadow)"
+          />
+          <path d="M 70 16 C 82 22 118 22 130 16 L 153 22 L 196 14 L 200 66 L 157 76 L 157 218 L 43 218 L 43 76 L 0 66 L 4 14 Z" fill="url(#tshirt-back-shine)"/>
+          <image id="tshirt-back-design"
+            href="" x="50" y="88" width="100" height="100"
+            clip-path="url(#tshirt-back-clip)"
+            preserveAspectRatio="xMidYMid meet"
+            display="none"
+          />
+          <!-- Back text -->
+          <text id="tshirt-back-text"
+            x="100" y="158" text-anchor="middle"
+            font-family="'Bebas Neue', sans-serif" font-size="11"
+            fill="#FF1DBC" letter-spacing="2" display="none"></text>
+          <path id="tshirt-back-outline"
+            d="M 70 16 C 82 22 118 22 130 16 L 153 22 L 196 14 L 200 66 L 157 76 L 157 218 L 43 218 L 43 76 L 0 66 L 4 14 Z"
+            fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"
+          />
+          <text x="100" y="13" text-anchor="middle"
+            font-family="'Syne Mono', monospace" font-size="5.5"
+            fill="rgba(255,29,188,0.4)" letter-spacing="2">BACK VIEW</text>
+        </svg>
+
+        <!-- Hoodie SVG -->
+        <svg id="svg-hoodie" class="mockup-svg" viewBox="0 0 200 242" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <clipPath id="hoodie-body-clip">
+              <rect x="32" y="90" width="136" height="150"/>
+            </clipPath>
+            <filter id="hoodie-shadow">
+              <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="rgba(0,0,0,0.5)"/>
+            </filter>
+            <linearGradient id="hoodie-shine" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="rgba(255,255,255,0.07)"/>
+              <stop offset="60%" stop-color="rgba(255,255,255,0)"/>
+            </linearGradient>
+          </defs>
+          <path id="hoodie-fill"
+            d="M 100 5 C 78 7 62 26 62 50 L 38 34 L 6 83 L 35 93 L 32 238 L 168 238 L 165 93 L 194 83 L 162 34 L 138 50 C 138 26 122 7 100 5 Z"
+            fill="#1e1e1e" filter="url(#hoodie-shadow)"
+          />
+          <path d="M 68 50 C 68 22 132 22 132 50 C 132 68 120 78 100 78 C 80 78 68 68 68 50 Z" fill="rgba(0,0,0,0.4)"/>
+          <path d="M 100 5 C 78 7 62 26 62 50 L 38 34 L 6 83 L 35 93 L 32 238 L 168 238 L 165 93 L 194 83 L 162 34 L 138 50 C 138 26 122 7 100 5 Z" fill="url(#hoodie-shine)"/>
+          <rect x="68" y="158" width="64" height="50" rx="6" fill="rgba(0,0,0,0.22)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+          <line x1="100" y1="162" x2="100" y2="205" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+          <image id="hoodie-design"
+            href="images/design1.png"
+            x="56" y="97" width="88" height="80"
+            clip-path="url(#hoodie-body-clip)"
+            preserveAspectRatio="xMidYMid meet"
+          />
+          <!-- Chest / back text (single element — back placement noted in order) -->
+          <text id="hoodie-front-text"
+            x="100" y="150" text-anchor="middle"
+            font-family="'Bebas Neue', sans-serif" font-size="10"
+            fill="#FF1DBC" letter-spacing="1.5" display="none"></text>
+          <path id="hoodie-outline"
+            d="M 100 5 C 78 7 62 26 62 50 L 38 34 L 6 83 L 35 93 L 32 238 L 168 238 L 165 93 L 194 83 L 162 34 L 138 50 C 138 26 122 7 100 5 Z"
+            fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"
+          />
+        </svg>
+
+        <!-- Snapback Cap SVG (5-panel style) -->
+        <svg id="svg-cap" class="mockup-svg" viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <clipPath id="cap-crown-clip">
+              <polygon points="100,18 176,50 175,90 25,90 24,50"/>
+            </clipPath>
+            <filter id="cap-shadow">
+              <feDropShadow dx="0" dy="4" stdDeviation="10" flood-color="rgba(0,0,0,0.55)"/>
+            </filter>
+            <linearGradient id="cap-shine" x1="0.2" y1="0" x2="0.8" y2="1">
+              <stop offset="0%" stop-color="rgba(255,255,255,0.13)"/>
+              <stop offset="70%" stop-color="rgba(255,255,255,0)"/>
+            </linearGradient>
+          </defs>
+          <!-- Angular 5-panel crown -->
+          <polygon id="cap-fill"
+            points="100,18 176,50 175,90 25,90 24,50"
+            fill="#1e1e1e" filter="url(#cap-shadow)"
+          />
+          <!-- Panel seam lines (left and right of centre panel) -->
+          <line x1="100" y1="18" x2="46" y2="90" stroke="rgba(0,0,0,0.28)" stroke-width="1.5"/>
+          <line x1="100" y1="18" x2="154" y2="90" stroke="rgba(0,0,0,0.28)" stroke-width="1.5"/>
+          <!-- Subtle stitching on seams -->
+          <line x1="100" y1="18" x2="46" y2="90" stroke="rgba(255,255,255,0.04)" stroke-width="0.5" stroke-dasharray="3 3"/>
+          <line x1="100" y1="18" x2="154" y2="90" stroke="rgba(255,255,255,0.04)" stroke-width="0.5" stroke-dasharray="3 3"/>
+          <!-- Crown shine -->
+          <polygon points="100,18 176,50 175,90 25,90 24,50" fill="url(#cap-shine)"/>
+          <!-- Crown outline -->
+          <polygon id="cap-outline"
+            points="100,18 176,50 175,90 25,90 24,50"
+            fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"
+          />
+          <!-- Flat brim -->
+          <rect id="cap-fill2" x="6" y="90" width="188" height="24" fill="#1e1e1e"/>
+          <!-- Brim top shadow strip -->
+          <rect x="6" y="90" width="188" height="5" fill="rgba(0,0,0,0.28)"/>
+          <!-- Brim outline -->
+          <rect x="6" y="90" width="188" height="24" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+          <!-- Snapback adjustment strap -->
+          <rect x="76" y="108" width="48" height="5" rx="2.5" fill="rgba(0,0,0,0.45)"/>
+          <rect x="90" y="109" width="20" height="3" rx="1.5" fill="rgba(255,255,255,0.08)"/>
+          <!-- Top button -->
+          <circle cx="100" cy="19" r="4.5" fill="rgba(0,0,0,0.45)"/>
+          <circle cx="100" cy="19" r="2" fill="rgba(255,255,255,0.12)"/>
+          <!-- Design on front centre panel -->
+          <image id="cap-design"
+            href="images/design1.png"
+            x="48" y="26" width="104" height="60"
+            clip-path="url(#cap-crown-clip)"
+            preserveAspectRatio="xMidYMid meet"
+          />
+          <!-- Custom text on front panel -->
+          <text id="cap-text"
+            x="100" y="68" text-anchor="middle"
+            font-family="'Bebas Neue', sans-serif" font-size="10"
+            fill="#FF1DBC" letter-spacing="2" display="none"></text>
+        </svg>
+
+        <!-- Preview label -->
+        <div class="preview-label" id="preview-label">
+          <strong id="preview-label-design">Design 1</strong>
+          <span id="preview-label-detail">T-Shirt &middot; Black &middot; M</span>
+        </div>
+
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ORDER FORM -->
+  <section class="order-section" id="order">
+    <div class="order-inner">
+
+      <div>
+        <p class="section-label">// Place Your Order</p>
+        <h2 class="section-title">Request<br>Your Merch</h2>
+        <div class="order-intro">
+          <p>Fill in the form and we'll confirm your order and sort out payment. <strong>No money changes hands until we've spoken.</strong></p>
+          <p>We batch orders every few weeks, so lead time is typically 2–3 weeks. Graham will let you know if his enthusiasm for packaging has waned.</p>
+        </div>
+
+        <!-- Order summary (synced with configurator) -->
+        <div class="order-summary">
+          <p class="order-summary-title">// Your Selection</p>
+          <div class="order-summary-row">
+            <span>Product</span>
+            <span id="sum-product">T-Shirt</span>
+          </div>
+          <div class="order-summary-row">
+            <span>Design</span>
+            <span id="sum-design">Design 1</span>
+          </div>
+          <div class="order-summary-row" id="sum-placement-row" style="display:none">
+            <span>Placement</span>
+            <span id="sum-placement">Front</span>
+          </div>
+          <div class="order-summary-row">
+            <span>Colour</span>
+            <span id="sum-colour">Black</span>
+          </div>
+          <div class="order-summary-row">
+            <span>Size</span>
+            <span id="sum-size">M</span>
+          </div>
+          <div class="order-summary-row">
+            <span>Custom Text</span>
+            <span id="sum-text">—</span>
+          </div>
+          <div class="order-summary-row" id="sum-text-pos-row">
+            <span>Text Position</span>
+            <span id="sum-text-pos">—</span>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <!-- Netlify form -->
+        <form
+          class="order-form"
+          id="order-form"
+          name="merch-order"
+          method="POST"
+          data-netlify="true"
+          netlify-honeypot="bot-field"
+        >
+          <!-- Hidden fields for Netlify -->
+          <input type="hidden" name="form-name" value="merch-order" />
+          <p style="display:none"><label>Don't fill this in: <input name="bot-field" /></label></p>
+
+          <!-- Selection carried through to form -->
+          <input type="hidden" name="product" id="form-product" value="T-Shirt" />
+          <input type="hidden" name="design" id="form-design" value="Design 1" />
+          <input type="hidden" name="design-placement" id="form-placement" value="Front" />
+          <input type="hidden" name="colour" id="form-colour" value="Black" />
+          <input type="hidden" name="size" id="form-size" value="M" />
+          <input type="hidden" name="custom-text" id="form-custom-text" value="" />
+          <input type="hidden" name="text-position" id="form-text-position" value="Chest" />
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="field-name">Your Name</label>
+              <input type="text" id="field-name" name="name" placeholder="First & last name" required />
+            </div>
+            <div class="form-group">
+              <label for="field-email">Email Address</label>
+              <input type="email" id="field-email" name="email" placeholder="you@example.com" required />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="field-address">Delivery Address</label>
+            <textarea id="field-address" name="address" placeholder="Street, town, postcode, country" rows="3" required></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="field-notes">Notes (optional)</label>
+            <textarea id="field-notes" name="notes" placeholder="Anything else we should know — special instructions, gift wrap, questions for Graham..." rows="3"></textarea>
+          </div>
+
+          <div class="form-submit">
+            <button type="submit" class="btn-primary">Send Order Request &rarr;</button>
+          </div>
+          <p class="form-note">No payment required now &mdash; we'll be in touch to confirm your order and arrange payment.</p>
+        </form>
+
+        <!-- Success state -->
+        <div class="form-success" id="form-success">
+          <h3>Order Received.</h3>
+          <p>Cheers &mdash; we've got your request. Someone (probably not Graham) will be in touch within a couple of days to confirm and sort payment.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-brand">
+      <img
+        src="https://img1.wsimg.com/isteam/ip/c5f4da44-74a7-4ebd-b7a0-a83c516ecd85/Belly%20Pork%20Brewing-37b48db.PNG/:/rs=h:200,cg:true,m/qt=q:100/ll"
+        alt="Belly Pork Brewing"
+      />
+      <p>Independent craft beer from Graham's kitchen to your glass. One batch at a time.</p>
+    </div>
+
+    <div class="footer-col">
+      <h4>Navigate</h4>
+      <ul>
+        <li><a href="index.html#about">About Us</a></li>
+        <li><a href="index.html#beers">The Beers</a></li>
+        <li><a href="index.html#process">How We Brew</a></li>
+        <li><a href="index.html#graham">Graham</a></li>
+        <li><a href="taproom.html">Tap Room</a></li>
+        <li><a href="merch.html">Merch</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h4>Connect</h4>
+      <ul>
+        <li><a href="https://bellyporkbrewing.com" target="_blank" rel="noopener">bellyporkbrewing.com</a></li>
+        <li><a href="index.html#newsletter">Newsletter</a></li>
+        <li><a href="#">Instagram</a></li>
+        <li><a href="#">Facebook</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2024 Belly Pork Brewing Co. — All Rights Reserved.</p>
+      <p>Powered by <span>vapes</span> and Graham's questionable decisions.</p>
+    </div>
+  </footer>
+
+  <script>
+    // ─── State ───
+    const state = {
+      product: 'tshirt',
+      design: '1',
+      colour: 'black',
+      colourValue: '#1e1e1e',
+      colourName: 'Black',
+      size: 'M',
+      tshirtView: 'front',
+      designPlacement: 'front',
+      customText: '',
+      textPosition: 'chest'
+    };
+
+    const SIZES_STANDARD = ['S', 'M', 'L', 'XL', 'XXL'];
+    const DEFAULT_SIZE = 'M';
+
+    // ─── Outline stroke: visible on light garments ───
+    function outlineStroke(colourName) {
+      return colourName === 'White' ? 'rgba(0,0,0,0.18)' : 'rgba(255,255,255,0.1)';
+    }
+
+    // ─── Apply garment colour ───
+    function applyColour(colourValue, colourName) {
+      ['tshirt-fill', 'tshirt-back-fill', 'hoodie-fill', 'cap-fill', 'cap-fill2'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.setAttribute('fill', colourValue);
+      });
+      const stroke = outlineStroke(colourName);
+      ['tshirt-outline', 'tshirt-back-outline', 'hoodie-outline', 'cap-outline'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.setAttribute('stroke', stroke);
+      });
+    }
+
+    // ─── Apply design image to all SVGs, then enforce placement visibility ───
+    function applyDesign(designNum) {
+      const src = `images/design${designNum}.png`;
+      ['tshirt-design', 'tshirt-back-design', 'hoodie-design', 'cap-design'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.setAttribute('href', src);
+      });
+      applyPlacement();
+    }
+
+    // ─── Show/hide design image per placement (t-shirt only) ───
+    function applyPlacement() {
+      const front = document.getElementById('tshirt-design');
+      const back  = document.getElementById('tshirt-back-design');
+      if (!front || !back) return;
+      front.setAttribute('display', state.designPlacement === 'back'  ? 'none' : 'inline');
+      back.setAttribute('display',  state.designPlacement === 'front' ? 'none' : 'inline');
+    }
+
+    // ─── Switch active product SVG ───
+    function applyProduct(product) {
+      document.querySelectorAll('.mockup-svg').forEach(el => el.classList.remove('active'));
+
+      if (product === 'tshirt') {
+        const id = state.tshirtView === 'back' ? 'svg-tshirt-back' : 'svg-tshirt';
+        document.getElementById(id).classList.add('active');
+        document.getElementById('view-toggle').classList.add('visible');
+        document.getElementById('design-placement-group').classList.add('visible');
+      } else {
+        document.getElementById(`svg-${product}`).classList.add('active');
+        document.getElementById('view-toggle').classList.remove('visible');
+        document.getElementById('design-placement-group').classList.remove('visible');
+      }
+
+      updateTextPositionButtons(product);
+      applyCustomText(state.customText);
+    }
+
+    // ─── Toggle t-shirt front/back view ───
+    function applyView(view) {
+      state.tshirtView = view;
+      document.querySelectorAll('.view-toggle-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.view === view);
+      });
+      document.getElementById('svg-tshirt').classList.toggle('active', view === 'front');
+      document.getElementById('svg-tshirt-back').classList.toggle('active', view === 'back');
+    }
+
+    // ─── Custom text: update SVG text elements ───
+    function applyCustomText(text) {
+      state.customText = text;
+      const allIds = ['tshirt-front-text', 'tshirt-sleeve-text', 'tshirt-back-text',
+                      'hoodie-front-text', 'cap-text'];
+      allIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) { el.textContent = ''; el.setAttribute('display', 'none'); }
+      });
+
+      if (!text) { syncUI(); return; }
+      const upper = text.toUpperCase();
+
+      if (state.product === 'tshirt') {
+        if (state.textPosition === 'chest') {
+          const el = document.getElementById('tshirt-front-text');
+          if (el) { el.textContent = upper; el.setAttribute('display', 'inline'); }
+        } else if (state.textPosition === 'back') {
+          const el = document.getElementById('tshirt-back-text');
+          if (el) { el.textContent = upper; el.setAttribute('display', 'inline'); }
+        } else if (state.textPosition === 'sleeve') {
+          const el = document.getElementById('tshirt-sleeve-text');
+          if (el) { el.textContent = upper; el.setAttribute('display', 'inline'); }
+        }
+      } else if (state.product === 'hoodie') {
+        const el = document.getElementById('hoodie-front-text');
+        if (el) { el.textContent = upper; el.setAttribute('display', 'inline'); }
+      } else if (state.product === 'cap') {
+        const el = document.getElementById('cap-text');
+        if (el) { el.textContent = upper; el.setAttribute('display', 'inline'); }
+      }
+      syncUI();
+    }
+
+    // ─── Text position selection ───
+    function applyTextPosition(pos) {
+      state.textPosition = pos;
+      document.querySelectorAll('.text-pos-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.pos === pos);
+      });
+      // For t-shirt: auto-flip view to match text position
+      if (state.product === 'tshirt') {
+        applyView(pos === 'back' ? 'back' : 'front');
+      }
+      applyCustomText(state.customText);
+    }
+
+    // ─── Show/hide text position buttons per product ───
+    function updateTextPositionButtons(product) {
+      const sleeveBtn = document.getElementById('sleeve-btn');
+      const backBtn   = document.querySelector('.text-pos-btn[data-pos="back"]');
+      if (sleeveBtn) sleeveBtn.classList.toggle('hidden', product !== 'tshirt');
+      if (backBtn)   backBtn.classList.toggle('hidden', product === 'cap');
+
+      // Cap: force chest position
+      if (product === 'cap' && state.textPosition !== 'chest') {
+        applyTextPosition('chest');
+      }
+    }
+
+    // ─── Sync preview label + order summary + hidden form fields ───
+    function syncUI() {
+      const productNames = { tshirt: 'T-Shirt', hoodie: 'Hoodie', cap: 'Cap' };
+      const placementNames = { front: 'Front', back: 'Back', both: 'Front & Back' };
+      const posNames = { chest: 'Chest', back: 'Back', sleeve: 'Sleeve' };
+      const pName = productNames[state.product];
+
+      document.getElementById('preview-label-design').textContent = `Design ${state.design}`;
+      document.getElementById('preview-label-detail').textContent = `${pName} · ${state.colourName} · ${state.size}`;
+
+      document.getElementById('sum-product').textContent = pName;
+      document.getElementById('sum-design').textContent = `Design ${state.design}`;
+      document.getElementById('sum-colour').textContent = state.colourName;
+      document.getElementById('sum-size').textContent = state.size;
+      document.getElementById('sum-text').textContent = state.customText || '—';
+      document.getElementById('sum-text-pos').textContent = state.customText ? posNames[state.textPosition] : '—';
+
+      const placementRow = document.getElementById('sum-placement-row');
+      if (placementRow) {
+        placementRow.style.display = state.product === 'tshirt' ? '' : 'none';
+        document.getElementById('sum-placement').textContent = placementNames[state.designPlacement];
+      }
+
+      document.getElementById('form-product').value = pName;
+      document.getElementById('form-design').value = `Design ${state.design}`;
+      document.getElementById('form-colour').value = state.colourName;
+      document.getElementById('form-size').value = state.size;
+      document.getElementById('form-custom-text').value = state.customText;
+      document.getElementById('form-text-position').value = state.customText ? posNames[state.textPosition] : 'None';
+      document.getElementById('form-placement').value =
+        state.product === 'tshirt' ? placementNames[state.designPlacement] : 'N/A';
+    }
+
+    // ─── Size button renderer ───
+    function renderSizeButtons(product) {
+      const container = document.getElementById('size-options');
+      if (product === 'cap') {
+        container.innerHTML = '<button class="size-btn one-size active" data-size="One Size">One Size</button>';
+        state.size = 'One Size';
+      } else {
+        const cur = SIZES_STANDARD.includes(state.size) ? state.size : DEFAULT_SIZE;
+        container.innerHTML = SIZES_STANDARD.map(s =>
+          `<button class="size-btn${s === cur ? ' active' : ''}" data-size="${s}">${s}</button>`
+        ).join('');
+        state.size = cur;
+        bindSizeButtons();
+      }
+    }
+
+    // ─── Event: product tabs ───
+    document.querySelectorAll('.product-tab').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.product-tab').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        state.product = btn.dataset.product;
+        applyProduct(state.product);
+        renderSizeButtons(state.product);
+        syncUI();
+      });
+    });
+
+    // ─── Event: design grid ───
+    document.querySelectorAll('.design-option').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.design-option').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        state.design = btn.dataset.design;
+        applyDesign(state.design);
+        syncUI();
+      });
+    });
+
+    // ─── Event: colour swatches ───
+    document.querySelectorAll('.colour-swatch').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.colour-swatch').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        state.colour     = btn.dataset.colour;
+        state.colourValue = btn.dataset.colourValue;
+        state.colourName  = btn.dataset.colourName;
+        document.getElementById('colour-name-display').textContent = state.colourName;
+        applyColour(state.colourValue, state.colourName);
+        syncUI();
+      });
+    });
+
+    // ─── Event: size buttons ───
+    function bindSizeButtons() {
+      document.querySelectorAll('.size-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          state.size = btn.dataset.size;
+          syncUI();
+        });
+      });
+    }
+    bindSizeButtons();
+
+    // ─── Event: front/back view toggle ───
+    document.querySelectorAll('.view-toggle-btn').forEach(btn => {
+      btn.addEventListener('click', () => applyView(btn.dataset.view));
+    });
+
+    // ─── Event: design placement ───
+    document.querySelectorAll('.placement-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.placement-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        state.designPlacement = btn.dataset.placement;
+        applyPlacement();
+        syncUI();
+      });
+    });
+
+    // ─── Event: custom text input ───
+    document.getElementById('custom-text-input').addEventListener('input', e => {
+      const text = e.target.value.slice(0, 20);
+      e.target.value = text;
+      document.getElementById('text-char-count').textContent = `${text.length}/20`;
+      applyCustomText(text);
+    });
+
+    // ─── Event: text position buttons ───
+    document.querySelectorAll('.text-pos-btn').forEach(btn => {
+      btn.addEventListener('click', () => applyTextPosition(btn.dataset.pos));
+    });
+
+    // ─── Mobile nav toggle ───
+    const burger = document.querySelector('.nav-burger');
+    const mobileNav = document.getElementById('nav-mobile');
+
+    function toggleMenu(open) {
+      burger.classList.toggle('open', open);
+      mobileNav.classList.toggle('open', open);
+      mobileNav.setAttribute('aria-hidden', String(!open));
+      burger.setAttribute('aria-expanded', String(open));
+      document.body.style.overflow = open ? 'hidden' : '';
+    }
+
+    burger.addEventListener('click', () => toggleMenu(!burger.classList.contains('open')));
+    document.querySelector('.nav-mobile-close').addEventListener('click', () => toggleMenu(false));
+    mobileNav.querySelectorAll('a').forEach(link => link.addEventListener('click', () => toggleMenu(false)));
+
+    // ─── Netlify form submission ───
+    const orderForm  = document.getElementById('order-form');
+    const formSuccess = document.getElementById('form-success');
+
+    orderForm.addEventListener('submit', async e => {
+      e.preventDefault();
+      try {
+        const res = await fetch('/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams(new FormData(orderForm)).toString()
+        });
+        if (res.ok) {
+          orderForm.style.display = 'none';
+          formSuccess.style.display = 'block';
+          formSuccess.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else {
+          alert('Something went wrong. Please try again or drop us an email directly.');
+        }
+      } catch {
+        alert('Something went wrong. Please try again or drop us an email directly.');
+      }
+    });
+
+    // ─── Initialise ───
+    applyColour(state.colourValue, state.colourName);
+    applyDesign(state.design);
+    applyProduct(state.product);
+    syncUI();
+  </script>
+
+</body>
+</html>
