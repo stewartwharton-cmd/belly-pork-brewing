@@ -159,55 +159,160 @@
       margin-top: 1rem;
     }
 
-    /* ─── PAGE HEADER ─── */
-    .page-header {
-      padding: 14rem 5rem 8rem;
-      position: relative;
-      overflow: hidden;
-      border-bottom: 1px solid var(--magenta-dim);
+    /* ─── HERO ─── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
-    .page-header::before {
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    .merch-hero {
+      position: relative;
+      min-height: 80vh;
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+    }
+
+    .merch-hero::before {
       content: '';
       position: absolute;
       inset: 0;
-      background: radial-gradient(ellipse 70% 60% at 30% 60%, rgba(255,29,188,0.07) 0%, transparent 70%);
-      pointer-events: none;
+      background: url('images/merch-hero.jpg') center center / cover no-repeat;
+      filter: grayscale(1);
+      z-index: 0;
     }
-    .page-header-bg-text {
+
+    /* Dark gradient so text is always readable */
+    .merch-hero-overlay {
       position: absolute;
-      right: -0.02em;
-      bottom: -0.15em;
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(8rem, 18vw, 20rem);
-      line-height: 1;
-      color: transparent;
-      -webkit-text-stroke: 1px rgba(255,29,188,0.08);
-      pointer-events: none;
-      user-select: none;
+      inset: 0;
+      background:
+        linear-gradient(to right, rgba(8,8,8,0.78) 0%, rgba(8,8,8,0.35) 55%, rgba(8,8,8,0.15) 100%),
+        linear-gradient(to top,   rgba(8,8,8,0.85) 0%, transparent 55%);
+      z-index: 1;
     }
-    .page-header .section-label { margin-bottom: 1.2rem; }
-    .page-header h1 {
+
+    /* Content block — bottom-left */
+    .merch-hero-content {
+      position: relative;
+      z-index: 10;
+      padding: 0 5rem 5rem;
+      max-width: 700px;
+    }
+
+    .merch-hero-eyebrow {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.38em;
+      text-transform: uppercase;
+      color: var(--magenta);
+      margin-bottom: 1.2rem;
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards 0.3s;
+    }
+
+    .merch-hero-h1 {
       font-family: 'Bebas Neue', sans-serif;
       font-size: clamp(5rem, 10vw, 11rem);
       line-height: 0.88;
       letter-spacing: 0.01em;
-      position: relative;
-      z-index: 2;
+      margin-bottom: 2.5rem;
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards 0.5s;
     }
-    .page-header h1 .outline {
+    .merch-hero-h1 .outline {
       -webkit-text-stroke: 2px var(--magenta);
       color: transparent;
       display: block;
     }
-    .page-header h1 .solid { display: block; }
-    .page-header-sub {
-      margin-top: 2rem;
-      font-size: 1.05rem;
-      line-height: 1.75;
-      color: var(--muted);
-      max-width: 480px;
-      position: relative;
-      z-index: 2;
+    .merch-hero-h1 .solid { display: block; }
+
+    .merch-hero-cta {
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards 0.8s;
+    }
+    .merch-hero-cta .btn-primary {
+      display: inline-block;
+      transition: transform 0.18s, box-shadow 0.18s;
+    }
+    .merch-hero-cta .btn-primary:hover {
+      transform: translate(-3px, -3px);
+      box-shadow: 5px 5px 0 var(--off-white);
+    }
+
+    /* ─── HERO IMAGE OVERLAYS (merch page only) ─── */
+
+    /* Bubbles */
+    @keyframes bubbleRiseA {
+      0%   { transform: translateY(0) translateX(0)    scale(1);    opacity: 0; }
+      8%   { opacity: 0.55; }
+      85%  { opacity: 0.22; }
+      100% { transform: translateY(-108vh) translateX(14px)  scale(0.75); opacity: 0; }
+    }
+    @keyframes bubbleRiseB {
+      0%   { transform: translateY(0) translateX(0)    scale(1);    opacity: 0; }
+      8%   { opacity: 0.5; }
+      85%  { opacity: 0.18; }
+      100% { transform: translateY(-108vh) translateX(-11px) scale(0.8);  opacity: 0; }
+    }
+
+    .merch-hero .bubble {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.28);
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
+      z-index: 6;
+      pointer-events: none;
+    }
+
+    /* "Ohhhh Graham" overlay */
+    @keyframes grahamReveal {
+      0%   { opacity: 0; transform: scale(0.94) translateY(10px); letter-spacing: 0.18em; }
+      100% { opacity: 1; transform: scale(1)    translateY(0);     letter-spacing: 0.06em; }
+    }
+    @keyframes grahamPulse {
+      0%, 100% {
+        opacity: 1;
+        text-shadow:
+          0 0 30px rgba(255,29,188,0.65),
+          0 0 70px rgba(255,29,188,0.3),
+          0 2px 8px rgba(0,0,0,0.8);
+      }
+      50% {
+        opacity: 0.78;
+        text-shadow:
+          0 0 55px rgba(255,29,188,0.9),
+          0 0 110px rgba(255,29,188,0.5),
+          0 2px 8px rgba(0,0,0,0.8);
+      }
+    }
+
+    .merch-hero-graham {
+      position: absolute;
+      z-index: 7;
+      right: 6%;
+      bottom: 28%;
+      text-align: right;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.8rem, 4.5vw, 5.5rem);
+      line-height: 1;
+      letter-spacing: 0.06em;
+      color: var(--magenta);
+      text-shadow:
+        0 0 30px rgba(255,29,188,0.65),
+        0 0 70px rgba(255,29,188,0.3),
+        0 2px 8px rgba(0,0,0,0.8);
+      opacity: 0;
+      pointer-events: none;
+      animation:
+        grahamReveal 1.4s cubic-bezier(0.22, 1, 0.36, 1) forwards 2.6s,
+        grahamPulse  4.5s ease-in-out infinite 4.2s;
     }
 
     /* ─── MARQUEE ─── */
@@ -738,6 +843,8 @@
 
     /* ─── RESPONSIVE ─── */
     @media (max-width: 1024px) {
+      .merch-hero { min-height: 65vh; }
+      .merch-hero-content { padding: 0 3rem 3.5rem; }
       .merch-section { grid-template-columns: 1fr; gap: 3rem; padding: 6rem 3rem; }
       .merch-preview { position: static; }
       .mockup-stage { max-width: 260px; }
@@ -750,7 +857,10 @@
       .nav-burger { display: flex; }
       .nav-mobile { display: flex; }
 
-      .page-header { padding: 10rem 2rem 5rem; }
+      .merch-hero { min-height: 60vh; }
+      .merch-hero-content { padding: 0 2rem 3rem; }
+      .merch-hero-h1 { font-size: clamp(4rem, 13vw, 6rem); }
+      .merch-hero-graham { font-size: clamp(2.2rem, 8vw, 3.5rem); right: 3%; bottom: 25%; }
       .merch-section { padding: 4rem 2rem; }
       .design-grid { grid-template-columns: repeat(3, 1fr); gap: 0.5rem; }
       .product-tabs { flex-wrap: wrap; }
@@ -758,6 +868,130 @@
       .form-row { grid-template-columns: 1fr; }
       footer { grid-template-columns: 1fr; padding: 3rem 2rem; gap: 2rem; }
       .footer-bottom { flex-direction: column; align-items: flex-start; }
+    }
+
+    /* ─── CHAT WIDGET ─── */
+    #chat-widget {
+      position: fixed;
+      bottom: 1.8rem;
+      right: 1.8rem;
+      z-index: 500;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0.75rem;
+    }
+    #chat-panel {
+      width: 460px;
+      background: var(--dark);
+      border: 1px solid var(--magenta-dim);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,29,188,0.08);
+      opacity: 0;
+      transform: translateY(12px) scale(0.97);
+      pointer-events: none;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+      transform-origin: bottom right;
+    }
+    #chat-panel.open {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: all;
+    }
+    #chat-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1.2rem;
+      background: var(--mid);
+      border-bottom: 1px solid var(--magenta-dim);
+      flex-shrink: 0;
+    }
+    .chat-header-info { display: flex; align-items: center; gap: 0.75rem; }
+    .chat-avatar {
+      width: 36px; height: 36px;
+      background: var(--magenta); color: var(--black);
+      font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .chat-header-name {
+      font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem;
+      letter-spacing: 0.06em; color: var(--off-white); line-height: 1.1;
+    }
+    .chat-header-sub {
+      font-family: 'Syne Mono', monospace; font-size: 0.58rem;
+      letter-spacing: 0.15em; color: var(--muted); text-transform: uppercase;
+    }
+    #chat-close {
+      background: none; border: none; color: var(--muted);
+      font-size: 1rem; cursor: pointer; padding: 0.25rem; transition: color 0.2s; line-height: 1;
+    }
+    #chat-close:hover { color: var(--magenta); }
+    #chat-messages {
+      flex: 1; overflow-y: auto; padding: 0.6rem;
+      display: flex; flex-direction: column; gap: 0.9rem;
+      max-height: 380px; min-height: 200px;
+      scrollbar-width: thin; scrollbar-color: var(--magenta) var(--black);
+    }
+    #chat-messages::-webkit-scrollbar { width: 3px; }
+    #chat-messages::-webkit-scrollbar-track { background: var(--black); }
+    #chat-messages::-webkit-scrollbar-thumb { background: var(--magenta); }
+    .chat-msg { display: flex; flex-direction: column; max-width: 96%; }
+    .chat-msg.graham { align-self: flex-start; }
+    .chat-msg.user { align-self: flex-end; }
+    .chat-msg-name {
+      font-family: 'Syne Mono', monospace; font-size: 0.58rem;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--magenta); margin-bottom: 0.3rem;
+    }
+    .chat-msg p { font-size: 0.88rem; line-height: 1.6; padding: 0.7rem 1rem; }
+    .chat-msg.graham p { background: var(--mid); color: var(--off-white); border: 1px solid rgba(255,29,188,0.1); }
+    .chat-msg.user p { background: var(--magenta); color: var(--black); font-weight: 600; }
+    .chat-msg.typing p { display: flex; gap: 4px; align-items: center; min-width: 44px; }
+    .chat-msg.typing p span {
+      display: inline-block; width: 6px; height: 6px;
+      background: var(--magenta); border-radius: 50%;
+      animation: typingBounce 1.2s ease-in-out infinite;
+    }
+    .chat-msg.typing p span:nth-child(2) { animation-delay: 0.2s; }
+    .chat-msg.typing p span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes typingBounce {
+      0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+      30% { transform: translateY(-5px); opacity: 1; }
+    }
+    #chat-input-row { display: flex; border-top: 1px solid var(--magenta-dim); flex-shrink: 0; }
+    #chat-input {
+      flex: 1; background: var(--black); border: none; color: var(--off-white);
+      font-family: 'Syne', sans-serif; font-size: 0.88rem; padding: 0.9rem 1rem; outline: none;
+    }
+    #chat-input::placeholder { color: rgba(240,234,224,0.25); }
+    #chat-send {
+      background: var(--magenta); border: none; color: var(--black);
+      padding: 0 1.1rem; cursor: pointer; display: flex; align-items: center;
+      transition: opacity 0.2s; flex-shrink: 0;
+    }
+    #chat-send:hover { opacity: 0.85; }
+    #chat-send:disabled { opacity: 0.4; cursor: not-allowed; }
+    #chat-send svg { width: 18px; height: 18px; display: block; }
+    #chat-toggle {
+      display: flex; align-items: center; gap: 0.6rem;
+      background: var(--magenta); color: var(--black); border: none;
+      padding: 0.7rem 1.3rem 0.7rem 1rem; cursor: pointer;
+      font-family: 'Syne Mono', monospace; font-size: 0.72rem;
+      letter-spacing: 0.18em; text-transform: uppercase; font-weight: 700;
+      box-shadow: 0 8px 32px rgba(255,29,188,0.35);
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    #chat-toggle:hover { opacity: 0.9; transform: translateY(-2px); }
+    #chat-toggle svg { width: 18px; height: 24px; flex-shrink: 0; }
+    #chat-toggle .toggle-close { display: none; }
+    #chat-toggle.open .toggle-open { display: none; }
+    #chat-toggle.open .toggle-close { display: inline; }
+    @media (max-width: 900px) {
+      #chat-widget { bottom: 1.2rem; right: 1.2rem; }
+      #chat-panel { width: calc(100vw - 2.4rem); }
     }
   </style>
 </head>
@@ -797,20 +1031,45 @@
     <a href="index.html#newsletter" class="nav-mobile-cta">Stay Updated</a>
   </div>
 
-  <!-- PAGE HEADER -->
-  <header class="page-header">
-    <p class="section-label">// Wear The Brand</p>
-    <h1>
-      <span class="solid">Belly</span>
-      <span class="outline">Pork</span>
-      <span class="solid">Merch</span>
-    </h1>
-    <p class="page-header-sub">
-      No middle men. No inflated prices. Just proper Belly Pork gear made to order.
-      Pick your product, choose your design, and we'll sort the rest.
-    </p>
-    <div class="page-header-bg-text" aria-hidden="true">MERCH</div>
-  </header>
+  <!-- HERO -->
+  <section class="merch-hero">
+
+    <!-- Dark gradient overlay -->
+    <div class="merch-hero-overlay"></div>
+
+    <!-- Beer bubbles (CSS animated, full width of hero) -->
+    <span class="bubble" style="left:4%;  width:7px;  height:7px;  bottom:2%;  animation-name:bubbleRiseA; animation-duration:6.2s; animation-delay:0s"></span>
+    <span class="bubble" style="left:11%; width:5px;  height:5px;  bottom:0%;  animation-name:bubbleRiseB; animation-duration:8.4s; animation-delay:1.3s"></span>
+    <span class="bubble" style="left:19%; width:11px; height:11px; bottom:8%;  animation-name:bubbleRiseA; animation-duration:7.1s; animation-delay:0.6s"></span>
+    <span class="bubble" style="left:27%; width:5px;  height:5px;  bottom:0%;  animation-name:bubbleRiseB; animation-duration:5.8s; animation-delay:2.1s"></span>
+    <span class="bubble" style="left:35%; width:8px;  height:8px;  bottom:14%; animation-name:bubbleRiseA; animation-duration:9.2s; animation-delay:0.9s"></span>
+    <span class="bubble" style="left:43%; width:4px;  height:4px;  bottom:0%;  animation-name:bubbleRiseB; animation-duration:6.7s; animation-delay:3.2s"></span>
+    <span class="bubble" style="left:51%; width:9px;  height:9px;  bottom:6%;  animation-name:bubbleRiseA; animation-duration:8.0s; animation-delay:1.7s"></span>
+    <span class="bubble" style="left:59%; width:6px;  height:6px;  bottom:0%;  animation-name:bubbleRiseB; animation-duration:7.5s; animation-delay:0.4s"></span>
+    <span class="bubble" style="left:67%; width:10px; height:10px; bottom:10%; animation-name:bubbleRiseA; animation-duration:6.5s; animation-delay:2.8s"></span>
+    <span class="bubble" style="left:74%; width:4px;  height:4px;  bottom:22%; animation-name:bubbleRiseB; animation-duration:8.9s; animation-delay:4.1s"></span>
+    <span class="bubble" style="left:81%; width:7px;  height:7px;  bottom:5%;  animation-name:bubbleRiseA; animation-duration:7.8s; animation-delay:1.1s"></span>
+    <span class="bubble" style="left:88%; width:5px;  height:5px;  bottom:18%; animation-name:bubbleRiseB; animation-duration:6.3s; animation-delay:3.7s"></span>
+    <span class="bubble" style="left:94%; width:8px;  height:8px;  bottom:0%;  animation-name:bubbleRiseA; animation-duration:9.6s; animation-delay:0.2s"></span>
+    <span class="bubble" style="left:22%; width:6px;  height:6px;  bottom:30%; animation-name:bubbleRiseB; animation-duration:7.3s; animation-delay:5.0s"></span>
+    <span class="bubble" style="left:47%; width:9px;  height:9px;  bottom:0%;  animation-name:bubbleRiseA; animation-duration:8.7s; animation-delay:2.4s"></span>
+
+    <!-- "Ohhhh Graham" overlay — right side of hero -->
+    <p class="merch-hero-graham" aria-hidden="true">Ohhhh Graham</p>
+
+    <!-- Hero content — bottom left -->
+    <div class="merch-hero-content">
+      <p class="merch-hero-eyebrow">// Limited Runs &nbsp;·&nbsp; Made To Order &nbsp;·&nbsp; No Bollocks</p>
+      <h1 class="merch-hero-h1">
+        <span class="solid">Belly Pork</span>
+        <span class="outline">Merch</span>
+      </h1>
+      <div class="merch-hero-cta">
+        <a href="#configure" class="btn-primary">Build Your Order &darr;</a>
+      </div>
+    </div>
+
+  </section>
 
   <!-- MARQUEE -->
   <div class="marquee-wrap" aria-hidden="true">
@@ -839,7 +1098,7 @@
         <p class="config-label">// 01 — Choose Product</p>
         <div class="product-tabs">
           <button class="product-tab active" data-product="tshirt">T-Shirt</button>
-          <button class="product-tab" data-product="hoodie">Hoodie</button>
+          <button class="product-tab" data-product="sweatshirt">Sweatshirt</button>
           <button class="product-tab" data-product="cap">Cap</button>
         </div>
       </div>
@@ -956,18 +1215,54 @@
               <rect x="43" y="74" width="114" height="146"/>
             </clipPath>
             <filter id="tshirt-shadow">
-              <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="rgba(0,0,0,0.5)"/>
+              <feDropShadow dx="0" dy="6" stdDeviation="11" flood-color="rgba(0,0,0,0.6)"/>
             </filter>
-            <linearGradient id="tshirt-shine" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stop-color="rgba(255,255,255,0.07)"/>
-              <stop offset="60%" stop-color="rgba(255,255,255,0)"/>
+            <!-- Lateral shading: dark at edges, slight highlight at centre -->
+            <linearGradient id="tshirt-lat-grad" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%"   stop-color="rgba(0,0,0,0.28)"/>
+              <stop offset="20%"  stop-color="rgba(0,0,0,0.06)"/>
+              <stop offset="50%"  stop-color="rgba(255,255,255,0.04)"/>
+              <stop offset="80%"  stop-color="rgba(0,0,0,0.06)"/>
+              <stop offset="100%" stop-color="rgba(0,0,0,0.28)"/>
+            </linearGradient>
+            <!-- Vertical depth: lighter at top, darker at bottom hem -->
+            <linearGradient id="tshirt-vert-grad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%"   stop-color="rgba(255,255,255,0.08)"/>
+              <stop offset="35%"  stop-color="rgba(255,255,255,0)"/>
+              <stop offset="100%" stop-color="rgba(0,0,0,0.14)"/>
             </linearGradient>
           </defs>
+          <!-- Base fill -->
           <path id="tshirt-fill"
             d="M 63 12 C 71 26 100 30 100 30 C 100 30 129 26 137 12 L 153 22 L 196 14 L 200 66 L 157 76 L 157 218 L 43 218 L 43 76 L 0 66 L 4 14 Z"
             fill="#1e1e1e" filter="url(#tshirt-shadow)"
           />
-          <path d="M 63 12 C 71 26 100 30 100 30 C 100 30 129 26 137 12 L 153 22 L 196 14 L 200 66 L 157 76 L 157 218 L 43 218 L 43 76 L 0 66 L 4 14 Z" fill="url(#tshirt-shine)"/>
+          <!-- Sleeve inner shadow – underside of both sleeves -->
+          <path d="M 4 14 L 0 66 L 43 76 L 55 30 Z" fill="rgba(0,0,0,0.18)"/>
+          <path d="M 196 14 L 200 66 L 157 76 L 145 30 Z" fill="rgba(0,0,0,0.18)"/>
+          <!-- Lateral shading -->
+          <path d="M 63 12 C 71 26 100 30 100 30 C 100 30 129 26 137 12 L 153 22 L 196 14 L 200 66 L 157 76 L 157 218 L 43 218 L 43 76 L 0 66 L 4 14 Z" fill="url(#tshirt-lat-grad)"/>
+          <!-- Vertical shading -->
+          <path d="M 63 12 C 71 26 100 30 100 30 C 100 30 129 26 137 12 L 153 22 L 196 14 L 200 66 L 157 76 L 157 218 L 43 218 L 43 76 L 0 66 L 4 14 Z" fill="url(#tshirt-vert-grad)"/>
+          <!-- Shoulder seam lines -->
+          <line x1="63" y1="12" x2="43" y2="76" stroke="rgba(0,0,0,0.3)" stroke-width="1.2"/>
+          <line x1="137" y1="12" x2="157" y2="76" stroke="rgba(0,0,0,0.3)" stroke-width="1.2"/>
+          <line x1="63" y1="12" x2="43" y2="76" stroke="rgba(255,255,255,0.05)" stroke-width="0.6" stroke-dasharray="3 2"/>
+          <line x1="137" y1="12" x2="157" y2="76" stroke="rgba(255,255,255,0.05)" stroke-width="0.6" stroke-dasharray="3 2"/>
+          <!-- Ribbed collar band -->
+          <path d="M 65 13 C 73 27 100 31 100 31 C 100 31 127 27 135 13"
+            fill="none" stroke="rgba(0,0,0,0.4)" stroke-width="7" stroke-linecap="round"/>
+          <path d="M 65 13 C 73 27 100 31 100 31 C 100 31 127 27 135 13"
+            fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="5.5" stroke-linecap="round"/>
+          <path d="M 65 13 C 73 27 100 31 100 31 C 100 31 127 27 135 13"
+            fill="none" stroke="rgba(0,0,0,0.22)" stroke-width="1.5" stroke-linecap="round"
+            stroke-dasharray="2.5 2.2"/>
+          <!-- Hem stitch -->
+          <line x1="43" y1="215" x2="157" y2="215" stroke="rgba(255,255,255,0.07)" stroke-width="0.8" stroke-dasharray="3 2.5"/>
+          <!-- Side seam shadow -->
+          <rect x="43" y="76" width="4" height="142" fill="rgba(0,0,0,0.14)"/>
+          <rect x="153" y="76" width="4" height="142" fill="rgba(0,0,0,0.14)"/>
+          <!-- Design image -->
           <image id="tshirt-design"
             href="images/design1.png"
             x="56" y="84" width="88" height="88"
@@ -979,15 +1274,16 @@
             x="100" y="106" text-anchor="middle"
             font-family="'Bebas Neue', sans-serif" font-size="9"
             fill="#FF1DBC" letter-spacing="1.5" display="none"></text>
-          <!-- Left sleeve text (rotated along sleeve) -->
+          <!-- Sleeve text -->
           <text id="tshirt-sleeve-text"
             x="26" y="45" text-anchor="middle"
             font-family="'Bebas Neue', sans-serif" font-size="6.5"
             fill="#FF1DBC" letter-spacing="1"
             transform="rotate(-75 26 45)" display="none"></text>
+          <!-- Outer outline -->
           <path id="tshirt-outline"
             d="M 63 12 C 71 26 100 30 100 30 C 100 30 129 26 137 12 L 153 22 L 196 14 L 200 66 L 157 76 L 157 218 L 43 218 L 43 76 L 0 66 L 4 14 Z"
-            fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"
+            fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="1"
           />
         </svg>
 
@@ -998,133 +1294,230 @@
               <rect x="43" y="74" width="114" height="146"/>
             </clipPath>
             <filter id="tshirt-back-shadow">
-              <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="rgba(0,0,0,0.5)"/>
+              <feDropShadow dx="0" dy="6" stdDeviation="11" flood-color="rgba(0,0,0,0.6)"/>
             </filter>
-            <linearGradient id="tshirt-back-shine" x1="1" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="rgba(255,255,255,0.07)"/>
-              <stop offset="60%" stop-color="rgba(255,255,255,0)"/>
+            <linearGradient id="tshirt-back-lat" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%"   stop-color="rgba(0,0,0,0.28)"/>
+              <stop offset="20%"  stop-color="rgba(0,0,0,0.06)"/>
+              <stop offset="50%"  stop-color="rgba(255,255,255,0.04)"/>
+              <stop offset="80%"  stop-color="rgba(0,0,0,0.06)"/>
+              <stop offset="100%" stop-color="rgba(0,0,0,0.28)"/>
+            </linearGradient>
+            <linearGradient id="tshirt-back-vert" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%"   stop-color="rgba(255,255,255,0.08)"/>
+              <stop offset="35%"  stop-color="rgba(255,255,255,0)"/>
+              <stop offset="100%" stop-color="rgba(0,0,0,0.14)"/>
             </linearGradient>
           </defs>
-          <!-- Back neckline is flatter/higher -->
           <path id="tshirt-back-fill"
             d="M 70 16 C 82 22 118 22 130 16 L 153 22 L 196 14 L 200 66 L 157 76 L 157 218 L 43 218 L 43 76 L 0 66 L 4 14 Z"
             fill="#1e1e1e" filter="url(#tshirt-back-shadow)"
           />
-          <path d="M 70 16 C 82 22 118 22 130 16 L 153 22 L 196 14 L 200 66 L 157 76 L 157 218 L 43 218 L 43 76 L 0 66 L 4 14 Z" fill="url(#tshirt-back-shine)"/>
+          <!-- Sleeve inner shadow -->
+          <path d="M 4 14 L 0 66 L 43 76 L 55 30 Z" fill="rgba(0,0,0,0.18)"/>
+          <path d="M 196 14 L 200 66 L 157 76 L 145 30 Z" fill="rgba(0,0,0,0.18)"/>
+          <path d="M 70 16 C 82 22 118 22 130 16 L 153 22 L 196 14 L 200 66 L 157 76 L 157 218 L 43 218 L 43 76 L 0 66 L 4 14 Z" fill="url(#tshirt-back-lat)"/>
+          <path d="M 70 16 C 82 22 118 22 130 16 L 153 22 L 196 14 L 200 66 L 157 76 L 157 218 L 43 218 L 43 76 L 0 66 L 4 14 Z" fill="url(#tshirt-back-vert)"/>
+          <!-- Shoulder seam lines -->
+          <line x1="70" y1="16" x2="43" y2="76" stroke="rgba(0,0,0,0.3)" stroke-width="1.2"/>
+          <line x1="130" y1="16" x2="157" y2="76" stroke="rgba(0,0,0,0.3)" stroke-width="1.2"/>
+          <line x1="70" y1="16" x2="43" y2="76" stroke="rgba(255,255,255,0.05)" stroke-width="0.6" stroke-dasharray="3 2"/>
+          <line x1="130" y1="16" x2="157" y2="76" stroke="rgba(255,255,255,0.05)" stroke-width="0.6" stroke-dasharray="3 2"/>
+          <!-- Back neck band (flat, ribbed) -->
+          <path d="M 72 17 C 84 23 116 23 128 17"
+            fill="none" stroke="rgba(0,0,0,0.4)" stroke-width="7" stroke-linecap="round"/>
+          <path d="M 72 17 C 84 23 116 23 128 17"
+            fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="5.5" stroke-linecap="round"/>
+          <path d="M 72 17 C 84 23 116 23 128 17"
+            fill="none" stroke="rgba(0,0,0,0.22)" stroke-width="1.5" stroke-linecap="round"
+            stroke-dasharray="2.5 2.2"/>
+          <!-- Centre back seam (subtle) -->
+          <line x1="100" y1="20" x2="100" y2="218" stroke="rgba(0,0,0,0.12)" stroke-width="1"/>
+          <!-- Hem stitch -->
+          <line x1="43" y1="215" x2="157" y2="215" stroke="rgba(255,255,255,0.07)" stroke-width="0.8" stroke-dasharray="3 2.5"/>
+          <!-- Side seam shadow -->
+          <rect x="43" y="76" width="4" height="142" fill="rgba(0,0,0,0.14)"/>
+          <rect x="153" y="76" width="4" height="142" fill="rgba(0,0,0,0.14)"/>
           <image id="tshirt-back-design"
             href="" x="50" y="88" width="100" height="100"
             clip-path="url(#tshirt-back-clip)"
             preserveAspectRatio="xMidYMid meet"
             display="none"
           />
-          <!-- Back text -->
           <text id="tshirt-back-text"
             x="100" y="158" text-anchor="middle"
             font-family="'Bebas Neue', sans-serif" font-size="11"
             fill="#FF1DBC" letter-spacing="2" display="none"></text>
           <path id="tshirt-back-outline"
             d="M 70 16 C 82 22 118 22 130 16 L 153 22 L 196 14 L 200 66 L 157 76 L 157 218 L 43 218 L 43 76 L 0 66 L 4 14 Z"
-            fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"
+            fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="1"
           />
           <text x="100" y="13" text-anchor="middle"
             font-family="'Syne Mono', monospace" font-size="5.5"
             fill="rgba(255,29,188,0.4)" letter-spacing="2">BACK VIEW</text>
         </svg>
 
-        <!-- Hoodie SVG -->
-        <svg id="svg-hoodie" class="mockup-svg" viewBox="0 0 200 242" xmlns="http://www.w3.org/2000/svg">
+        <!-- Sweatshirt SVG (crew neck) -->
+        <svg id="svg-sweatshirt" class="mockup-svg" viewBox="0 0 200 234" xmlns="http://www.w3.org/2000/svg">
           <defs>
-            <clipPath id="hoodie-body-clip">
-              <rect x="32" y="90" width="136" height="150"/>
+            <clipPath id="sweatshirt-body-clip">
+              <rect x="38" y="72" width="124" height="148"/>
             </clipPath>
-            <filter id="hoodie-shadow">
-              <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="rgba(0,0,0,0.5)"/>
+            <filter id="sweatshirt-shadow">
+              <feDropShadow dx="0" dy="6" stdDeviation="11" flood-color="rgba(0,0,0,0.6)"/>
             </filter>
-            <linearGradient id="hoodie-shine" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stop-color="rgba(255,255,255,0.07)"/>
-              <stop offset="60%" stop-color="rgba(255,255,255,0)"/>
+            <linearGradient id="sweatshirt-lat" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%"   stop-color="rgba(0,0,0,0.30)"/>
+              <stop offset="20%"  stop-color="rgba(0,0,0,0.07)"/>
+              <stop offset="50%"  stop-color="rgba(255,255,255,0.04)"/>
+              <stop offset="80%"  stop-color="rgba(0,0,0,0.07)"/>
+              <stop offset="100%" stop-color="rgba(0,0,0,0.30)"/>
+            </linearGradient>
+            <linearGradient id="sweatshirt-vert" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%"   stop-color="rgba(255,255,255,0.08)"/>
+              <stop offset="35%"  stop-color="rgba(255,255,255,0)"/>
+              <stop offset="100%" stop-color="rgba(0,0,0,0.16)"/>
             </linearGradient>
           </defs>
-          <path id="hoodie-fill"
-            d="M 100 5 C 78 7 62 26 62 50 L 38 34 L 6 83 L 35 93 L 32 238 L 168 238 L 165 93 L 194 83 L 162 34 L 138 50 C 138 26 122 7 100 5 Z"
-            fill="#1e1e1e" filter="url(#hoodie-shadow)"
+          <!-- Main body (boxy crew-neck silhouette, longer sleeves than t-shirt) -->
+          <path id="sweatshirt-fill"
+            d="M 70 16 C 76 32 90 40 100 40 C 110 40 124 32 130 16
+               L 148 22 L 192 12 L 196 60 L 160 70
+               L 158 214 L 42 214
+               L 40 70 L 4 60 L 8 12
+               L 52 22 Z"
+            fill="#1e1e1e" filter="url(#sweatshirt-shadow)"
           />
-          <path d="M 68 50 C 68 22 132 22 132 50 C 132 68 120 78 100 78 C 80 78 68 68 68 50 Z" fill="rgba(0,0,0,0.4)"/>
-          <path d="M 100 5 C 78 7 62 26 62 50 L 38 34 L 6 83 L 35 93 L 32 238 L 168 238 L 165 93 L 194 83 L 162 34 L 138 50 C 138 26 122 7 100 5 Z" fill="url(#hoodie-shine)"/>
-          <rect x="68" y="158" width="64" height="50" rx="6" fill="rgba(0,0,0,0.22)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
-          <line x1="100" y1="162" x2="100" y2="205" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
-          <image id="hoodie-design"
+          <!-- Sleeve underside shadow -->
+          <path d="M 8 12 L 4 60 L 40 70 L 52 28 Z" fill="rgba(0,0,0,0.18)"/>
+          <path d="M 192 12 L 196 60 L 160 70 L 148 28 Z" fill="rgba(0,0,0,0.18)"/>
+          <!-- Lateral + vertical shading -->
+          <path d="M 70 16 C 76 32 90 40 100 40 C 110 40 124 32 130 16 L 148 22 L 192 12 L 196 60 L 160 70 L 158 214 L 42 214 L 40 70 L 4 60 L 8 12 L 52 22 Z" fill="url(#sweatshirt-lat)"/>
+          <path d="M 70 16 C 76 32 90 40 100 40 C 110 40 124 32 130 16 L 148 22 L 192 12 L 196 60 L 160 70 L 158 214 L 42 214 L 40 70 L 4 60 L 8 12 L 52 22 Z" fill="url(#sweatshirt-vert)"/>
+          <!-- Shoulder seam lines -->
+          <line x1="70" y1="16" x2="40" y2="70" stroke="rgba(0,0,0,0.3)" stroke-width="1.2"/>
+          <line x1="130" y1="16" x2="160" y2="70" stroke="rgba(0,0,0,0.3)" stroke-width="1.2"/>
+          <line x1="70" y1="16" x2="40" y2="70" stroke="rgba(255,255,255,0.05)" stroke-width="0.6" stroke-dasharray="3 2"/>
+          <line x1="130" y1="16" x2="160" y2="70" stroke="rgba(255,255,255,0.05)" stroke-width="0.6" stroke-dasharray="3 2"/>
+          <!-- Ribbed crew-neck collar band -->
+          <path d="M 68 17 C 76 33 92 41 100 41 C 108 41 124 33 132 17"
+            fill="none" stroke="rgba(0,0,0,0.45)" stroke-width="9" stroke-linecap="round"/>
+          <path d="M 68 17 C 76 33 92 41 100 41 C 108 41 124 33 132 17"
+            fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="7" stroke-linecap="round"/>
+          <path d="M 68 17 C 76 33 92 41 100 41 C 108 41 124 33 132 17"
+            fill="none" stroke="rgba(0,0,0,0.25)" stroke-width="2" stroke-linecap="round"
+            stroke-dasharray="2.2 2"/>
+          <!-- Ribbed sleeve cuffs (short band at end of each sleeve) -->
+          <!-- Left cuff area -->
+          <path d="M 4 52 L 4 60 L 40 70 L 40 61 Z" fill="rgba(0,0,0,0.35)"/>
+          <path d="M 4 52 L 4 60 L 40 70 L 40 61 Z" fill="rgba(255,255,255,0.04)"/>
+          <line x1="4" y1="52" x2="40" y2="61" stroke="rgba(0,0,0,0.4)" stroke-width="1.2"/>
+          <line x1="4" y1="54" x2="40" y2="63" stroke="rgba(255,255,255,0.06)" stroke-width="0.7" stroke-dasharray="2 1.8"/>
+          <!-- Right cuff area -->
+          <path d="M 196 52 L 196 60 L 160 70 L 160 61 Z" fill="rgba(0,0,0,0.35)"/>
+          <path d="M 196 52 L 196 60 L 160 70 L 160 61 Z" fill="rgba(255,255,255,0.04)"/>
+          <line x1="196" y1="52" x2="160" y2="61" stroke="rgba(0,0,0,0.4)" stroke-width="1.2"/>
+          <line x1="196" y1="54" x2="160" y2="63" stroke="rgba(255,255,255,0.06)" stroke-width="0.7" stroke-dasharray="2 1.8"/>
+          <!-- Ribbed hem band at bottom -->
+          <rect x="42" y="204" width="116" height="10" fill="rgba(0,0,0,0.32)"/>
+          <rect x="42" y="204" width="116" height="10" fill="rgba(255,255,255,0.03)"/>
+          <line x1="42" y1="204" x2="158" y2="204" stroke="rgba(0,0,0,0.4)" stroke-width="1.2"/>
+          <line x1="42" y1="206" x2="158" y2="206" stroke="rgba(255,255,255,0.06)" stroke-width="0.7" stroke-dasharray="2 1.8"/>
+          <line x1="42" y1="208" x2="158" y2="208" stroke="rgba(255,255,255,0.06)" stroke-width="0.7" stroke-dasharray="2 1.8"/>
+          <!-- Side seam shadow -->
+          <rect x="40" y="70" width="5" height="144" fill="rgba(0,0,0,0.15)"/>
+          <rect x="155" y="70" width="5" height="144" fill="rgba(0,0,0,0.15)"/>
+          <!-- Design image -->
+          <image id="sweatshirt-design"
             href="images/design1.png"
-            x="56" y="97" width="88" height="80"
-            clip-path="url(#hoodie-body-clip)"
+            x="52" y="82" width="96" height="88"
+            clip-path="url(#sweatshirt-body-clip)"
             preserveAspectRatio="xMidYMid meet"
           />
-          <!-- Chest / back text (single element — back placement noted in order) -->
-          <text id="hoodie-front-text"
-            x="100" y="150" text-anchor="middle"
+          <text id="sweatshirt-front-text"
+            x="100" y="148" text-anchor="middle"
             font-family="'Bebas Neue', sans-serif" font-size="10"
             fill="#FF1DBC" letter-spacing="1.5" display="none"></text>
-          <path id="hoodie-outline"
-            d="M 100 5 C 78 7 62 26 62 50 L 38 34 L 6 83 L 35 93 L 32 238 L 168 238 L 165 93 L 194 83 L 162 34 L 138 50 C 138 26 122 7 100 5 Z"
-            fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"
+          <path id="sweatshirt-outline"
+            d="M 70 16 C 76 32 90 40 100 40 C 110 40 124 32 130 16 L 148 22 L 192 12 L 196 60 L 160 70 L 158 214 L 42 214 L 40 70 L 4 60 L 8 12 L 52 22 Z"
+            fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="1"
           />
         </svg>
 
-        <!-- Snapback Cap SVG (5-panel style) -->
-        <svg id="svg-cap" class="mockup-svg" viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg">
+        <!-- Snapback Cap SVG (5-panel, curved dome) -->
+        <svg id="svg-cap" class="mockup-svg" viewBox="0 0 200 148" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <clipPath id="cap-crown-clip">
-              <polygon points="100,18 176,50 175,90 25,90 24,50"/>
+              <path d="M 22 88 C 22 44 46 10 100 8 C 154 10 178 44 178 88 Z"/>
             </clipPath>
             <filter id="cap-shadow">
-              <feDropShadow dx="0" dy="4" stdDeviation="10" flood-color="rgba(0,0,0,0.55)"/>
+              <feDropShadow dx="0" dy="6" stdDeviation="11" flood-color="rgba(0,0,0,0.6)"/>
             </filter>
-            <linearGradient id="cap-shine" x1="0.2" y1="0" x2="0.8" y2="1">
-              <stop offset="0%" stop-color="rgba(255,255,255,0.13)"/>
-              <stop offset="70%" stop-color="rgba(255,255,255,0)"/>
+            <!-- Crown shading: lighter top-left, darker sides -->
+            <radialGradient id="cap-crown-grad" cx="38%" cy="30%" r="65%">
+              <stop offset="0%"   stop-color="rgba(255,255,255,0.12)"/>
+              <stop offset="55%"  stop-color="rgba(255,255,255,0)"/>
+              <stop offset="100%" stop-color="rgba(0,0,0,0.20)"/>
+            </radialGradient>
+            <linearGradient id="cap-brim-grad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%"   stop-color="rgba(0,0,0,0.22)"/>
+              <stop offset="40%"  stop-color="rgba(0,0,0,0)"/>
+              <stop offset="100%" stop-color="rgba(0,0,0,0.10)"/>
             </linearGradient>
           </defs>
-          <!-- Angular 5-panel crown -->
-          <polygon id="cap-fill"
-            points="100,18 176,50 175,90 25,90 24,50"
+          <!-- Crown dome (curved path) -->
+          <path id="cap-fill"
+            d="M 22 88 C 22 44 46 10 100 8 C 154 10 178 44 178 88 Z"
             fill="#1e1e1e" filter="url(#cap-shadow)"
           />
-          <!-- Panel seam lines (left and right of centre panel) -->
-          <line x1="100" y1="18" x2="46" y2="90" stroke="rgba(0,0,0,0.28)" stroke-width="1.5"/>
-          <line x1="100" y1="18" x2="154" y2="90" stroke="rgba(0,0,0,0.28)" stroke-width="1.5"/>
-          <!-- Subtle stitching on seams -->
-          <line x1="100" y1="18" x2="46" y2="90" stroke="rgba(255,255,255,0.04)" stroke-width="0.5" stroke-dasharray="3 3"/>
-          <line x1="100" y1="18" x2="154" y2="90" stroke="rgba(255,255,255,0.04)" stroke-width="0.5" stroke-dasharray="3 3"/>
-          <!-- Crown shine -->
-          <polygon points="100,18 176,50 175,90 25,90 24,50" fill="url(#cap-shine)"/>
+          <!-- Crown shading overlay -->
+          <path d="M 22 88 C 22 44 46 10 100 8 C 154 10 178 44 178 88 Z" fill="url(#cap-crown-grad)"/>
+          <!-- Panel seam lines (5-panel: two seams from top button down) -->
+          <line x1="100" y1="8" x2="48" y2="88" stroke="rgba(0,0,0,0.32)" stroke-width="1.4"/>
+          <line x1="100" y1="8" x2="152" y2="88" stroke="rgba(0,0,0,0.32)" stroke-width="1.4"/>
+          <line x1="100" y1="8" x2="48" y2="88" stroke="rgba(255,255,255,0.06)" stroke-width="0.7" stroke-dasharray="3 2.5"/>
+          <line x1="100" y1="8" x2="152" y2="88" stroke="rgba(255,255,255,0.06)" stroke-width="0.7" stroke-dasharray="3 2.5"/>
           <!-- Crown outline -->
-          <polygon id="cap-outline"
-            points="100,18 176,50 175,90 25,90 24,50"
-            fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"
+          <path id="cap-outline"
+            d="M 22 88 C 22 44 46 10 100 8 C 154 10 178 44 178 88"
+            fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="1"
           />
-          <!-- Flat brim -->
-          <rect id="cap-fill2" x="6" y="90" width="188" height="24" fill="#1e1e1e"/>
-          <!-- Brim top shadow strip -->
-          <rect x="6" y="90" width="188" height="5" fill="rgba(0,0,0,0.28)"/>
+          <!-- Sweatband (thin darker ring at base of crown) -->
+          <path d="M 22 88 C 46 96 154 96 178 88" fill="none" stroke="rgba(0,0,0,0.45)" stroke-width="5"/>
+          <path d="M 22 88 C 46 96 154 96 178 88" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="3"/>
+          <!-- Brim -->
+          <path id="cap-fill2"
+            d="M 8 90 Q 100 98 192 90 L 188 114 Q 100 120 12 114 Z"
+            fill="#1e1e1e"
+          />
+          <!-- Brim shading -->
+          <path d="M 8 90 Q 100 98 192 90 L 188 114 Q 100 120 12 114 Z" fill="url(#cap-brim-grad)"/>
+          <!-- Brim underside hint (darker under-brim) -->
+          <path d="M 12 114 Q 100 120 188 114 L 188 116 Q 100 122 12 116 Z" fill="rgba(0,0,0,0.35)"/>
           <!-- Brim outline -->
-          <rect x="6" y="90" width="188" height="24" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
-          <!-- Snapback adjustment strap -->
-          <rect x="76" y="108" width="48" height="5" rx="2.5" fill="rgba(0,0,0,0.45)"/>
-          <rect x="90" y="109" width="20" height="3" rx="1.5" fill="rgba(255,255,255,0.08)"/>
+          <path d="M 8 90 Q 100 98 192 90 L 188 114 Q 100 120 12 114 Z"
+            fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.8"/>
+          <!-- Snapback strap -->
+          <rect x="72" y="105" width="56" height="7" rx="3.5" fill="rgba(0,0,0,0.55)"/>
+          <rect x="72" y="105" width="56" height="7" rx="3.5" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="0.7"/>
+          <!-- Strap holes -->
+          <circle cx="86"  cy="108.5" r="1.5" fill="rgba(255,255,255,0.12)"/>
+          <circle cx="100" cy="108.5" r="1.5" fill="rgba(255,255,255,0.12)"/>
+          <circle cx="114" cy="108.5" r="1.5" fill="rgba(255,255,255,0.12)"/>
           <!-- Top button -->
-          <circle cx="100" cy="19" r="4.5" fill="rgba(0,0,0,0.45)"/>
-          <circle cx="100" cy="19" r="2" fill="rgba(255,255,255,0.12)"/>
-          <!-- Design on front centre panel -->
+          <circle cx="100" cy="9" r="5" fill="rgba(0,0,0,0.5)"/>
+          <circle cx="100" cy="9" r="2.5" fill="rgba(255,255,255,0.14)"/>
+          <!-- Design image on front centre panel -->
           <image id="cap-design"
             href="images/design1.png"
-            x="48" y="26" width="104" height="60"
+            x="42" y="14" width="116" height="72"
             clip-path="url(#cap-crown-clip)"
             preserveAspectRatio="xMidYMid meet"
           />
-          <!-- Custom text on front panel -->
+          <!-- Custom text -->
           <text id="cap-text"
-            x="100" y="68" text-anchor="middle"
-            font-family="'Bebas Neue', sans-serif" font-size="10"
+            x="100" y="64" text-anchor="middle"
+            font-family="'Bebas Neue', sans-serif" font-size="11"
             fill="#FF1DBC" letter-spacing="2" display="none"></text>
         </svg>
 
@@ -1308,12 +1701,12 @@
 
     // ─── Apply garment colour ───
     function applyColour(colourValue, colourName) {
-      ['tshirt-fill', 'tshirt-back-fill', 'hoodie-fill', 'cap-fill', 'cap-fill2'].forEach(id => {
+      ['tshirt-fill', 'tshirt-back-fill', 'sweatshirt-fill', 'cap-fill', 'cap-fill2'].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.setAttribute('fill', colourValue);
       });
       const stroke = outlineStroke(colourName);
-      ['tshirt-outline', 'tshirt-back-outline', 'hoodie-outline', 'cap-outline'].forEach(id => {
+      ['tshirt-outline', 'tshirt-back-outline', 'sweatshirt-outline', 'cap-outline'].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.setAttribute('stroke', stroke);
       });
@@ -1322,7 +1715,7 @@
     // ─── Apply design image to all SVGs, then enforce placement visibility ───
     function applyDesign(designNum) {
       const src = `images/design${designNum}.png`;
-      ['tshirt-design', 'tshirt-back-design', 'hoodie-design', 'cap-design'].forEach(id => {
+      ['tshirt-design', 'tshirt-back-design', 'sweatshirt-design', 'cap-design'].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.setAttribute('href', src);
       });
@@ -1348,7 +1741,7 @@
         document.getElementById('view-toggle').classList.add('visible');
         document.getElementById('design-placement-group').classList.add('visible');
       } else {
-        document.getElementById(`svg-${product}`).classList.add('active');
+        document.getElementById('svg-' + product).classList.add('active');
         document.getElementById('view-toggle').classList.remove('visible');
         document.getElementById('design-placement-group').classList.remove('visible');
       }
@@ -1371,7 +1764,7 @@
     function applyCustomText(text) {
       state.customText = text;
       const allIds = ['tshirt-front-text', 'tshirt-sleeve-text', 'tshirt-back-text',
-                      'hoodie-front-text', 'cap-text'];
+                      'sweatshirt-front-text', 'cap-text'];
       allIds.forEach(id => {
         const el = document.getElementById(id);
         if (el) { el.textContent = ''; el.setAttribute('display', 'none'); }
@@ -1391,8 +1784,8 @@
           const el = document.getElementById('tshirt-sleeve-text');
           if (el) { el.textContent = upper; el.setAttribute('display', 'inline'); }
         }
-      } else if (state.product === 'hoodie') {
-        const el = document.getElementById('hoodie-front-text');
+      } else if (state.product === 'sweatshirt') {
+        const el = document.getElementById('sweatshirt-front-text');
         if (el) { el.textContent = upper; el.setAttribute('display', 'inline'); }
       } else if (state.product === 'cap') {
         const el = document.getElementById('cap-text');
@@ -1429,7 +1822,7 @@
 
     // ─── Sync preview label + order summary + hidden form fields ───
     function syncUI() {
-      const productNames = { tshirt: 'T-Shirt', hoodie: 'Hoodie', cap: 'Cap' };
+      const productNames = { tshirt: 'T-Shirt', sweatshirt: 'Sweatshirt', cap: 'Cap' };
       const placementNames = { front: 'Front', back: 'Back', both: 'Front & Back' };
       const posNames = { chest: 'Chest', back: 'Back', sleeve: 'Sleeve' };
       const pName = productNames[state.product];
@@ -1600,6 +1993,138 @@
     applyDesign(state.design);
     applyProduct(state.product);
     syncUI();
+  </script>
+
+  <!-- ─── CHAT WITH GRAHAM ─── -->
+  <div id="chat-widget">
+    <div id="chat-panel" aria-hidden="true" aria-label="Chat with Graham">
+      <div id="chat-header">
+        <div class="chat-header-info">
+          <div class="chat-avatar">G</div>
+          <div>
+            <p class="chat-header-name">Graham</p>
+            <p class="chat-header-sub">Head of Taste · Belly Pork Brewing</p>
+          </div>
+        </div>
+        <button id="chat-close" aria-label="Close chat">&#x2715;</button>
+      </div>
+      <div id="chat-messages" role="log" aria-live="polite"></div>
+      <div id="chat-input-row">
+        <input id="chat-input" type="text" placeholder="Ask Graham anything..." autocomplete="off" />
+        <button id="chat-send" aria-label="Send message">
+          <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 10 L17 10 M11 4 L17 10 L11 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+    <button id="chat-toggle" aria-expanded="false" aria-controls="chat-panel">
+      <svg viewBox="0 0 20 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M2 6 L18 6 L15.5 26 C15.5 26.8 14.8 27.5 14 27.5 L6 27.5 C5.2 27.5 4.5 26.8 4.5 26 Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="rgba(0,0,0,0.25)"/>
+        <path d="M2 6 C7 10 13 10 18 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <span class="toggle-open">Chat with Graham</span>
+      <span class="toggle-close">Close</span>
+    </button>
+  </div>
+
+  <script>
+    (function () {
+      const toggle   = document.getElementById('chat-toggle');
+      const panel    = document.getElementById('chat-panel');
+      const closeBtn = document.getElementById('chat-close');
+      const messages = document.getElementById('chat-messages');
+      const input    = document.getElementById('chat-input');
+      const sendBtn  = document.getElementById('chat-send');
+      let history = [];
+      let isOpen  = false;
+
+      function openPanel() {
+        isOpen = true;
+        panel.classList.add('open');
+        toggle.classList.add('open');
+        panel.setAttribute('aria-hidden', 'false');
+        toggle.setAttribute('aria-expanded', 'true');
+        if (messages.children.length === 0) {
+          addMsg('graham', "Alright boy, what do you want to know? Ask me about the beers, the tap room, anything. I'm about two pints in so keep it straightforward.");
+        }
+        input.focus();
+      }
+
+      function closePanel() {
+        isOpen = false;
+        panel.classList.remove('open');
+        toggle.classList.remove('open');
+        panel.setAttribute('aria-hidden', 'true');
+        toggle.setAttribute('aria-expanded', 'false');
+      }
+
+      toggle.addEventListener('click', () => isOpen ? closePanel() : openPanel());
+      closeBtn.addEventListener('click', closePanel);
+
+      function addMsg(role, text) {
+        const wrap = document.createElement('div');
+        wrap.className = 'chat-msg ' + role;
+        if (role === 'graham') {
+          wrap.innerHTML = '<p class="chat-msg-name">Graham</p><p>' + text + '</p>';
+        } else {
+          wrap.innerHTML = '<p>' + text + '</p>';
+        }
+        messages.appendChild(wrap);
+        messages.scrollTop = messages.scrollHeight;
+        return wrap;
+      }
+
+      function addTyping() {
+        const wrap = document.createElement('div');
+        wrap.className = 'chat-msg graham typing';
+        wrap.innerHTML = '<p class="chat-msg-name">Graham</p><p><span></span><span></span><span></span></p>';
+        messages.appendChild(wrap);
+        messages.scrollTop = messages.scrollHeight;
+        return wrap;
+      }
+
+      async function send() {
+        const text = input.value.trim();
+        if (!text || sendBtn.disabled) return;
+        input.value = '';
+        sendBtn.disabled = true;
+        input.disabled = true;
+        addMsg('user', text);
+        history.push({ role: 'user', content: text });
+        const typing = addTyping();
+        try {
+          const res = await fetch('/.netlify/functions/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ messages: history }),
+          });
+          if (res.status === 404) throw new Error('FUNCTION_NOT_FOUND');
+          if (!res.ok) { const t = await res.text().catch(() => ''); throw new Error('HTTP_' + res.status + (t ? ': ' + t : '')); }
+          const data = await res.json();
+          const reply = data.reply || "Something went wrong boy. Try again.";
+          typing.remove();
+          addMsg('graham', reply);
+          history.push({ role: 'assistant', content: reply });
+        } catch (err) {
+          console.error('[Graham chat error]', err);
+          typing.remove();
+          if (err.message === 'FUNCTION_NOT_FOUND') {
+            addMsg('graham', "Can't reach me right now boy. If you're testing locally, run <code>netlify dev</code> instead of <code>npx serve</code>.");
+          } else if (err.message && err.message.includes('HTTP_5')) {
+            addMsg('graham', "Something went wrong on my end boy. Check that OPENAI_API_KEY is set in your Netlify environment variables, then redeploy.");
+          } else {
+            addMsg('graham', "Lost me there boy — check the browser console (F12) for the actual error.");
+          }
+        }
+        sendBtn.disabled = false;
+        input.disabled = false;
+        input.focus();
+      }
+
+      sendBtn.addEventListener('click', send);
+      input.addEventListener('keydown', e => { if (e.key === 'Enter') send(); });
+    })();
   </script>
 
 </body>
