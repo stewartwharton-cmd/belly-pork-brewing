@@ -727,11 +727,15 @@
       transform: scale(1.2);
     }
     .quiz-opt-icon {
-      font-size: 1.5rem;
+      width: 1.5rem;
+      height: 1.5rem;
       flex-shrink: 0;
-      line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       transition: transform 0.15s ease;
     }
+    .quiz-opt-icon svg { width: 100%; height: 100%; display: block; }
     .quiz-opt-text {
       flex: 1;
     }
@@ -862,9 +866,11 @@
       align-items: center;
       justify-content: center;
       margin: 0 auto 1.5rem;
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.8rem;
-      color: var(--magenta);
+    }
+    .step-icon svg {
+      width: 58%;
+      height: 58%;
+      display: block;
     }
     .step-title {
       font-family: 'Bebas Neue', sans-serif;
@@ -1061,6 +1067,172 @@
       color: rgba(240,234,224,0.25);
     }
     .footer-bottom span { color: var(--magenta); }
+
+    /* ─── BEER TRACKER ─── */
+    .tracker {
+      background: var(--black);
+      padding: 9rem 5rem;
+      position: relative;
+      overflow: hidden;
+      border-top: 1px solid var(--magenta-dim);
+    }
+    .tracker::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 70% 80% at 50% 60%, rgba(255,29,188,0.05), transparent 60%);
+      pointer-events: none;
+    }
+    .tracker-inner { max-width: 920px; margin: 0 auto; }
+    .tracker-header { text-align: center; margin-bottom: 2.5rem; }
+    .tracker-sub {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 0.8rem;
+    }
+
+    /* tabs */
+    .tracker-tabs {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 3.5rem;
+      border: 1px solid var(--magenta-dim);
+      width: fit-content;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .tracker-tab {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      padding: 0.75rem 2.2rem;
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+      min-height: 44px;
+    }
+    .tracker-tab + .tracker-tab { border-left: 1px solid var(--magenta-dim); }
+    .tracker-tab.active {
+      background: var(--magenta);
+      color: var(--black);
+      font-weight: 700;
+    }
+
+    /* person grid */
+    .tracker-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--magenta-dim);
+      margin-bottom: 1px;
+    }
+    .tracker-person {
+      background: var(--dark);
+      padding: 3rem 2rem 2.5rem;
+      text-align: center;
+      position: relative;
+    }
+    .tracker-name {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.38em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+    .tracker-count {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3.8rem, 6vw, 6rem);
+      line-height: 1;
+      color: var(--off-white);
+      margin-bottom: 0.8rem;
+      display: block;
+    }
+    @keyframes beerFlip {
+      0%   { transform: scale(1);    color: var(--off-white); }
+      30%  { transform: scale(1.12); color: var(--magenta);   }
+      100% { transform: scale(1);    color: var(--off-white); }
+    }
+    .tracker-count.flip { animation: beerFlip 0.45s ease; }
+    .tracker-browny .tracker-count {
+      color: rgba(240,234,224,0.45);
+    }
+    @keyframes beerFlipBrowny {
+      0%   { transform: scale(1);    color: rgba(240,234,224,0.45); }
+      30%  { transform: scale(1.08); color: rgba(255,29,188,0.55);  }
+      100% { transform: scale(1);    color: rgba(240,234,224,0.45); }
+    }
+    .tracker-browny .tracker-count.flip { animation: beerFlipBrowny 0.45s ease; }
+
+    .tracker-next {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.58rem;
+      letter-spacing: 0.14em;
+      color: rgba(240,234,224,0.22);
+      text-transform: uppercase;
+    }
+    .tracker-badge {
+      position: absolute;
+      bottom: 0; left: 50%;
+      transform: translateX(-50%);
+      background: rgba(255,29,188,0.1);
+      border: 1px solid rgba(255,29,188,0.22);
+      border-bottom: none;
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.52rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--magenta);
+      padding: 0.28rem 0.75rem;
+      white-space: nowrap;
+    }
+
+    /* total */
+    .tracker-total {
+      background: var(--mid);
+      border: 1px solid var(--magenta-dim);
+      border-top: 2px solid var(--magenta);
+      padding: 2.5rem 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+    .tracker-total-label {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .tracker-total-count {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(4.5rem, 9vw, 8rem);
+      color: var(--magenta);
+      line-height: 1;
+    }
+    .tracker-total-unit {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    @media (max-width: 768px) {
+      .tracker { padding: 5rem 1.8rem; }
+      .tracker-grid { grid-template-columns: 1fr; }
+      .tracker-person { padding: 2.5rem 2rem 3rem; }
+      .tracker-total { flex-direction: column; gap: 0.5rem; text-align: center; padding: 2rem; }
+      .tracker-total-count { font-size: clamp(4rem, 18vw, 6rem); }
+    }
 
     /* ─── HERO BUBBLES ─── */
     .hero-bubbles {
@@ -1298,7 +1470,20 @@
 
     @media (max-width: 900px) {
       #chat-widget { bottom: 1.2rem; right: 1.2rem; }
-      #chat-panel { width: calc(100vw - 2.4rem); }
+    }
+    @media (max-width: 768px) {
+      #chat-panel {
+        position: fixed;
+        left: 0; right: 0; bottom: 0; top: auto;
+        width: 100%;
+        height: 85svh;
+        transform: translateY(100%);
+        opacity: 1;
+        border-top: 2px solid var(--magenta);
+        border-left: none; border-right: none; border-bottom: none;
+      }
+      #chat-panel.open { transform: translateY(0); opacity: 1; }
+      #chat-messages { max-height: none; flex: 1; }
     }
 
     /* ─── SCROLL REVEAL ─── */
@@ -1327,94 +1512,208 @@
       display: none;
       flex-direction: column;
       justify-content: center;
+      align-items: center;
       gap: 5px;
       background: none;
       border: none;
       cursor: pointer;
-      padding: 0.4rem;
+      padding: 0.5rem;
       z-index: 300;
+      min-width: 44px;
+      min-height: 44px;
     }
     .nav-burger span {
       display: block;
-      width: 24px;
+      width: 26px;
       height: 2px;
-      background: var(--off-white);
-      transition: transform 0.3s ease, opacity 0.3s ease, background 0.2s;
+      background: var(--magenta);
+      transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.32s ease;
     }
     .nav-burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
     .nav-burger.open span:nth-child(2) { opacity: 0; }
     .nav-burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-    .nav-burger.open span { background: var(--magenta); }
 
-    .nav-mobile {
-      display: none;
+    /* ─── NAV OVERLAY ─── */
+    .nav-overlay {
       position: fixed;
       inset: 0;
+      z-index: 240;
+      background: rgba(0,0,0,0.6);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.35s ease, visibility 0s linear 0.35s;
+      pointer-events: none;
+    }
+    .nav-overlay.open {
+      opacity: 1;
+      visibility: visible;
+      transition: opacity 0.35s ease;
+      pointer-events: auto;
+    }
+
+    .nav-mobile {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: min(82vw, 340px);
       z-index: 250;
-      background: rgba(8,8,8,0.97);
+      background: var(--dark);
+      border-left: 1px solid var(--magenta-dim);
+      display: flex;
       flex-direction: column;
-      align-items: center;
+      align-items: flex-start;
       justify-content: center;
-      gap: 2.5rem;
+      padding: 5rem 2.5rem 3rem;
+      gap: 0;
+      transform: translateX(100%);
+      transition: transform 0.38s cubic-bezier(0.4, 0, 0.2, 1), visibility 0s linear 0.38s;
+      visibility: hidden;
+    }
+    .nav-mobile.open {
+      transform: translateX(0);
+      visibility: visible;
+      transition: transform 0.38s cubic-bezier(0.4, 0, 0.2, 1);
     }
     .nav-mobile a {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(2.5rem, 8vw, 4rem);
-      letter-spacing: 0.08em;
-      color: var(--off-white);
+      font-size: clamp(2rem, 6vw, 2.6rem);
+      letter-spacing: 0.06em;
+      color: var(--muted);
       text-decoration: none;
       transition: color 0.2s;
+      padding: 0.75rem 0;
+      width: 100%;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
     }
-    .nav-mobile a:hover { color: var(--magenta); }
+    .nav-mobile a:last-of-type { border-bottom: none; }
+    .nav-mobile a:hover, .nav-mobile a:focus { color: var(--magenta); }
     .nav-mobile-close {
       position: absolute;
-      top: 1.4rem;
-      right: 1.5rem;
+      top: 1rem;
+      right: 1rem;
       background: none;
       border: none;
       color: var(--muted);
-      font-size: 1.6rem;
+      font-size: 1.3rem;
       cursor: pointer;
       line-height: 1;
       transition: color 0.2s;
+      min-width: 44px;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     .nav-mobile-close:hover { color: var(--magenta); }
 
     .nav-mobile .nav-mobile-cta {
       font-family: 'Syne Mono', monospace;
-      font-size: 0.8rem;
-      letter-spacing: 0.2em;
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
       background: var(--magenta);
       color: var(--black);
-      padding: 0.9rem 2rem;
+      padding: 0.9rem 1.8rem;
       font-weight: 700;
-      margin-top: 1rem;
+      margin-top: 2rem;
+      width: 100%;
+      text-align: center;
+      border-bottom: none !important;
     }
 
     /* ─── RESPONSIVE ─── */
     @media (max-width: 900px) {
-      nav { padding: 1rem 1.5rem; }
+      nav { padding: 0.9rem 1.4rem; }
       .nav-links { display: none; }
       .nav-cta { display: none; }
       .nav-burger { display: flex; }
+    }
 
-      .hero { grid-template-columns: 1fr; grid-template-rows: auto 60vw; }
-      .hero-left { padding: 8rem 2rem 3rem; }
+    @media (max-width: 768px) {
+      /* ── HERO ── */
+      .hero {
+        display: flex;
+        flex-direction: column;
+        min-height: 100svh;
+      }
+      .hero-right {
+        order: -1;
+        height: 56vw;
+        min-height: 230px;
+        max-height: 400px;
+        flex-shrink: 0;
+      }
       .hero-right::before { display: none; }
-      .scroll-hint { left: 2rem; }
+      .hero-right img { object-position: center 10%; }
+      .hero-left {
+        flex: 1;
+        padding: 2.2rem 1.8rem 3.5rem;
+        justify-content: center;
+      }
+      .hero-eyebrow { margin-bottom: 1rem; font-size: 0.6rem; }
+      .hero-h1 { font-size: clamp(4rem, 16vw, 7rem); margin-bottom: 1.2rem; }
+      .hero-sub { font-size: 0.9rem; margin-bottom: 2rem; max-width: 100%; }
+      .hero-buttons { gap: 0.75rem; }
+      .btn-primary, .btn-ghost { padding: 0.85rem 1.7rem; font-size: 0.68rem; }
+      .scroll-hint { left: 1.8rem; bottom: 1.5rem; }
 
-      .about, .graham { grid-template-columns: 1fr; gap: 3rem; padding: 5rem 2rem; }
-      .about-stats { grid-template-columns: repeat(3, 1fr); }
+      /* ── ABOUT ── */
+      .about { grid-template-columns: 1fr; gap: 2.5rem; padding: 5rem 1.8rem; }
+      .about-stats { grid-template-columns: repeat(3, 1fr); gap: 0.5rem; }
+      .stat-num { font-size: 2.8rem; }
+      .about-card { padding: 2.5rem 2rem; }
 
-      .beers, .process, .newsletter { padding: 5rem 2rem; }
+      /* ── BEERS ── */
+      .beers { padding: 5rem 1.8rem; }
       .beers-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
       .beers-grid { grid-template-columns: 1fr; }
+      .beer-card, .beer-card-inner { min-height: 360px; }
+      .beer-card-front, .beer-card-back { padding: 2.5rem 1.8rem; }
+      .beer-name { font-size: 2.4rem; }
 
-      .process-steps { grid-template-columns: 1fr 1fr; gap: 3rem; }
-      .process-steps::before { display: none; }
+      /* ── QUIZ ── */
+      .quiz-section { padding: 5rem 1.5rem; }
+      .quiz-body { padding: 2rem 1.4rem; }
+      .quiz-options { grid-template-columns: 1fr; }
+      .quiz-option { min-height: 52px; }
 
-      footer { grid-template-columns: 1fr; padding: 3rem 2rem; gap: 2rem; }
+      /* ── PROCESS ── */
+      .process { padding: 5rem 1.8rem; }
+      .process-header { margin-bottom: 3.5rem; }
+      .process-steps { grid-template-columns: 1fr; gap: 2.5rem; }
+      .process-steps::before {
+        top: 2.25rem;
+        bottom: 2.25rem;
+        left: 50%;
+        right: auto;
+        width: 1px;
+        height: auto;
+      }
+      .process-step { padding: 0 1.5rem; }
+      .step-icon { margin-bottom: 1.2rem; }
+
+      /* ── GRAHAM ── */
+      .graham { grid-template-columns: 1fr; gap: 3rem; padding: 5rem 1.8rem; }
+      .graham-visual { aspect-ratio: auto; height: 260px; }
+      .graham-visual::before { font-size: 18rem; }
+      .graham-quote p { font-size: 1.3rem; }
+
+      /* ── NEWSLETTER ── */
+      .newsletter { padding: 5rem 1.8rem; }
+      .newsletter-form { flex-direction: column; }
+      .newsletter-form input {
+        border-right: 1px solid rgba(240,234,224,0.12);
+        border-bottom: none;
+      }
+      .newsletter-form button { padding: 1rem; }
+
+      /* ── FOOTER ── */
+      footer { grid-template-columns: 1fr; padding: 3rem 1.8rem; gap: 2rem; }
+      .footer-bottom { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+
+      /* ── GLOBAL TYPOGRAPHY ── */
+      .section-title { font-size: clamp(2.6rem, 10vw, 4.5rem); }
     }
   </style>
 </head>
@@ -1443,6 +1742,7 @@
   </nav>
 
   <!-- MOBILE NAV -->
+  <div class="nav-overlay" id="nav-overlay"></div>
   <div class="nav-mobile" id="nav-mobile" aria-hidden="true">
     <button class="nav-mobile-close" aria-label="Close menu">&#x2715;</button>
     <a href="#about" class="nav-mobile-link">About</a>
@@ -1480,7 +1780,7 @@
     </div>
 
 <div class="hero-left">
-      <p class="hero-eyebrow">Craft Beer · Est. 2024 · Graham's Kitchen</p>
+      <p class="hero-eyebrow">Craft Beer · Est. 2024 · Suffolk</p>
       <h1 class="hero-h1">
         <span class="solid">Belly</span>
         <span class="solid">Pork</span>
@@ -1714,19 +2014,19 @@
             <h3 class="quiz-q-text">How's the evening looking?</h3>
             <div class="quiz-options">
               <button class="quiz-option" data-val="Sofa. Literally not moving.">
-                <span class="quiz-opt-icon">🛋️</span>
+                <span class="quiz-opt-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="9" width="16" height="5" rx="2.5" fill="rgba(255,29,188,0.15)" stroke="#FF1DBC" stroke-width="1.5"/><rect x="6" y="7" width="12" height="4" rx="1.5" fill="rgba(255,29,188,0.15)" stroke="#FF1DBC" stroke-width="1.5"/><line x1="6" y1="14" x2="6" y2="17" stroke="#FF1DBC" stroke-width="1.5" stroke-linecap="round"/><line x1="18" y1="14" x2="18" y2="17" stroke="#FF1DBC" stroke-width="1.5" stroke-linecap="round"/><rect x="2" y="11" width="3" height="3" rx="1.5" fill="rgba(255,29,188,0.15)" stroke="#FF1DBC" stroke-width="1.5"/><rect x="19" y="11" width="3" height="3" rx="1.5" fill="rgba(255,29,188,0.15)" stroke="#FF1DBC" stroke-width="1.5"/></svg></span>
                 <span class="quiz-opt-text">Sofa. Literally not moving.</span>
               </button>
               <button class="quiz-option" data-val="Out with whoever's about">
-                <span class="quiz-opt-icon">🍺</span>
+                <span class="quiz-opt-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 4 L6 18 L18 18 L16 4 Z" fill="rgba(255,29,188,0.15)" stroke="#FF1DBC" stroke-width="1.5" stroke-linejoin="round"/><path d="M7.5 8 Q12 10.5 16.5 8" fill="none" stroke="#F0EAE0" stroke-width="1.2" stroke-linecap="round"/><circle cx="10" cy="13" r="0.8" fill="#FF1DBC"/><circle cx="14" cy="14" r="0.6" fill="#FF1DBC"/><path d="M6 18 Q12 20 18 18" fill="none" stroke="#FF1DBC" stroke-width="1.5" stroke-linecap="round"/></svg></span>
                 <span class="quiz-opt-text">Out with whoever's about</span>
               </button>
               <button class="quiz-option" data-val="Keeping it civilised">
-                <span class="quiz-opt-icon">😌</span>
+                <span class="quiz-opt-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 4 Q9 10 12 12 Q15 10 15 4 Z" fill="rgba(255,29,188,0.15)" stroke="#FF1DBC" stroke-width="1.5" stroke-linejoin="round"/><line x1="12" y1="12" x2="12" y2="17" stroke="#FF1DBC" stroke-width="1.5" stroke-linecap="round"/><rect x="8" y="17" width="8" height="1.5" rx="0.75" fill="#FF1DBC"/></svg></span>
                 <span class="quiz-opt-text">Keeping it civilised</span>
               </button>
               <button class="quiz-option" data-val="No plan. Chaos mode.">
-                <span class="quiz-opt-icon">🔥</span>
+                <span class="quiz-opt-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 3 L10 8 L6 7 L9 11 L5 13 L10 13 L9 18 L12 15 L15 18 L14 13 L19 13 L15 11 L18 7 L14 8 Z" fill="rgba(255,29,188,0.15)" stroke="#FF1DBC" stroke-width="1.5" stroke-linejoin="round"/></svg></span>
                 <span class="quiz-opt-text">No plan. Chaos mode.</span>
               </button>
             </div>
@@ -1737,19 +2037,19 @@
             <h3 class="quiz-q-text">What are you after from your pint?</h3>
             <div class="quiz-options">
               <button class="quiz-option" data-val="Something tropical and hazy">
-                <span class="quiz-opt-icon">🥭</span>
+                <span class="quiz-opt-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="4" fill="rgba(255,29,188,0.15)" stroke="#FF1DBC" stroke-width="1.5"/><line x1="12" y1="2" x2="12" y2="5" stroke="#FF1DBC" stroke-width="1.5" stroke-linecap="round"/><line x1="12" y1="19" x2="12" y2="22" stroke="#FF1DBC" stroke-width="1.5" stroke-linecap="round"/><line x1="2" y1="12" x2="5" y2="12" stroke="#FF1DBC" stroke-width="1.5" stroke-linecap="round"/><line x1="19" y1="12" x2="22" y2="12" stroke="#FF1DBC" stroke-width="1.5" stroke-linecap="round"/><line x1="4.93" y1="4.93" x2="7.05" y2="7.05" stroke="#FF1DBC" stroke-width="1.5" stroke-linecap="round"/><line x1="16.95" y1="16.95" x2="19.07" y2="19.07" stroke="#FF1DBC" stroke-width="1.5" stroke-linecap="round"/><line x1="19.07" y1="4.93" x2="16.95" y2="7.05" stroke="#FF1DBC" stroke-width="1.5" stroke-linecap="round"/><line x1="7.05" y1="16.95" x2="4.93" y2="19.07" stroke="#FF1DBC" stroke-width="1.5" stroke-linecap="round"/></svg></span>
                 <span class="quiz-opt-text">Something tropical and hazy</span>
               </button>
               <button class="quiz-option" data-val="Clean, citrusy, refreshing">
-                <span class="quiz-opt-icon">🍊</span>
+                <span class="quiz-opt-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="8" fill="rgba(255,29,188,0.15)" stroke="#FF1DBC" stroke-width="1.5"/><circle cx="12" cy="12" r="4" fill="none" stroke="#F0EAE0" stroke-width="1"/><line x1="12" y1="4" x2="12" y2="20" stroke="#F0EAE0" stroke-width="1" stroke-linecap="round"/><line x1="4" y1="12" x2="20" y2="12" stroke="#F0EAE0" stroke-width="1" stroke-linecap="round"/><line x1="6.34" y1="6.34" x2="17.66" y2="17.66" stroke="#F0EAE0" stroke-width="0.8" stroke-linecap="round"/><line x1="17.66" y1="6.34" x2="6.34" y2="17.66" stroke="#F0EAE0" stroke-width="0.8" stroke-linecap="round"/></svg></span>
                 <span class="quiz-opt-text">Clean, citrusy, refreshing</span>
               </button>
               <button class="quiz-option" data-val="Big bitterness, no messing">
-                <span class="quiz-opt-icon">😤</span>
+                <span class="quiz-opt-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><ellipse cx="12" cy="11" rx="5" ry="7" fill="rgba(255,29,188,0.15)" stroke="#FF1DBC" stroke-width="1.5"/><line x1="8" y1="8" x2="16" y2="8" stroke="#F0EAE0" stroke-width="1" stroke-linecap="round"/><line x1="7.5" y1="11" x2="16.5" y2="11" stroke="#F0EAE0" stroke-width="1" stroke-linecap="round"/><line x1="8" y1="14" x2="16" y2="14" stroke="#F0EAE0" stroke-width="1" stroke-linecap="round"/><path d="M10 4 Q8 2 9 0.5" fill="none" stroke="#FF1DBC" stroke-width="1.2" stroke-linecap="round"/><path d="M14 4 Q16 2 15 0.5" fill="none" stroke="#FF1DBC" stroke-width="1.2" stroke-linecap="round"/></svg></span>
                 <span class="quiz-opt-text">Big bitterness, no messing</span>
               </button>
               <button class="quiz-option" data-val="Whatever hits first, honestly">
-                <span class="quiz-opt-icon">🤷</span>
+                <span class="quiz-opt-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 4 Q16 4 16 8 Q16 11 12 12 L12 14" fill="none" stroke="#FF1DBC" stroke-width="1.5" stroke-linecap="round"/><circle cx="12" cy="17.5" r="1.2" fill="#FF1DBC"/></svg></span>
                 <span class="quiz-opt-text">Whatever hits first, honestly</span>
               </button>
             </div>
@@ -1760,19 +2060,19 @@
             <h3 class="quiz-q-text">How many are you having tonight?</h3>
             <div class="quiz-options">
               <button class="quiz-option" data-val="Just the one (definitely)">
-                <span class="quiz-opt-icon">☝️</span>
+                <span class="quiz-opt-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 5 L7 19 L17 19 L15 5 Z" fill="rgba(255,29,188,0.15)" stroke="#FF1DBC" stroke-width="1.5" stroke-linejoin="round"/><path d="M8.5 9 Q12 11 15.5 9" fill="none" stroke="#F0EAE0" stroke-width="1.2" stroke-linecap="round"/></svg></span>
                 <span class="quiz-opt-text">Just the one (definitely)</span>
               </button>
               <button class="quiz-option" data-val="Two or three, sensibly">
-                <span class="quiz-opt-icon">✌️</span>
+                <span class="quiz-opt-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 6 L2 17 L9 17 L8 6 Z" fill="rgba(255,29,188,0.15)" stroke="#FF1DBC" stroke-width="1.3" stroke-linejoin="round"/><path d="M3.3 9.5 Q5.5 11 7.7 9.5" fill="none" stroke="#F0EAE0" stroke-width="1" stroke-linecap="round"/><path d="M9.5 6 L8.5 17 L15.5 17 L14.5 6 Z" fill="rgba(255,29,188,0.15)" stroke="#FF1DBC" stroke-width="1.3" stroke-linejoin="round"/><path d="M9.8 9.5 Q12 11 14.2 9.5" fill="none" stroke="#F0EAE0" stroke-width="1" stroke-linecap="round"/><path d="M16 6 L15 17 L22 17 L21 6 Z" fill="rgba(255,29,188,0.15)" stroke="#FF1DBC" stroke-width="1.3" stroke-linejoin="round"/><path d="M16.3 9.5 Q18.5 11 20.7 9.5" fill="none" stroke="#F0EAE0" stroke-width="1" stroke-linecap="round"/></svg></span>
                 <span class="quiz-opt-text">Two or three, sensibly</span>
               </button>
               <button class="quiz-option" data-val="Already lost count">
-                <span class="quiz-opt-icon">🌀</span>
+                <span class="quiz-opt-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 5 Q18 5 19 11 Q20 17 14 19 Q8 21 5 16 Q2 11 6 7 Q8 5 12 5" fill="rgba(255,29,188,0.15)" stroke="#FF1DBC" stroke-width="1.5" stroke-linecap="round"/><path d="M12 8 Q15 8 16 11 Q17 14 14 16 Q11 18 9 16" fill="none" stroke="#FF1DBC" stroke-width="1" stroke-linecap="round"/><circle cx="12" cy="12" r="1.5" fill="#FF1DBC"/></svg></span>
                 <span class="quiz-opt-text">Already lost count</span>
               </button>
               <button class="quiz-option" data-val="Why are you asking">
-                <span class="quiz-opt-icon">💀</span>
+                <span class="quiz-opt-icon"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><ellipse cx="12" cy="10" rx="6" ry="7" fill="rgba(255,29,188,0.15)" stroke="#FF1DBC" stroke-width="1.5"/><rect x="9" y="16" width="6" height="4" rx="1" fill="rgba(255,29,188,0.15)" stroke="#FF1DBC" stroke-width="1.5"/><circle cx="9.5" cy="8.5" r="1.2" fill="#F0EAE0"/><circle cx="14.5" cy="8.5" r="1.2" fill="#F0EAE0"/><line x1="9" y1="16" x2="9" y2="20" stroke="#FF1DBC" stroke-width="0.5"/><line x1="12" y1="16" x2="12" y2="20" stroke="#FF1DBC" stroke-width="0.5"/><line x1="15" y1="16" x2="15" y2="20" stroke="#FF1DBC" stroke-width="0.5"/></svg></span>
                 <span class="quiz-opt-text">Why are you asking</span>
               </button>
             </div>
@@ -1805,26 +2105,78 @@
     </div>
 
     <div class="process-steps">
+
+      <!-- 01 Malt — barley stalk -->
       <div class="process-step">
-        <div class="step-icon">01</div>
+        <div class="step-icon">
+          <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <line x1="18" y1="33" x2="18" y2="4" stroke="#FF1DBC" stroke-width="1.6" stroke-linecap="round"/>
+            <!-- grain pods, alternating left/right -->
+            <path d="M18 11 C18 11 11 9 11 14 C11 18 18 17 18 17" fill="rgba(255,29,188,0.18)" stroke="#FF1DBC" stroke-width="1.3" stroke-linejoin="round"/>
+            <path d="M18 11 C18 11 25 9 25 14 C25 18 18 17 18 17" fill="rgba(255,29,188,0.18)" stroke="#FF1DBC" stroke-width="1.3" stroke-linejoin="round"/>
+            <path d="M18 19 C18 19 11 17 11 22 C11 26 18 25 18 25" fill="rgba(255,29,188,0.18)" stroke="#FF1DBC" stroke-width="1.3" stroke-linejoin="round"/>
+            <path d="M18 19 C18 19 25 17 25 22 C25 26 18 25 18 25" fill="rgba(255,29,188,0.18)" stroke="#FF1DBC" stroke-width="1.3" stroke-linejoin="round"/>
+          </svg>
+        </div>
         <h3 class="step-title">Malt</h3>
         <p class="step-body">Quality malted barley and specialty grains form the backbone of every brew we make.</p>
       </div>
+
+      <!-- 02 Mash — mash tun vessel -->
       <div class="process-step">
-        <div class="step-icon">02</div>
+        <div class="step-icon">
+          <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <!-- vessel body -->
+            <path d="M8 10 L28 10 L25 29 L11 29 Z" fill="rgba(255,29,188,0.12)" stroke="#FF1DBC" stroke-width="1.5" stroke-linejoin="round"/>
+            <!-- lid -->
+            <rect x="6" y="7" width="24" height="4" rx="0.5" fill="rgba(255,29,188,0.22)" stroke="#FF1DBC" stroke-width="1.4"/>
+            <!-- mash liquid lines -->
+            <path d="M13 18 Q18 15 23 18" stroke="#F0EAE0" stroke-width="1.3" stroke-linecap="round" opacity="0.75"/>
+            <path d="M13 23 Q18 20 23 23" stroke="#F0EAE0" stroke-width="1.3" stroke-linecap="round" opacity="0.4"/>
+            <!-- outlet pipe -->
+            <line x1="18" y1="29" x2="18" y2="33" stroke="#FF1DBC" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
         <h3 class="step-title">Mash</h3>
         <p class="step-body">Grain meets hot water in the mash tun, converting starches into fermentable sugars.</p>
       </div>
+
+      <!-- 03 Boil — brew kettle with flame -->
       <div class="process-step">
-        <div class="step-icon">03</div>
+        <div class="step-icon">
+          <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <!-- flame -->
+            <path d="M15 14 C14 11 16 8 15 5 C17 7 18 5 18 5 C18 8 20 6 21 5 C22 8 23 11 21 14" fill="rgba(255,29,188,0.28)" stroke="#FF1DBC" stroke-width="1.2" stroke-linejoin="round"/>
+            <!-- kettle rim -->
+            <rect x="8" y="14" width="20" height="2.5" rx="0.5" fill="rgba(255,29,188,0.22)" stroke="#FF1DBC" stroke-width="1.4"/>
+            <!-- kettle body -->
+            <path d="M9 16.5 L9.5 29 Q9.5 30.5 18 30.5 Q26.5 30.5 26.5 29 L27 16.5 Z" fill="rgba(255,29,188,0.1)" stroke="#FF1DBC" stroke-width="1.5" stroke-linejoin="round"/>
+            <!-- handle -->
+            <path d="M27 19 C31 19 31 25 27 25" stroke="#FF1DBC" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
         <h3 class="step-title">Boil</h3>
         <p class="step-body">Hops go in at exactly the right moment — bitterness, aroma, flavour. Timing is everything.</p>
       </div>
+
+      <!-- 04 Graham — pint glass -->
       <div class="process-step">
-        <div class="step-icon">04</div>
+        <div class="step-icon">
+          <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <!-- glass body -->
+            <path d="M11 7 L13 31 L23 31 L25 7 Z" fill="rgba(255,29,188,0.1)" stroke="#FF1DBC" stroke-width="1.5" stroke-linejoin="round"/>
+            <!-- foam arc -->
+            <path d="M11 7 Q14.5 3.5 18 3.5 Q21.5 3.5 25 7" stroke="#F0EAE0" stroke-width="1.4" fill="rgba(240,234,224,0.18)" stroke-linecap="round"/>
+            <!-- bubbles rising -->
+            <circle cx="16" cy="25" r="0.9" fill="#FF1DBC" opacity="0.55"/>
+            <circle cx="20" cy="20" r="1.1" fill="#FF1DBC" opacity="0.4"/>
+            <circle cx="15" cy="15" r="0.8" fill="#FF1DBC" opacity="0.6"/>
+          </svg>
+        </div>
         <h3 class="step-title">Graham</h3>
         <p class="step-body">The final and most critical step. If it doesn't pass Graham, it doesn't pass us.</p>
       </div>
+
     </div>
   </section>
 
@@ -1863,6 +2215,47 @@
   </section>
 
   <!-- NEWSLETTER -->
+  <!-- BEER TRACKER -->
+  <section class="tracker" id="tracker">
+    <div class="tracker-inner">
+      <div class="tracker-header">
+        <p class="section-label">Live Scoreboard</p>
+        <h2 class="section-title">Beer<br>Tracker</h2>
+        <p class="tracker-sub">Beers consumed in the name of research</p>
+      </div>
+
+      <div class="tracker-tabs" role="tablist">
+        <button class="tracker-tab active" data-period="year" role="tab" aria-selected="true">This Year</button>
+        <button class="tracker-tab" data-period="week" role="tab" aria-selected="false">This Week</button>
+      </div>
+
+      <div class="tracker-grid">
+        <div class="tracker-person">
+          <div class="tracker-name">Stew</div>
+          <span class="tracker-count" id="trk-count-stew">0</span>
+          <div class="tracker-next" id="trk-next-stew">next in —</div>
+        </div>
+        <div class="tracker-person">
+          <div class="tracker-name">Harv</div>
+          <span class="tracker-count" id="trk-count-harv">0</span>
+          <div class="tracker-next" id="trk-next-harv">next in —</div>
+        </div>
+        <div class="tracker-person tracker-browny">
+          <div class="tracker-name">Browny</div>
+          <span class="tracker-count" id="trk-count-browny">0</span>
+          <div class="tracker-next" id="trk-next-browny">next in —</div>
+          <div class="tracker-badge">Can't keep up</div>
+        </div>
+      </div>
+
+      <div class="tracker-total">
+        <span class="tracker-total-label">Combined Total</span>
+        <span class="tracker-total-count" id="trk-total">0</span>
+        <span class="tracker-total-unit">beers</span>
+      </div>
+    </div>
+  </section>
+
   <section class="newsletter" id="newsletter">
     <p class="section-label">// Stay In The Loop</p>
     <h2 class="section-title">New Brews.<br>First.</h2>
@@ -2060,6 +2453,104 @@
       input.addEventListener('keydown', e => { if (e.key === 'Enter') send(); });
     })();
 
+    // ─── Beer Tracker ───
+    (function () {
+      const YEAR_START = new Date('2025-01-01T00:00:00');
+
+      // Rates in beers-per-second
+      const RATE_NORMAL = 3 / 86400;   // Stew + Harv: 3 beers/day
+      const RATE_BROWNY = 2.6 / 86400; // Browny: 2.6 beers/day — can't keep up
+
+      function getWeekStart() {
+        const now = new Date();
+        const day = now.getDay(); // 0 = Sunday
+        const daysBack = day === 0 ? 6 : day - 1; // days since last Monday
+        const monday = new Date(now);
+        monday.setHours(0, 0, 0, 0);
+        monday.setDate(monday.getDate() - daysBack);
+        return monday;
+      }
+
+      function calcExact(rate, startMs) {
+        const elapsed = (Date.now() - startMs) / 1000;
+        return Math.max(0, elapsed * rate);
+      }
+
+      function formatCountdown(seconds) {
+        const h = Math.floor(seconds / 3600);
+        const m = Math.floor((seconds % 3600) / 60);
+        const s = Math.floor(seconds % 60);
+        return h + ':' + String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+      }
+
+      const els = {
+        stew:   { count: document.getElementById('trk-count-stew'),   next: document.getElementById('trk-next-stew')   },
+        harv:   { count: document.getElementById('trk-count-harv'),   next: document.getElementById('trk-next-harv')   },
+        browny: { count: document.getElementById('trk-count-browny'), next: document.getElementById('trk-next-browny') },
+        total:  document.getElementById('trk-total'),
+      };
+
+      const prev = { stew: -1, harv: -1, browny: -1 };
+      let currentPeriod = 'year';
+
+      function update() {
+        const startMs = currentPeriod === 'year'
+          ? YEAR_START.getTime()
+          : getWeekStart().getTime();
+
+        const people = [
+          { key: 'stew',   rate: RATE_NORMAL },
+          { key: 'harv',   rate: RATE_NORMAL },
+          { key: 'browny', rate: RATE_BROWNY },
+        ];
+
+        let combinedTotal = 0;
+
+        people.forEach(({ key, rate }) => {
+          const exact  = calcExact(rate, startMs);
+          const count  = Math.floor(exact);
+          const frac   = exact - count;
+          const nextIn = ((1 - frac) / rate); // seconds to next beer
+
+          combinedTotal += count;
+
+          const el = els[key];
+          if (!el.count) return;
+
+          // Flip animation when count increments
+          if (count !== prev[key]) {
+            el.count.classList.remove('flip');
+            void el.count.offsetWidth; // reflow to restart animation
+            el.count.classList.add('flip');
+            prev[key] = count;
+          }
+
+          el.count.textContent = count.toLocaleString();
+          if (el.next) el.next.textContent = 'next in ' + formatCountdown(nextIn);
+        });
+
+        if (els.total) els.total.textContent = combinedTotal.toLocaleString();
+      }
+
+      // Tab switching
+      document.querySelectorAll('.tracker-tab').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.tracker-tab').forEach(b => {
+            b.classList.remove('active');
+            b.setAttribute('aria-selected', 'false');
+          });
+          btn.classList.add('active');
+          btn.setAttribute('aria-selected', 'true');
+          currentPeriod = btn.dataset.period;
+          prev.stew = prev.harv = prev.browny = -1; // reset so flip fires on tab switch
+          update();
+        });
+      });
+
+      update();
+      setInterval(update, 1000);
+    })();
+
     // ─── Scroll reveal ───
     (function () {
       // Individual elements that reveal one at a time
@@ -2163,9 +2654,11 @@
 
     const burger = document.querySelector('.nav-burger');
     const mobileNav = document.getElementById('nav-mobile');
+    const navOverlay = document.getElementById('nav-overlay');
 
     function toggleMenu(open) {
-      mobileNav.style.display = open ? 'flex' : 'none';
+      mobileNav.classList.toggle('open', open);
+      if (navOverlay) navOverlay.classList.toggle('open', open);
       const chatWidget = document.getElementById('chat-widget');
       if (chatWidget) chatWidget.style.zIndex = open ? '0' : '';
       burger.classList.toggle('open', open);
@@ -2174,12 +2667,9 @@
       document.body.style.overflow = open ? 'hidden' : '';
     }
 
-    burger.addEventListener('click', () => {
-      toggleMenu(mobileNav.style.display !== 'flex');
-    });
-
+    burger.addEventListener('click', () => toggleMenu(!mobileNav.classList.contains('open')));
     document.querySelector('.nav-mobile-close').addEventListener('click', () => toggleMenu(false));
-
+    if (navOverlay) navOverlay.addEventListener('click', () => toggleMenu(false));
     mobileNav.querySelectorAll('a').forEach(link => {
       link.addEventListener('click', () => toggleMenu(false));
     });
