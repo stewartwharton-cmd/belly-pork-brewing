@@ -1610,7 +1610,17 @@
         const k = String(Math.round(r.rating));
         if (ratingBreakdown[k] !== undefined) ratingBreakdown[k]++;
       });
-      return { total, avg, fiveStar, fiveStarPct, verified, ratingBreakdown };
+      const brewerMentions = {};
+      const brewerAvgRating = {};
+      ['Graham', 'Harv', 'Stew', 'Browny'].forEach(name => {
+        const re = new RegExp(name, 'i');
+        const mentioned = reviews.filter(r => re.test(r.review || ''));
+        brewerMentions[name] = mentioned.length;
+        brewerAvgRating[name] = mentioned.length > 0
+          ? parseFloat((mentioned.reduce((s, r) => s + (r.rating || 0), 0) / mentioned.length).toFixed(1))
+          : 0;
+      });
+      return { total, avg, fiveStar, fiveStarPct, verified, ratingBreakdown, brewerMentions, brewerAvgRating };
     }
 
     // ─── RENDER HERO STATS ───
@@ -1702,7 +1712,7 @@
         html += `
           <div class="brewer-card rank-${b.rank}">
             <span class="brewer-rank">${b.rankLabel}</span>
-            <div class="brewer-name">${b.name}${sentimentWord ? ' <small style="font-size:0.5em;opacity:0.6;">— ${sentimentWord}</small>' : ''}</div>
+            <div class="brewer-name">${b.name}${sentimentWord ? ' <small style="font-size:0.5em;opacity:0.6;">— ' + sentimentWord + '</small>' : ''}</div>
             <div class="brewer-stars">
               <span class="brewer-stars-display">${starsHTML(Math.round(avgRating))}</span>
               <span class="brewer-rating-num">${avgRating}</span>
@@ -1987,6 +1997,7 @@
         allReviews = await resp.json();
 
         const stats = computeStats(allReviews);
+        window._localStats = stats; // save for leaderboard fallback
         renderHeroStats(stats);
         renderStatsRow(stats);
         renderRatingChart(stats.ratingBreakdown, stats.total);

@@ -81,6 +81,11 @@ WRITING STYLES (vary enormously across the 1000 reviews):
 
 NAMES: Realistic UK names. Mix of traditional (David, Susan, Michael, Margaret, Colin, Barbara, Peter, Janet, Robert, Linda) and modern (Jake, Zoe, Tom, Amy, Josh, Emma, Dan, Sarah, Matt, Lucy, Ben, Sophie, James, Olivia). Some beer community personas: "Ale Trail Andy", "Hop Head Mike", "NEIPA Nicki".
 
+STAFF MENTIONS IN BEER AND BREWERY REVIEWS:
+- In beer reviews (category: beer) and brewery reviews (category: brewery), approximately 15-20% of reviews should naturally mention a staff member by name (Graham, Harv, Stew, or Browny)
+- These mentions should feel organic: "Graham recommended I try this", "Stew poured me a tasting flight", "Harv explained the hop profile", "Browny somehow handed me the wrong glass"
+- Spread mentions across all four names — do not cluster them
+
 IMPORTANT RULES:
 - Ratings must match the content — a glowing review needs 4-5 stars, a terrible Browny review needs 1-2 stars
 - Dates must be realistic for the brewery (founded 2024), ranging from 2024-01 through 2025-12
@@ -130,14 +135,14 @@ const BATCH_SPECS = [
   { startId: 751, count: 50, focus: 'General brewery visit and atmosphere reviews', category: 'brewery', beer: 'null', dateRange: '2025-06 to 2025-12', notes: 'Bucket list destination for some. Return visitors. People bring friends. Some brewery tour mentions.' },
 
   // Batches 17-18: Brewer reviews, Graham and Stew focus (rev_0801 - rev_0900)
-  { startId: 801, count: 50, focus: 'Brewer/staff reviews focusing 60% Graham, 40% Stew', category: 'brewer', beer: 'null', dateRange: '2024-06 to 2025-06', notes: 'Graham: legendary status, knowledgeable, funny, 10k PB mentioned in ~8% of Graham reviews, TV show suggestions. Stew: quiet genius, remembers orders, brilliant host, welcoming. Mix of visitor and local reviewers.' },
-  { startId: 851, count: 50, focus: 'Brewer/staff reviews focusing 60% Graham, 40% Stew', category: 'brewer', beer: 'null', dateRange: '2024-08 to 2025-12', notes: 'More Graham legends. Some compare him to famous beer personalities. Stew: the unsung hero, brains of the operation. A couple of reviews mention both together. The 10k PB trait in ~8% of Graham reviews.' },
+  { startId: 801, count: 50, focus: 'Brewer/staff reviews focusing 60% Graham, 40% Stew', category: 'brewer', beer: 'null', dateRange: '2024-06 to 2025-06', notes: 'REQUIRED: Every review in this batch MUST mention a brewer by name (Graham or Stew). Graham: legendary status, knowledgeable, funny, 10k PB mentioned in ~8% of Graham reviews, TV show suggestions. Stew: quiet genius, remembers orders, brilliant host, welcoming. Mix of visitor and local reviewers.' },
+  { startId: 851, count: 50, focus: 'Brewer/staff reviews focusing 60% Graham, 40% Stew', category: 'brewer', beer: 'null', dateRange: '2024-08 to 2025-12', notes: 'REQUIRED: Every review in this batch MUST mention a brewer by name (Graham or Stew). More Graham legends. Some compare him to famous beer personalities. Stew: the unsung hero, brains of the operation. A couple of reviews mention both together. The 10k PB trait in ~8% of Graham reviews.' },
 
   // Batch 19: Harv and Browny (rev_0901 - rev_0950)
-  { startId: 901, count: 50, focus: 'Brewer reviews: 50% Harv, 50% Browny', category: 'brewer', beer: 'null', dateRange: '2024-03 to 2025-12', notes: 'Harv: 4-5 stars, warm, knowledgeable, people drive 90 minutes to see him. Browny: 1-3 stars, various disasters — wrong beer, phone checking, Stella recommendation, stout/porter confusion, forgot to charge then texted asking for money. Include these exact reviews: one that is just "Browny." at 1 star, "The other three are absolute legends. Browny exists.", "Came for the NEIPA. Got something from Asda. Thanks Browny.", "I ordered a stout and got a water. Browny seemed proud of this."' },
+  { startId: 901, count: 50, focus: 'Brewer reviews: 50% Harv, 50% Browny', category: 'brewer', beer: 'null', dateRange: '2024-03 to 2025-12', notes: 'REQUIRED: Every review in this batch MUST mention Harv or Browny by name. Harv: 4-5 stars, warm, knowledgeable, people drive 90 minutes to see him. Browny: 1-3 stars, various disasters — wrong beer, phone checking, Stella recommendation, stout/porter confusion, forgot to charge then texted asking for money. Include these exact reviews: one that is just "Browny." at 1 star, "The other three are absolute legends. Browny exists.", "Came for the NEIPA. Got something from Asda. Thanks Browny.", "I ordered a stout and got a water. Browny seemed proud of this."' },
 
   // Batch 20: Mixed brewer reviews including iconic Browny moments (rev_0951 - rev_1000)
-  { startId: 951, count: 50, focus: 'Mixed brewer reviews, several memorable Browny incidents, some Harv and Graham', category: 'brewer', beer: 'null', dateRange: '2024-01 to 2025-12', notes: 'Include a variety: some positive Harv and Graham reviews, but mostly Browny disasters. Include more Browny-specific incidents spread throughout — phone checking, wrong recommendations, confident errors. A few reviews note bewilderment that he still works there. Make them funny and varied. Rating range 1-5.' },
+  { startId: 951, count: 50, focus: 'Mixed brewer reviews, several memorable Browny incidents, some Harv and Graham', category: 'brewer', beer: 'null', dateRange: '2024-01 to 2025-12', notes: 'REQUIRED: Every review in this batch MUST mention a brewer by name (Browny, Harv, or Graham). Include a variety: some positive Harv and Graham reviews, but mostly Browny disasters. Include more Browny-specific incidents spread throughout — phone checking, wrong recommendations, confident errors. A few reviews note bewilderment that he still works there. Make them funny and varied. Rating range 1-5.' },
 ];
 
 async function callOpenAI(messages, retryAttempt = 0) {
@@ -196,7 +201,7 @@ REQUIREMENTS:
 - Ratings must match the review content
 - beer_reviewed field: use exactly "${spec.beer}" (the string "null" for brewery/brewer reviews)
 - category field: use exactly "${spec.category}"
-- verified_purchase: true for ~70% of reviews, false for the rest (use false more for 1-2 star reviews)
+- verified_purchase: true for ~70% of reviews, false for the rest (use false more for 1-2 star reviews)${spec.category === 'brewer' ? '\n- CRITICAL: Every single review in this batch MUST include a brewer\'s name (Graham, Harv, Stew, or Browny) naturally in the review text' : '\n- STAFF MENTIONS: ~15-20% of reviews in this batch should naturally mention a staff member by name (Graham, Harv, Stew, or Browny)'}
 
 Return JSON: {"reviews": [array of ${spec.count} review objects]}`;
 
