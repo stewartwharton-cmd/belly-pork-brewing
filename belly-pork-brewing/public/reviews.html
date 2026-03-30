@@ -1,0 +1,2107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reviews — Belly Pork Brewing Co.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&family=Syne+Mono&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --magenta: #FF1DBC;
+      --magenta-dim: rgba(255,29,188,0.15);
+      --black: #080808;
+      --off-white: #F0EAE0;
+      --dark: #111111;
+      --mid: #1e1e1e;
+      --muted: rgba(240,234,224,0.5);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--off-white);
+      font-family: 'Syne', sans-serif;
+      overflow-x: hidden;
+    }
+
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--black); }
+    ::-webkit-scrollbar-thumb { background: var(--magenta); }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      inset: 0 0 auto 0;
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 3rem;
+      background: rgba(8,8,8,0.88);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--magenta-dim);
+    }
+
+    .nav-logo img {
+      height: 52px;
+      display: block;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover,
+    .nav-links a.active { color: var(--magenta); }
+
+    .nav-cta {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      background: var(--magenta);
+      color: var(--black);
+      padding: 0.6rem 1.4rem;
+      text-decoration: none;
+      font-weight: 700;
+      transition: opacity 0.2s;
+    }
+    .nav-cta:hover { opacity: 0.85; }
+
+    /* ─── NAV WEATHER ─── */
+    .nav-weather {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.64rem;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      border: 1px solid var(--magenta-dim);
+      padding: 0.35rem 0.8rem;
+      white-space: nowrap;
+      cursor: default;
+      user-select: none;
+      transition: border-color 0.2s;
+    }
+    .nav-weather:hover { border-color: rgba(255,29,188,0.35); }
+    .nav-weather-icon { width: 11px; height: 11px; flex-shrink: 0; }
+    .nav-weather-label { color: var(--muted); }
+    .nav-weather-sep { color: rgba(255,29,188,0.3); margin: 0 0.1rem; }
+    .nav-weather-temp { color: var(--magenta); font-size: 0.74rem; letter-spacing: 0.04em; }
+    @media (max-width: 900px) {
+      .nav-logo img { height: 38px; }
+      .nav-weather {
+        flex-direction: column;
+        align-items: center;
+        gap: 0.05rem;
+        padding: 0.3rem 0.6rem;
+      }
+      .nav-weather-sep { display: none; }
+      .nav-weather-icon { display: none; }
+      .nav-weather-label {
+        display: block;
+        font-size: 0.5rem;
+        letter-spacing: 0.18em;
+        color: var(--muted);
+        line-height: 1;
+      }
+      .nav-weather-temp { font-size: 0.72rem; line-height: 1; }
+    }
+
+    /* ─── HAMBURGER / MOBILE MENU ─── */
+    .nav-burger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem;
+      z-index: 300;
+      min-width: 44px;
+      min-height: 44px;
+    }
+    .nav-burger span {
+      display: block;
+      width: 26px;
+      height: 2px;
+      background: var(--magenta);
+      transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.32s ease;
+    }
+    .nav-burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-burger.open span:nth-child(2) { opacity: 0; }
+    .nav-burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* ─── NAV OVERLAY ─── */
+    .nav-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 240;
+      background: rgba(0,0,0,0.6);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.35s ease, visibility 0s linear 0.35s;
+      pointer-events: none;
+    }
+    .nav-overlay.open {
+      opacity: 1;
+      visibility: visible;
+      transition: opacity 0.35s ease;
+      pointer-events: auto;
+    }
+
+    .nav-mobile {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: min(82vw, 340px);
+      z-index: 250;
+      background: var(--dark);
+      border-left: 1px solid var(--magenta-dim);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 5rem 2.5rem 3rem;
+      gap: 0;
+      transform: translateX(100%);
+      transition: transform 0.38s cubic-bezier(0.4, 0, 0.2, 1), visibility 0s linear 0.38s;
+      visibility: hidden;
+    }
+    .nav-mobile.open {
+      transform: translateX(0);
+      visibility: visible;
+      transition: transform 0.38s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .nav-mobile a {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2rem, 6vw, 2.6rem);
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+      padding: 0.75rem 0;
+      width: 100%;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .nav-mobile a:last-of-type { border-bottom: none; }
+    .nav-mobile a:hover, .nav-mobile a:focus { color: var(--magenta); }
+    .nav-mobile-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 1.3rem;
+      cursor: pointer;
+      line-height: 1;
+      transition: color 0.2s;
+      min-width: 44px;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .nav-mobile-close:hover { color: var(--magenta); }
+
+    .nav-mobile .nav-mobile-cta {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      background: var(--magenta);
+      color: var(--black);
+      padding: 0.9rem 1.8rem;
+      font-weight: 700;
+      margin-top: 2rem;
+      width: 100%;
+      text-align: center;
+      border-bottom: none !important;
+    }
+
+    @media (max-width: 900px) {
+      nav { padding: 0.9rem 1.4rem; }
+      .nav-links { display: none; }
+      .nav-cta { display: none; }
+      .nav-burger { display: flex; }
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--dark);
+      border-top: 1px solid var(--magenta-dim);
+      padding: 4rem 5rem 3rem;
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr;
+      gap: 4rem;
+    }
+    .footer-brand img {
+      height: 48px;
+      margin-bottom: 1.2rem;
+      display: block;
+    }
+    .footer-brand p {
+      font-size: 0.9rem;
+      line-height: 1.7;
+      color: var(--muted);
+      max-width: 280px;
+    }
+    .footer-col h4 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.1rem;
+      letter-spacing: 0.1em;
+      margin-bottom: 1.2rem;
+      color: var(--magenta);
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 0.6rem; }
+    .footer-col ul a {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-col ul a:hover { color: var(--off-white); }
+
+    .footer-bottom {
+      grid-column: 1 / -1;
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(240,234,224,0.06);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer-bottom p {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      color: rgba(240,234,224,0.25);
+    }
+    .footer-bottom span { color: var(--magenta); }
+
+    @media (max-width: 768px) {
+      footer {
+        grid-template-columns: 1fr;
+        padding: 3rem 1.5rem 2rem;
+        gap: 0;
+      }
+      .footer-brand { padding-bottom: 2.5rem; border-bottom: 1px solid rgba(255,29,188,0.1); margin-bottom: 2.5rem; }
+      .footer-col { padding-bottom: 2rem; border-bottom: 1px solid rgba(255,29,188,0.06); margin-bottom: 2rem; }
+      .footer-col:last-of-type { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+      .footer-bottom { flex-direction: column; align-items: flex-start; gap: 0.5rem; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid rgba(255,29,188,0.06); }
+    }
+
+    /* ─── KEYFRAMES ─── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 0.7; }
+    }
+
+    /* ─── SKELETON ─── */
+    .skeleton {
+      background: linear-gradient(90deg, var(--mid) 25%, #2a2a2a 50%, var(--mid) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.6s infinite;
+      border-radius: 4px;
+    }
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    /* ─── PAGE LAYOUT ─── */
+    .page-wrap {
+      padding-top: 84px; /* nav height */
+    }
+
+    /* ─── HERO SECTION ─── */
+    .reviews-hero {
+      padding: 7rem 5rem 5rem;
+      display: grid;
+      grid-template-columns: 55% 45%;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      min-height: 70vh;
+    }
+
+    .reviews-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 70% at 20% 50%, rgba(255,29,188,0.07) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .reviews-hero-left {
+      position: relative;
+      z-index: 2;
+    }
+
+    .reviews-hero-eyebrow {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--magenta);
+      margin-bottom: 1.4rem;
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards 0.2s;
+    }
+
+    .reviews-hero h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(4rem, 8vw, 7.5rem);
+      line-height: 0.9;
+      letter-spacing: 0.02em;
+      margin-bottom: 1.6rem;
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards 0.35s;
+    }
+
+    .reviews-hero h1 .solid { color: var(--off-white); display: block; }
+    .reviews-hero h1 .outline {
+      -webkit-text-stroke: 2px var(--magenta);
+      color: transparent;
+      display: block;
+    }
+
+    .reviews-hero-sub {
+      font-size: 1.1rem;
+      line-height: 1.7;
+      color: var(--muted);
+      max-width: 420px;
+      margin-bottom: 2.5rem;
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards 0.5s;
+    }
+
+    /* Hero loading stats */
+    .hero-stats {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards 0.65s;
+    }
+
+    .hero-stat {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+
+    .hero-stat-value {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.2rem;
+      color: var(--magenta);
+      line-height: 1;
+    }
+
+    .hero-stat-label {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .hero-stat-skeleton {
+      width: 80px;
+      height: 2.2rem;
+    }
+
+    .reviews-hero-right {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 2;
+      opacity: 0;
+      animation: fadeIn 0.8s ease forwards 0.5s;
+    }
+
+    .reviews-hero-right img {
+      max-height: 420px;
+      max-width: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 0 60px rgba(255,29,188,0.12));
+    }
+
+    @media (max-width: 900px) {
+      .reviews-hero {
+        grid-template-columns: 1fr;
+        padding: 5rem 1.5rem 3rem;
+        min-height: auto;
+      }
+      .reviews-hero-right { display: none; }
+    }
+
+    /* ─── SECTION BASE ─── */
+    .section {
+      padding: 6rem 5rem;
+    }
+
+    .section-dark {
+      background: var(--dark);
+    }
+
+    .section-label {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--magenta);
+      margin-bottom: 1rem;
+    }
+
+    .section-h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      letter-spacing: 0.03em;
+      margin-bottom: 1.5rem;
+    }
+
+    @media (max-width: 768px) {
+      .section { padding: 4rem 1.5rem; }
+    }
+
+    /* ─── AI SUMMARY ─── */
+    .ai-summary-section {
+      text-align: center;
+      padding: 5rem 5rem;
+    }
+
+    .ai-summary-inner {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .ai-summary-subtitle {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 1.5rem;
+    }
+
+    .speech-bubble {
+      background: var(--mid);
+      border: 1px solid var(--magenta-dim);
+      border-radius: 12px;
+      padding: 2rem 2.5rem;
+      position: relative;
+      text-align: left;
+      margin-top: 2rem;
+    }
+
+    .speech-bubble::before {
+      content: '';
+      position: absolute;
+      top: -10px;
+      left: 2.5rem;
+      width: 0;
+      height: 0;
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      border-bottom: 10px solid var(--magenta-dim);
+    }
+
+    .speech-bubble-header {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 1rem;
+    }
+
+    .speech-avatar {
+      width: 40px;
+      height: 40px;
+      background: var(--magenta);
+      color: var(--black);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.4rem;
+      flex-shrink: 0;
+    }
+
+    .speech-name {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    .speech-role {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .speech-text {
+      font-size: 1.05rem;
+      line-height: 1.75;
+      color: var(--off-white);
+    }
+
+    .summary-skeleton {
+      height: 120px;
+      border-radius: 12px;
+      margin-top: 2rem;
+    }
+
+    @media (max-width: 768px) {
+      .ai-summary-section { padding: 4rem 1.5rem; }
+    }
+
+    /* ─── STATS ROW ─── */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      border-top: 1px solid var(--magenta-dim);
+      border-bottom: 1px solid var(--magenta-dim);
+    }
+
+    .stat-item {
+      padding: 3rem 2.5rem;
+      border-right: 1px solid var(--magenta-dim);
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .stat-item:last-child { border-right: none; }
+
+    .stat-value {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3rem, 5vw, 4.5rem);
+      color: var(--magenta);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    @media (max-width: 768px) {
+      .stats-row { grid-template-columns: 1fr 1fr; }
+      .stat-item { padding: 2rem 1.5rem; border-bottom: 1px solid var(--magenta-dim); }
+      .stat-item:nth-child(odd) { border-right: 1px solid var(--magenta-dim); }
+      .stat-item:nth-child(even) { border-right: none; }
+      .stat-item:last-child, .stat-item:nth-last-child(2):nth-child(odd) { border-bottom: none; }
+    }
+
+    /* ─── BREWER LEADERBOARD ─── */
+    .leaderboard-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-top: 2.5rem;
+    }
+
+    .brewer-card {
+      background: var(--mid);
+      border: 1px solid rgba(240,234,224,0.06);
+      padding: 2rem;
+      position: relative;
+      transition: border-color 0.2s;
+    }
+
+    .brewer-card:hover { border-color: rgba(240,234,224,0.12); }
+
+    .brewer-card.rank-1 {
+      border-color: rgba(255,29,188,0.4);
+      box-shadow: 0 0 30px rgba(255,29,188,0.08), 0 0 0 1px rgba(255,29,188,0.15);
+    }
+
+    .brewer-card.rank-1:hover {
+      box-shadow: 0 0 50px rgba(255,29,188,0.14), 0 0 0 1px rgba(255,29,188,0.25);
+    }
+
+    .brewer-card.rank-4 {
+      border-color: rgba(240,234,224,0.04);
+      opacity: 0.85;
+    }
+
+    .brewer-rank {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      padding: 0.2rem 0.6rem;
+      border-radius: 3px;
+    }
+
+    .rank-1 .brewer-rank { background: var(--magenta); color: var(--black); }
+    .rank-2 .brewer-rank { background: rgba(240,234,224,0.12); color: var(--off-white); }
+    .rank-3 .brewer-rank { background: rgba(240,234,224,0.08); color: var(--muted); }
+    .rank-4 .brewer-rank { background: rgba(240,234,224,0.05); color: rgba(240,234,224,0.35); }
+
+    .brewer-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.2rem;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+    }
+
+    .rank-1 .brewer-name { color: var(--magenta); }
+    .rank-2 .brewer-name,
+    .rank-3 .brewer-name { color: var(--off-white); }
+    .rank-4 .brewer-name { color: var(--muted); }
+
+    .brewer-stars {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .brewer-stars-display {
+      font-size: 1rem;
+      letter-spacing: 0.05em;
+    }
+
+    .brewer-rating-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.1rem;
+      color: var(--magenta);
+    }
+
+    .brewer-meta {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+
+    .brewer-adjectives {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-bottom: 1rem;
+    }
+
+    .brewer-adj-pill {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.6rem;
+      border-radius: 20px;
+    }
+
+    .rank-1 .brewer-adj-pill { background: rgba(255,29,188,0.15); color: var(--magenta); border: 1px solid rgba(255,29,188,0.3); }
+    .rank-2 .brewer-adj-pill { background: rgba(100,180,255,0.1); color: #64b4ff; border: 1px solid rgba(100,180,255,0.2); }
+    .rank-3 .brewer-adj-pill { background: rgba(100,220,150,0.1); color: #64dc96; border: 1px solid rgba(100,220,150,0.2); }
+    .rank-4 .brewer-adj-pill { background: rgba(240,234,224,0.05); color: rgba(240,234,224,0.3); border: 1px solid rgba(240,234,224,0.08); }
+
+    .brewer-fact {
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: var(--muted);
+      font-style: italic;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(240,234,224,0.06);
+    }
+
+    .rank-4 .brewer-fact { color: rgba(240,234,224,0.3); }
+
+    .card-skeleton { height: 200px; border-radius: 4px; }
+
+    @media (max-width: 768px) {
+      .leaderboard-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ─── BEER SENTIMENT ─── */
+    .beer-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 2.5rem;
+    }
+
+    .beer-card {
+      background: var(--mid);
+      border: 1px solid rgba(240,234,224,0.06);
+      padding: 2rem;
+      transition: border-color 0.2s;
+    }
+
+    .beer-card:hover { border-color: var(--magenta-dim); }
+
+    .beer-card-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.5rem;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.3rem;
+      color: var(--magenta);
+    }
+
+    .beer-card-style {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+
+    .beer-rating-bar-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .beer-rating-bar-bg {
+      flex: 1;
+      height: 6px;
+      background: rgba(240,234,224,0.08);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .beer-rating-bar-fill {
+      height: 100%;
+      background: var(--magenta);
+      border-radius: 3px;
+      transition: width 0.8s ease;
+    }
+
+    .beer-rating-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.2rem;
+      color: var(--magenta);
+      width: 2.5rem;
+      text-align: right;
+    }
+
+    .beer-review-count {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+
+    .beer-notes {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .beer-note-pill {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.25rem 0.6rem;
+      background: rgba(255,29,188,0.1);
+      color: var(--magenta);
+      border: 1px solid rgba(255,29,188,0.2);
+      border-radius: 20px;
+    }
+
+    .beer-standout-quote {
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: var(--muted);
+      font-style: italic;
+      border-left: 2px solid var(--magenta);
+      padding-left: 0.8rem;
+    }
+
+    @media (max-width: 900px) {
+      .beer-cards { grid-template-columns: 1fr; }
+    }
+
+    /* ─── STAR RATING CHART ─── */
+    .rating-chart {
+      max-width: 600px;
+      margin-top: 2.5rem;
+    }
+
+    .rating-bar-row {
+      display: grid;
+      grid-template-columns: 2.5rem 1fr 5rem;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .rating-bar-label {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--muted);
+      text-align: right;
+    }
+
+    .rating-bar-bg {
+      height: 10px;
+      background: rgba(240,234,224,0.06);
+      border-radius: 5px;
+      overflow: hidden;
+    }
+
+    .rating-bar-fill {
+      height: 100%;
+      background: var(--magenta);
+      border-radius: 5px;
+      transition: width 0.8s ease;
+    }
+
+    .rating-bar-count {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    /* ─── THEME TAGS ─── */
+    .theme-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      margin-top: 2rem;
+    }
+
+    .theme-tag {
+      font-family: 'Syne Mono', monospace;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.5rem 1.2rem;
+      border: 1px solid var(--magenta-dim);
+      color: var(--off-white);
+      border-radius: 30px;
+      cursor: default;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .theme-tag:hover { border-color: var(--magenta); background: rgba(255,29,188,0.06); }
+
+    .theme-tag.size-lg { font-size: 1rem; }
+    .theme-tag.size-md { font-size: 0.8rem; }
+    .theme-tag.size-sm { font-size: 0.65rem; }
+
+    /* ─── FEATURED REVIEWS ─── */
+    .featured-reviews {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-top: 2.5rem;
+    }
+
+    .featured-card {
+      padding: 2rem;
+      border-radius: 4px;
+      border: 1px solid;
+    }
+
+    .featured-card.gold {
+      background: rgba(255,200,0,0.04);
+      border-color: rgba(255,200,0,0.2);
+    }
+
+    .featured-card.skull {
+      background: rgba(240,234,224,0.02);
+      border-color: rgba(240,234,224,0.06);
+    }
+
+    .featured-card-header {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .featured-card-icon {
+      font-size: 1.5rem;
+      line-height: 1;
+    }
+
+    .featured-card-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.2rem;
+      letter-spacing: 0.06em;
+    }
+
+    .gold .featured-card-title { color: #ffc800; }
+    .skull .featured-card-title { color: var(--muted); }
+
+    @media (max-width: 768px) {
+      .featured-reviews { grid-template-columns: 1fr; }
+    }
+
+    /* ─── REVIEW CARD ─── */
+    .review-card {
+      background: var(--mid);
+      border: 1px solid rgba(240,234,224,0.06);
+      padding: 1.5rem;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .review-card:hover {
+      border-color: var(--magenta-dim);
+      transform: translateY(-2px);
+    }
+
+    .review-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 0.8rem;
+      gap: 1rem;
+    }
+
+    .review-stars {
+      font-size: 0.85rem;
+      letter-spacing: 0.05em;
+    }
+
+    .star-filled { color: var(--magenta); }
+    .star-empty { color: rgba(240,234,224,0.15); }
+
+    .reviewer-type-badge {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.55rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.5rem;
+      border-radius: 3px;
+      white-space: nowrap;
+    }
+
+    .badge-local { background: rgba(255,29,188,0.15); color: var(--magenta); }
+    .badge-visitor { background: rgba(100,180,255,0.12); color: #64b4ff; }
+    .badge-beer_geek { background: rgba(100,220,150,0.12); color: #64dc96; }
+    .badge-casual { background: rgba(240,234,224,0.08); color: var(--muted); }
+
+    .review-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.8rem;
+      gap: 0.5rem;
+    }
+
+    .review-name {
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--off-white);
+    }
+
+    .review-location {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+    }
+
+    .review-date {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      color: rgba(240,234,224,0.25);
+    }
+
+    .review-tags {
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+      margin-bottom: 0.8rem;
+    }
+
+    .review-beer-tag {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.58rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.15rem 0.5rem;
+      border-radius: 3px;
+    }
+
+    .beer-tag-neipa { background: rgba(255,150,0,0.12); color: #ff9600; border: 1px solid rgba(255,150,0,0.2); }
+    .beer-tag-pale { background: rgba(180,230,100,0.12); color: #b4e664; border: 1px solid rgba(180,230,100,0.2); }
+    .beer-tag-wcipa { background: rgba(100,200,255,0.12); color: #64c8ff; border: 1px solid rgba(100,200,255,0.2); }
+
+    .review-verified {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.55rem;
+      letter-spacing: 0.1em;
+      color: rgba(100,220,150,0.6);
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .review-text {
+      font-size: 0.9rem;
+      line-height: 1.65;
+      color: rgba(240,234,224,0.8);
+    }
+
+    .review-read-more {
+      background: none;
+      border: none;
+      color: var(--magenta);
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      margin-top: 0.4rem;
+      padding: 0;
+      text-decoration: underline;
+    }
+
+    /* ─── REVIEW FEED ─── */
+    .review-feed-section { padding: 6rem 5rem; }
+
+    .review-feed-header {
+      display: flex;
+      align-items: baseline;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .review-count-badge {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      padding: 0.25rem 0.6rem;
+      background: var(--magenta-dim);
+      color: var(--magenta);
+      border-radius: 3px;
+    }
+
+    /* Filter bar */
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: center;
+      margin-bottom: 2rem;
+      padding: 1.5rem;
+      background: var(--mid);
+      border: 1px solid rgba(240,234,224,0.06);
+    }
+
+    .filter-group {
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+    }
+
+    .filter-pill {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.4rem 0.8rem;
+      border: 1px solid rgba(240,234,224,0.1);
+      background: none;
+      color: var(--muted);
+      cursor: pointer;
+      border-radius: 3px;
+      transition: all 0.15s;
+    }
+
+    .filter-pill:hover { border-color: var(--magenta); color: var(--off-white); }
+    .filter-pill.active { border-color: var(--magenta); background: rgba(255,29,188,0.1); color: var(--magenta); }
+
+    .filter-select {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.4rem 0.8rem;
+      border: 1px solid rgba(240,234,224,0.1);
+      background: var(--dark);
+      color: var(--muted);
+      cursor: pointer;
+      border-radius: 3px;
+      appearance: none;
+      padding-right: 1.6rem;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='rgba(240,234,224,0.3)' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.5rem center;
+      transition: border-color 0.15s;
+    }
+
+    .filter-select:hover, .filter-select:focus { border-color: var(--magenta); outline: none; }
+
+    .filter-search {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.85rem;
+      padding: 0.4rem 0.8rem;
+      border: 1px solid rgba(240,234,224,0.1);
+      background: var(--dark);
+      color: var(--off-white);
+      border-radius: 3px;
+      min-width: 200px;
+      transition: border-color 0.15s;
+    }
+
+    .filter-search::placeholder { color: rgba(240,234,224,0.25); }
+    .filter-search:focus { outline: none; border-color: var(--magenta); }
+
+    .filter-divider {
+      width: 1px;
+      height: 24px;
+      background: rgba(240,234,224,0.08);
+    }
+
+    /* Review grid */
+    .review-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .load-more-btn {
+      display: block;
+      width: 100%;
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      padding: 1.2rem;
+      border: 1px solid var(--magenta-dim);
+      background: none;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .load-more-btn:hover { border-color: var(--magenta); color: var(--magenta); background: rgba(255,29,188,0.04); }
+
+    .empty-state {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 4rem 2rem;
+      color: var(--muted);
+    }
+
+    .empty-state h3 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+      color: rgba(240,234,224,0.3);
+    }
+
+    .empty-state p {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    @media (max-width: 900px) {
+      .review-feed-section { padding: 4rem 1.5rem; }
+      .review-grid { grid-template-columns: 1fr; }
+      .filter-bar { flex-direction: column; align-items: flex-start; }
+      .filter-search { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="index.html" class="nav-logo">
+      <img
+        src="https://img1.wsimg.com/isteam/ip/c5f4da44-74a7-4ebd-b7a0-a83c516ecd85/Belly%20Pork%20Brewing-37b48db.PNG/:/rs=h:200,cg:true,m/qt=q:100/ll"
+        alt="Belly Pork Brewing"
+      />
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html#about">About</a></li>
+      <li><a href="index.html#beers">Beers</a></li>
+      <li><a href="index.html#process">How We Brew</a></li>
+      <li><a href="index.html#graham">Graham</a></li>
+      <li><a href="taproom.html">Tap Room</a></li>
+      <li><a href="merch.html">Merch</a></li>
+      <li><a href="reviews.html" class="active">Reviews</a></li>
+    </ul>
+    <div class="nav-weather" id="nav-weather" title="Brewing conditions · Bungay, Suffolk">
+      <svg class="nav-weather-icon" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 1 L4 5 L1 5.5 L3 8 L2.5 11 L6 9.5 L9.5 11 L9 8 L11 5.5 L8 5 Z" fill="rgba(255,29,188,0.2)" stroke="#FF1DBC" stroke-width="0.9" stroke-linejoin="round"/>
+      </svg>
+      <span class="nav-weather-label">Bungay</span>
+      <span class="nav-weather-sep">·</span>
+      <span class="nav-weather-temp" id="nav-weather-temp">—°C</span>
+    </div>
+    <a href="index.html#newsletter" class="nav-cta">Stay Updated</a>
+    <button class="nav-burger" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- MOBILE NAV -->
+  <div class="nav-overlay" id="nav-overlay"></div>
+  <div class="nav-mobile" id="nav-mobile" aria-hidden="true">
+    <button class="nav-mobile-close" aria-label="Close menu">&#x2715;</button>
+    <a href="index.html#about" class="nav-mobile-link">About</a>
+    <a href="index.html#beers" class="nav-mobile-link">Beers</a>
+    <a href="index.html#process" class="nav-mobile-link">How We Brew</a>
+    <a href="index.html#graham" class="nav-mobile-link">Graham</a>
+    <a href="taproom.html" class="nav-mobile-link">Tap Room</a>
+    <a href="merch.html" class="nav-mobile-link">Merch</a>
+    <a href="reviews.html" class="nav-mobile-link">Reviews</a>
+    <a href="index.html#newsletter" class="nav-mobile-cta">Stay Updated</a>
+  </div>
+
+  <div class="page-wrap">
+
+    <!-- ─── HERO ─── -->
+    <section class="reviews-hero">
+      <div class="reviews-hero-left">
+        <p class="reviews-hero-eyebrow">// What They're Saying</p>
+        <h1>
+          <span class="solid">The People</span>
+          <span class="outline">Have Spoken</span>
+        </h1>
+        <p class="reviews-hero-sub">1,000 reviews. Some glowing. Some honest. All about the beer.</p>
+        <div class="hero-stats" id="hero-stats">
+          <div class="hero-stat">
+            <div class="hero-stat-value skeleton hero-stat-skeleton" id="stat-total">&nbsp;</div>
+            <div class="hero-stat-label">Total Reviews</div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-value skeleton hero-stat-skeleton" id="stat-avg">&nbsp;</div>
+            <div class="hero-stat-label">Avg Rating</div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-value skeleton hero-stat-skeleton" id="stat-fivestar">&nbsp;</div>
+            <div class="hero-stat-label">5-Star Reviews</div>
+          </div>
+        </div>
+      </div>
+      <div class="reviews-hero-right">
+        <img src="images/hero.png" alt="Belly Pork Brewing mascot — a very opinionated pig" />
+      </div>
+    </section>
+
+    <!-- ─── AI SUMMARY ─── -->
+    <section class="section section-dark ai-summary-section">
+      <div class="ai-summary-inner">
+        <p class="section-label">// AI Analysis</p>
+        <h2 class="section-h2" style="text-align:center;">What The Data Says</h2>
+        <div id="ai-summary-container">
+          <div class="summary-skeleton skeleton"></div>
+        </div>
+        <p class="ai-summary-subtitle" id="ai-summary-subtitle" style="display:none;">Based on analysis of 1,000 customer reviews</p>
+      </div>
+    </section>
+
+    <!-- ─── STATS ROW ─── -->
+    <div class="stats-row">
+      <div class="stat-item">
+        <div class="stat-value" id="s-total">—</div>
+        <div class="stat-label">Total Reviews</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value" id="s-avg">—</div>
+        <div class="stat-label">Average Rating</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value" id="s-fivestar">—</div>
+        <div class="stat-label">5-Star Reviews</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value" id="s-verified">—</div>
+        <div class="stat-label">Verified Purchases</div>
+      </div>
+    </div>
+
+    <!-- ─── BREWER LEADERBOARD ─── -->
+    <section class="section">
+      <p class="section-label">// The Crew</p>
+      <h2 class="section-h2">The Crew, Ranked</h2>
+      <div class="leaderboard-grid" id="leaderboard-grid">
+        <div class="card-skeleton skeleton"></div>
+        <div class="card-skeleton skeleton"></div>
+        <div class="card-skeleton skeleton"></div>
+        <div class="card-skeleton skeleton"></div>
+      </div>
+    </section>
+
+    <!-- ─── BEER SENTIMENT ─── -->
+    <section class="section section-dark">
+      <p class="section-label">// The Beers</p>
+      <h2 class="section-h2">Beer by Beer</h2>
+      <div class="beer-cards" id="beer-cards">
+        <div class="card-skeleton skeleton" style="height:280px;"></div>
+        <div class="card-skeleton skeleton" style="height:280px;"></div>
+        <div class="card-skeleton skeleton" style="height:280px;"></div>
+      </div>
+    </section>
+
+    <!-- ─── STAR RATING CHART ─── -->
+    <section class="section">
+      <p class="section-label">// Breakdown</p>
+      <h2 class="section-h2">Rating Breakdown</h2>
+      <div class="rating-chart" id="rating-chart">
+        <div class="card-skeleton skeleton" style="height:150px;"></div>
+      </div>
+    </section>
+
+    <!-- ─── THEME TAGS ─── -->
+    <section class="section section-dark">
+      <p class="section-label">// Patterns</p>
+      <h2 class="section-h2">What People Keep Saying</h2>
+      <div class="theme-tags" id="theme-tags">
+        <div class="skeleton" style="height:36px;width:120px;border-radius:30px;"></div>
+        <div class="skeleton" style="height:36px;width:180px;border-radius:30px;"></div>
+        <div class="skeleton" style="height:36px;width:100px;border-radius:30px;"></div>
+        <div class="skeleton" style="height:36px;width:150px;border-radius:30px;"></div>
+        <div class="skeleton" style="height:36px;width:200px;border-radius:30px;"></div>
+      </div>
+    </section>
+
+    <!-- ─── FEATURED REVIEWS ─── -->
+    <section class="section">
+      <p class="section-label">// Highlights</p>
+      <h2 class="section-h2">The Ones We Remember</h2>
+      <div class="featured-reviews" id="featured-reviews">
+        <div class="card-skeleton skeleton" style="height:280px;"></div>
+        <div class="card-skeleton skeleton" style="height:280px;"></div>
+      </div>
+    </section>
+
+    <!-- ─── REVIEW FEED ─── -->
+    <section class="review-feed-section">
+      <div class="review-feed-header">
+        <h2 class="section-h2" style="margin-bottom:0;">All Reviews</h2>
+        <span class="review-count-badge" id="feed-count">loading…</span>
+      </div>
+
+      <!-- Filters -->
+      <div class="filter-bar">
+        <div class="filter-group" id="star-filters">
+          <button class="filter-pill active" data-rating="">All</button>
+          <button class="filter-pill" data-rating="5">★★★★★</button>
+          <button class="filter-pill" data-rating="4">★★★★</button>
+          <button class="filter-pill" data-rating="3">★★★</button>
+          <button class="filter-pill" data-rating="2">★★</button>
+          <button class="filter-pill" data-rating="1">★</button>
+        </div>
+        <div class="filter-divider"></div>
+        <select class="filter-select" id="filter-beer">
+          <option value="">All Beers</option>
+          <option value="Narcoleptic NEIPA">Narcoleptic NEIPA</option>
+          <option value="Reverse Weave">Reverse Weave</option>
+          <option value="Fanny Buffet">Fanny Buffet</option>
+        </select>
+        <select class="filter-select" id="filter-category">
+          <option value="">All Categories</option>
+          <option value="beer">Beer</option>
+          <option value="brewery">Brewery</option>
+          <option value="brewer">Brewer</option>
+        </select>
+        <select class="filter-select" id="filter-type">
+          <option value="">All Reviewers</option>
+          <option value="local">Local</option>
+          <option value="visitor">Visitor</option>
+          <option value="beer_geek">Beer Geek</option>
+          <option value="casual">Casual</option>
+        </select>
+        <div class="filter-divider"></div>
+        <select class="filter-select" id="filter-sort">
+          <option value="newest">Newest</option>
+          <option value="oldest">Oldest</option>
+          <option value="top">Top Rated</option>
+          <option value="low">Lowest Rated</option>
+        </select>
+        <div class="filter-divider"></div>
+        <input class="filter-search" type="text" id="filter-search" placeholder="&#128269; Search reviews…" />
+      </div>
+
+      <div class="review-grid" id="review-grid">
+        <!-- populated by JS -->
+      </div>
+
+      <button class="load-more-btn" id="load-more-btn" style="display:none;">Load More Reviews</button>
+    </section>
+
+  </div><!-- end page-wrap -->
+
+  <!-- ─── FOOTER ─── -->
+  <footer>
+    <div class="footer-brand">
+      <img
+        src="https://img1.wsimg.com/isteam/ip/c5f4da44-74a7-4ebd-b7a0-a83c516ecd85/Belly%20Pork%20Brewing-37b48db.PNG/:/rs=h:200,cg:true,m/qt=q:100/ll"
+        alt="Belly Pork Brewing"
+      />
+      <p>Independent craft beer from Graham's kitchen to your glass. One batch at a time.</p>
+    </div>
+
+    <div class="footer-col">
+      <h4>Navigate</h4>
+      <ul>
+        <li><a href="index.html#about">About Us</a></li>
+        <li><a href="index.html#beers">The Beers</a></li>
+        <li><a href="index.html#process">How We Brew</a></li>
+        <li><a href="index.html#graham">Graham</a></li>
+        <li><a href="reviews.html">Reviews</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h4>Connect</h4>
+      <ul>
+        <li><a href="https://bellyporkbrewing.com" target="_blank" rel="noopener">bellyporkbrewing.com</a></li>
+        <li><a href="index.html#newsletter">Newsletter</a></li>
+        <li><a href="#">Instagram</a></li>
+        <li><a href="#">Facebook</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2024 Belly Pork Brewing Co. — All Rights Reserved.</p>
+      <p>Powered by <span>vapes</span> and Graham's questionable decisions.</p>
+    </div>
+  </footer>
+
+  <script>
+    // ─── STATE ───
+    let allReviews = [];
+    let analysisData = null;
+    const filters = {
+      rating: null,
+      beer: null,
+      category: null,
+      reviewerType: null,
+      sort: 'newest',
+      search: ''
+    };
+    let displayCount = 24;
+
+    // ─── HELPERS ───
+    function starsHTML(rating, filled = '★', empty = '★') {
+      let html = '';
+      for (let i = 1; i <= 5; i++) {
+        html += `<span class="${i <= rating ? 'star-filled' : 'star-empty'}">${i <= rating ? filled : empty}</span>`;
+      }
+      return html;
+    }
+
+    function formatDate(dateStr) {
+      if (!dateStr) return '';
+      const d = new Date(dateStr);
+      return d.toLocaleDateString('en-GB', { year: 'numeric', month: 'short', day: 'numeric' });
+    }
+
+    function truncate(text, max = 200) {
+      if (!text || text.length <= max) return { text: text || '', truncated: false };
+      return { text: text.substring(0, max).trim() + '…', truncated: true };
+    }
+
+    function getBeerTagClass(beer) {
+      if (beer === 'Narcoleptic NEIPA') return 'beer-tag-neipa';
+      if (beer === 'Reverse Weave') return 'beer-tag-pale';
+      if (beer === 'Fanny Buffet') return 'beer-tag-wcipa';
+      return '';
+    }
+
+    function getBeerTagLabel(beer) {
+      if (beer === 'Narcoleptic NEIPA') return 'Narcoleptic NEIPA';
+      if (beer === 'Reverse Weave') return 'Reverse Weave';
+      if (beer === 'Fanny Buffet') return 'Fanny Buffet';
+      return '';
+    }
+
+    // ─── RENDER REVIEW CARD ───
+    function renderReviewCard(review, opts = {}) {
+      const { text, truncated } = truncate(review.review, 200);
+      const beerTagClass = getBeerTagClass(review.beer_reviewed);
+      const beerTagLabel = getBeerTagLabel(review.beer_reviewed);
+      const expandId = `review-expand-${review.id}`;
+
+      return `
+        <div class="review-card">
+          <div class="review-card-top">
+            <div class="review-stars">${starsHTML(review.rating)}</div>
+            <span class="reviewer-type-badge badge-${review.reviewer_type}">${(review.reviewer_type || '').replace('_', ' ')}</span>
+          </div>
+          <div class="review-meta">
+            <div>
+              <div class="review-name">${review.name || 'Anonymous'}</div>
+              <div class="review-location">${review.location || ''}</div>
+            </div>
+            <div class="review-date">${formatDate(review.date)}</div>
+          </div>
+          <div class="review-tags">
+            ${beerTagClass ? `<span class="review-beer-tag ${beerTagClass}">${beerTagLabel}</span>` : ''}
+            ${review.verified_purchase ? `<span class="review-verified">✓ Verified</span>` : ''}
+          </div>
+          <div class="review-text" id="text-${review.id}">${text}</div>
+          ${truncated ? `<button class="review-read-more" onclick="expandReview('${review.id}', ${JSON.stringify(review.review).replace(/'/g, "\\'")})" id="btn-${review.id}">Read more</button>` : ''}
+        </div>
+      `;
+    }
+
+    function expandReview(id, fullText) {
+      const textEl = document.getElementById('text-' + id);
+      const btnEl = document.getElementById('btn-' + id);
+      if (textEl) textEl.textContent = fullText;
+      if (btnEl) btnEl.remove();
+    }
+
+    // ─── COMPUTE LOCAL STATS ───
+    function computeStats(reviews) {
+      const total = reviews.length;
+      const avg = total > 0
+        ? (reviews.reduce((s, r) => s + (r.rating || 0), 0) / total).toFixed(1)
+        : 0;
+      const fiveStar = reviews.filter(r => r.rating === 5).length;
+      const fiveStarPct = total > 0 ? Math.round((fiveStar / total) * 100) : 0;
+      const verified = reviews.filter(r => r.verified_purchase).length;
+      const ratingBreakdown = { '1': 0, '2': 0, '3': 0, '4': 0, '5': 0 };
+      reviews.forEach(r => {
+        const k = String(Math.round(r.rating));
+        if (ratingBreakdown[k] !== undefined) ratingBreakdown[k]++;
+      });
+      return { total, avg, fiveStar, fiveStarPct, verified, ratingBreakdown };
+    }
+
+    // ─── RENDER HERO STATS ───
+    function renderHeroStats(stats) {
+      const totalEl = document.getElementById('stat-total');
+      const avgEl = document.getElementById('stat-avg');
+      const fiveEl = document.getElementById('stat-fivestar');
+      if (totalEl) { totalEl.classList.remove('skeleton', 'hero-stat-skeleton'); totalEl.textContent = stats.total.toLocaleString(); }
+      if (avgEl) { avgEl.classList.remove('skeleton', 'hero-stat-skeleton'); avgEl.textContent = stats.avg + '★'; }
+      if (fiveEl) { fiveEl.classList.remove('skeleton', 'hero-stat-skeleton'); fiveEl.textContent = stats.fiveStarPct + '%'; }
+    }
+
+    // ─── RENDER STATS ROW ───
+    function renderStatsRow(stats) {
+      const animateNum = (el, target, suffix = '') => {
+        if (!el) return;
+        const start = 0;
+        const duration = 1200;
+        const startTime = performance.now();
+        const targetNum = typeof target === 'number' ? target : parseFloat(target);
+        const isDecimal = String(target).includes('.');
+        function update(now) {
+          const progress = Math.min((now - startTime) / duration, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          const current = start + (targetNum - start) * eased;
+          el.textContent = (isDecimal ? current.toFixed(1) : Math.round(current).toLocaleString()) + suffix;
+          if (progress < 1) requestAnimationFrame(update);
+        }
+        requestAnimationFrame(update);
+      };
+
+      animateNum(document.getElementById('s-total'), stats.total);
+      animateNum(document.getElementById('s-avg'), parseFloat(stats.avg), '★');
+      animateNum(document.getElementById('s-fivestar'), stats.fiveStar);
+      animateNum(document.getElementById('s-verified'), stats.verified);
+    }
+
+    // ─── RENDER RATING CHART ───
+    function renderRatingChart(breakdown, total) {
+      const container = document.getElementById('rating-chart');
+      if (!container) return;
+      let html = '';
+      for (let star = 5; star >= 1; star--) {
+        const count = breakdown[String(star)] || 0;
+        const pct = total > 0 ? ((count / total) * 100).toFixed(1) : 0;
+        const width = total > 0 ? Math.max((count / total) * 100, 0.5) : 0;
+        html += `
+          <div class="rating-bar-row">
+            <div class="rating-bar-label">${star}★</div>
+            <div class="rating-bar-bg">
+              <div class="rating-bar-fill" style="width:${width}%"></div>
+            </div>
+            <div class="rating-bar-count">${count} (${pct}%)</div>
+          </div>
+        `;
+      }
+      container.innerHTML = html;
+    }
+
+    // ─── RENDER BREWER LEADERBOARD ───
+    function renderLeaderboard(analysis, localStats) {
+      const container = document.getElementById('leaderboard-grid');
+      if (!container) return;
+
+      const brewers = [
+        { name: 'Graham', rank: 1, rankLabel: '#1 LEGEND', defaultRating: 4.9, defaultAdj: ['Legendary', 'Knowledgeable', 'Hilarious'], defaultFact: "Can't stop talking about his 10k PB. Three times per pint, minimum." },
+        { name: 'Harv',   rank: 2, rankLabel: '#2',        defaultRating: 4.7, defaultAdj: ['Passionate', 'Warm', 'Knowledgeable'], defaultFact: 'People drive 90 minutes just to see Harv.' },
+        { name: 'Stew',   rank: 3, rankLabel: '#3',        defaultRating: 4.6, defaultAdj: ['Welcoming', 'Brilliant', 'Thoughtful'], defaultFact: 'Remembered a customer\'s order from eight months ago unprompted.' },
+        { name: 'Browny', rank: 4, rankLabel: 'NEEDS WORK', defaultRating: 2.1, defaultAdj: ['Chaotic', 'Memorable', 'Employed'], defaultFact: 'Somehow still works here.' },
+      ];
+
+      let html = '';
+      brewers.forEach(b => {
+        const sentiment = analysis && analysis.brewerSentiment && analysis.brewerSentiment[b.name];
+        const avgRating = localStats && localStats.brewerAvgRating && localStats.brewerAvgRating[b.name]
+          ? localStats.brewerAvgRating[b.name]
+          : b.defaultRating;
+        const mentions = localStats && localStats.brewerMentions && localStats.brewerMentions[b.name]
+          ? localStats.brewerMentions[b.name]
+          : '—';
+        const adjectives = sentiment ? sentiment.topAdjectives : b.defaultAdj;
+        const funFact = sentiment ? sentiment.funFact : b.defaultFact;
+        const sentimentWord = sentiment ? sentiment.sentiment : '';
+
+        const adjPills = (adjectives || []).map(a =>
+          `<span class="brewer-adj-pill">${a}</span>`
+        ).join('');
+
+        html += `
+          <div class="brewer-card rank-${b.rank}">
+            <span class="brewer-rank">${b.rankLabel}</span>
+            <div class="brewer-name">${b.name}${sentimentWord ? ' <small style="font-size:0.5em;opacity:0.6;">— ${sentimentWord}</small>' : ''}</div>
+            <div class="brewer-stars">
+              <span class="brewer-stars-display">${starsHTML(Math.round(avgRating))}</span>
+              <span class="brewer-rating-num">${avgRating}</span>
+            </div>
+            <div class="brewer-meta">${mentions} mentions in reviews</div>
+            <div class="brewer-adjectives">${adjPills}</div>
+            <div class="brewer-fact">"${funFact}"</div>
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+    }
+
+    // ─── RENDER BEER CARDS ───
+    function renderBeerCards(analysis, reviews) {
+      const container = document.getElementById('beer-cards');
+      if (!container) return;
+
+      const beers = [
+        { name: 'Narcoleptic NEIPA', style: 'DIPA · 8.4% ABV', defaultNotes: ['Mango', 'Passionfruit', 'Dank Resin'], defaultQuote: 'It put me to sleep in the best possible way.' },
+        { name: 'Reverse Weave',     style: 'Pale Ale · 5.7% ABV', defaultNotes: ['Citrus', 'Crisp', 'Crushable'], defaultQuote: 'The one you come back for, again and again.' },
+        { name: 'Fanny Buffet',      style: 'West Coast IPA · 5.7% ABV', defaultNotes: ['Pine Resin', 'Grapefruit', 'Bitter'], defaultQuote: "The name alone got me through the door. The beer kept me there." },
+      ];
+
+      let html = '';
+      beers.forEach(b => {
+        const beerAI = analysis && analysis.beerSentiment && analysis.beerSentiment[b.name];
+        const beerReviews = reviews.filter(r => r.beer_reviewed === b.name);
+        const count = beerReviews.length;
+        const avgRating = count > 0
+          ? (beerReviews.reduce((s, r) => s + (r.rating || 0), 0) / count)
+          : 0;
+        const notes = beerAI ? beerAI.topNotes : b.defaultNotes;
+        const quote = beerAI ? beerAI.standoutQuote : b.defaultQuote;
+
+        const barWidth = (avgRating / 5) * 100;
+        const notesPills = (notes || []).map(n => `<span class="beer-note-pill">${n}</span>`).join('');
+
+        html += `
+          <div class="beer-card">
+            <div class="beer-card-name">${b.name}</div>
+            <div class="beer-card-style">${b.style}</div>
+            <div class="beer-rating-bar-wrap">
+              <div class="beer-rating-bar-bg">
+                <div class="beer-rating-bar-fill" style="width:${barWidth.toFixed(1)}%"></div>
+              </div>
+              <div class="beer-rating-num">${avgRating.toFixed(1)}★</div>
+            </div>
+            <div class="beer-review-count">${count} reviews</div>
+            <div class="beer-notes">${notesPills}</div>
+            <div class="beer-standout-quote">"${quote}"</div>
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+    }
+
+    // ─── RENDER THEME TAGS ───
+    function renderThemeTags(themes) {
+      const container = document.getElementById('theme-tags');
+      if (!container || !themes || !themes.length) return;
+
+      const sizes = ['size-lg', 'size-lg', 'size-md', 'size-md', 'size-md', 'size-sm', 'size-sm', 'size-sm', 'size-sm', 'size-sm'];
+      let html = themes.map((theme, i) =>
+        `<span class="theme-tag ${sizes[i] || 'size-sm'}">${theme}</span>`
+      ).join('');
+      container.innerHTML = html;
+    }
+
+    // ─── RENDER AI SUMMARY ───
+    function renderAISummary(summary) {
+      const container = document.getElementById('ai-summary-container');
+      const subtitle = document.getElementById('ai-summary-subtitle');
+      if (!container) return;
+
+      container.innerHTML = `
+        <div class="speech-bubble">
+          <div class="speech-bubble-header">
+            <div class="speech-avatar">G</div>
+            <div>
+              <div class="speech-name">Graham · AI Analysis</div>
+              <div class="speech-role">Head of Taste · Belly Pork Brewing</div>
+            </div>
+          </div>
+          <p class="speech-text">${summary}</p>
+        </div>
+      `;
+
+      if (subtitle) subtitle.style.display = 'block';
+    }
+
+    // ─── RENDER FEATURED REVIEWS ───
+    function renderFeaturedReviews(analysis) {
+      const container = document.getElementById('featured-reviews');
+      if (!container) return;
+
+      const funniest = analysis && analysis.funniestReview;
+      const worstBrowny = analysis && analysis.worstBrownyMoment;
+
+      let html = '';
+
+      if (funniest) {
+        html += `
+          <div class="featured-card gold">
+            <div class="featured-card-header">
+              <span class="featured-card-icon">🏆</span>
+              <span class="featured-card-title">Funniest Review</span>
+            </div>
+            ${renderReviewCard(funniest, { noExpand: true })}
+          </div>
+        `;
+      }
+
+      if (worstBrowny) {
+        html += `
+          <div class="featured-card skull">
+            <div class="featured-card-header">
+              <span class="featured-card-icon">💀</span>
+              <span class="featured-card-title">Worst Browny Moment</span>
+            </div>
+            ${renderReviewCard(worstBrowny, { noExpand: true })}
+          </div>
+        `;
+      }
+
+      if (!funniest && !worstBrowny) {
+        container.innerHTML = '<p style="color:var(--muted);font-family:\'Syne Mono\',monospace;font-size:0.75rem;letter-spacing:0.15em;">AI analysis unavailable — generate reviews first.</p>';
+        return;
+      }
+
+      container.innerHTML = html;
+    }
+
+    // ─── FILTER & SORT REVIEWS ───
+    function getFilteredReviews() {
+      let result = [...allReviews];
+
+      if (filters.rating) {
+        result = result.filter(r => r.rating === parseInt(filters.rating, 10));
+      }
+      if (filters.beer) {
+        result = result.filter(r => r.beer_reviewed === filters.beer);
+      }
+      if (filters.category) {
+        result = result.filter(r => r.category === filters.category);
+      }
+      if (filters.reviewerType) {
+        result = result.filter(r => r.reviewer_type === filters.reviewerType);
+      }
+      if (filters.search) {
+        const q = filters.search.toLowerCase();
+        result = result.filter(r =>
+          (r.review || '').toLowerCase().includes(q) ||
+          (r.name || '').toLowerCase().includes(q) ||
+          (r.location || '').toLowerCase().includes(q) ||
+          (r.beer_reviewed || '').toLowerCase().includes(q)
+        );
+      }
+
+      switch (filters.sort) {
+        case 'oldest':  result.sort((a, b) => new Date(a.date) - new Date(b.date)); break;
+        case 'top':     result.sort((a, b) => b.rating - a.rating); break;
+        case 'low':     result.sort((a, b) => a.rating - b.rating); break;
+        case 'newest':
+        default:        result.sort((a, b) => new Date(b.date) - new Date(a.date)); break;
+      }
+
+      return result;
+    }
+
+    // ─── RENDER REVIEW FEED ───
+    function renderReviewFeed() {
+      const grid = document.getElementById('review-grid');
+      const countBadge = document.getElementById('feed-count');
+      const loadMoreBtn = document.getElementById('load-more-btn');
+      if (!grid) return;
+
+      const filtered = getFilteredReviews();
+      const total = filtered.length;
+      const shown = filtered.slice(0, displayCount);
+
+      if (countBadge) countBadge.textContent = total.toLocaleString() + ' review' + (total !== 1 ? 's' : '');
+
+      if (shown.length === 0) {
+        grid.innerHTML = `
+          <div class="empty-state">
+            <h3>No Reviews Found</h3>
+            <p>Try adjusting your filters</p>
+          </div>
+        `;
+        if (loadMoreBtn) loadMoreBtn.style.display = 'none';
+        return;
+      }
+
+      grid.innerHTML = shown.map(r => renderReviewCard(r)).join('');
+
+      if (loadMoreBtn) {
+        if (total > displayCount) {
+          loadMoreBtn.style.display = 'block';
+          loadMoreBtn.textContent = `Load More (${total - displayCount} remaining)`;
+        } else {
+          loadMoreBtn.style.display = 'none';
+        }
+      }
+    }
+
+    // ─── SETUP FILTER LISTENERS ───
+    function setupFilters() {
+      // Star pills
+      const starPills = document.querySelectorAll('#star-filters .filter-pill');
+      starPills.forEach(pill => {
+        pill.addEventListener('click', () => {
+          starPills.forEach(p => p.classList.remove('active'));
+          pill.classList.add('active');
+          filters.rating = pill.dataset.rating || null;
+          displayCount = 24;
+          renderReviewFeed();
+        });
+      });
+
+      // Beer dropdown
+      const beerSelect = document.getElementById('filter-beer');
+      if (beerSelect) beerSelect.addEventListener('change', () => {
+        filters.beer = beerSelect.value || null;
+        displayCount = 24;
+        renderReviewFeed();
+      });
+
+      // Category dropdown
+      const catSelect = document.getElementById('filter-category');
+      if (catSelect) catSelect.addEventListener('change', () => {
+        filters.category = catSelect.value || null;
+        displayCount = 24;
+        renderReviewFeed();
+      });
+
+      // Reviewer type dropdown
+      const typeSelect = document.getElementById('filter-type');
+      if (typeSelect) typeSelect.addEventListener('change', () => {
+        filters.reviewerType = typeSelect.value || null;
+        displayCount = 24;
+        renderReviewFeed();
+      });
+
+      // Sort dropdown
+      const sortSelect = document.getElementById('filter-sort');
+      if (sortSelect) sortSelect.addEventListener('change', () => {
+        filters.sort = sortSelect.value;
+        displayCount = 24;
+        renderReviewFeed();
+      });
+
+      // Search input (debounced)
+      const searchInput = document.getElementById('filter-search');
+      let searchTimer;
+      if (searchInput) searchInput.addEventListener('input', () => {
+        clearTimeout(searchTimer);
+        searchTimer = setTimeout(() => {
+          filters.search = searchInput.value.trim();
+          displayCount = 24;
+          renderReviewFeed();
+        }, 300);
+      });
+
+      // Load more
+      const loadMoreBtn = document.getElementById('load-more-btn');
+      if (loadMoreBtn) loadMoreBtn.addEventListener('click', () => {
+        displayCount += 24;
+        renderReviewFeed();
+        loadMoreBtn.scrollIntoView({ behavior: 'smooth', block: 'end' });
+      });
+    }
+
+    // ─── MAIN INIT ───
+    async function init() {
+      // 1. Fetch reviews.json and render feed immediately
+      try {
+        const resp = await fetch('/data/reviews.json');
+        if (!resp.ok) throw new Error('reviews.json not found');
+        allReviews = await resp.json();
+
+        const stats = computeStats(allReviews);
+        renderHeroStats(stats);
+        renderStatsRow(stats);
+        renderRatingChart(stats.ratingBreakdown, stats.total);
+        renderReviewFeed();
+        setupFilters();
+      } catch (err) {
+        console.warn('Could not load reviews.json:', err.message);
+        const grid = document.getElementById('review-grid');
+        if (grid) {
+          grid.innerHTML = `
+            <div class="empty-state">
+              <h3>Reviews Not Generated</h3>
+              <p>Run <code style="color:var(--magenta);">node scripts/generate-reviews.js</code> first</p>
+            </div>
+          `;
+        }
+        const countBadge = document.getElementById('feed-count');
+        if (countBadge) countBadge.textContent = '0 reviews';
+        setupFilters();
+      }
+
+      // 2. Fetch AI analysis async
+      try {
+        const analysisResp = await fetch('/.netlify/functions/analyse-reviews');
+        if (!analysisResp.ok) {
+          const errData = await analysisResp.json().catch(() => ({}));
+          if (errData.error === 'reviews_not_generated') {
+            renderAISummary('No reviews generated yet. Run node scripts/generate-reviews.js first.');
+          }
+          throw new Error(`Analysis function returned ${analysisResp.status}`);
+        }
+        analysisData = await analysisResp.json();
+
+        // Render AI-powered sections
+        if (analysisData.summary) renderAISummary(analysisData.summary);
+        renderLeaderboard(analysisData, analysisData);
+        renderBeerCards(analysisData, allReviews);
+        if (analysisData.topThemes) renderThemeTags(analysisData.topThemes);
+        renderFeaturedReviews(analysisData);
+      } catch (err) {
+        console.warn('Could not load AI analysis:', err.message);
+        // Render with fallback static data
+        renderLeaderboard(null, null);
+        renderBeerCards(null, allReviews);
+        renderFeaturedReviews(null);
+
+        const summaryContainer = document.getElementById('ai-summary-container');
+        if (summaryContainer) {
+          summaryContainer.innerHTML = `
+            <div class="speech-bubble" style="opacity:0.5;">
+              <div class="speech-bubble-header">
+                <div class="speech-avatar">G</div>
+                <div>
+                  <div class="speech-name">Graham · AI Analysis</div>
+                  <div class="speech-role">Head of Taste · Belly Pork Brewing</div>
+                </div>
+              </div>
+              <p class="speech-text" style="color:var(--muted);">AI analysis unavailable right now. But the beer's still great. Trust me. Also my 10k PB is 52:14.</p>
+            </div>
+          `;
+        }
+
+        const themeTags = document.getElementById('theme-tags');
+        if (themeTags) {
+          renderThemeTags(['Incredible NEIPA', 'Graham is a legend', 'Worth the drive', 'Proper craft beer', 'Where is Browny\'s apron', 'Bungay\'s finest', 'Soft tropical hops', 'The vibes are immaculate']);
+        }
+      }
+    }
+
+    // ─── NAV ───
+    (function () {
+      const burger = document.querySelector('.nav-burger');
+      const mobileNav = document.getElementById('nav-mobile');
+      const navOverlay = document.getElementById('nav-overlay');
+
+      function toggleMenu(open) {
+        mobileNav.classList.toggle('open', open);
+        if (navOverlay) navOverlay.classList.toggle('open', open);
+        burger.classList.toggle('open', open);
+        burger.setAttribute('aria-expanded', String(open));
+        mobileNav.setAttribute('aria-hidden', String(!open));
+        document.body.style.overflow = open ? 'hidden' : '';
+      }
+
+      burger.addEventListener('click', () => toggleMenu(!mobileNav.classList.contains('open')));
+      document.querySelector('.nav-mobile-close').addEventListener('click', () => toggleMenu(false));
+      if (navOverlay) navOverlay.addEventListener('click', () => toggleMenu(false));
+      mobileNav.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => toggleMenu(false));
+      });
+    })();
+
+    // ─── WEATHER ───
+    (function () {
+      const WEATHER_URL = 'https://api.open-meteo.com/v1/forecast?latitude=52.4543&longitude=1.4382&current=temperature_2m&temperature_unit=celsius&timezone=Europe%2FLondon';
+      const tempEl = document.getElementById('nav-weather-temp');
+
+      function fetchWeather() {
+        fetch(WEATHER_URL)
+          .then(r => r.json())
+          .then(data => {
+            const temp = data.current && data.current.temperature_2m;
+            if (temp !== undefined && temp !== null) {
+              tempEl.textContent = Math.round(temp) + '°C';
+            }
+          })
+          .catch(() => {});
+      }
+
+      fetchWeather();
+      setInterval(fetchWeather, 30 * 60 * 1000);
+    })();
+
+    // ─── START ───
+    init();
+  </script>
+</body>
+</html>
