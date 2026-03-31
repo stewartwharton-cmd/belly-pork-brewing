@@ -272,6 +272,36 @@
       z-index: 3;
     }
 
+    .graham-stamp {
+      position: absolute;
+      bottom: 12%;
+      right: 8%;
+      width: 148px;
+      height: 148px;
+      z-index: 5;
+      transform: rotate(11deg);
+      opacity: 0;
+      animation: stampIn 0.4s cubic-bezier(0.2, 0, 0.1, 1) forwards 1.6s;
+      pointer-events: none;
+      mix-blend-mode: multiply;
+      filter: contrast(1.15);
+    }
+    .graham-stamp svg {
+      width: 100%;
+      height: 100%;
+      /* slight ink bleed / imperfection */
+      filter: url(#stamp-roughen);
+    }
+    @keyframes stampIn {
+      0%   { opacity: 0; transform: rotate(11deg) scale(1.3); }
+      60%  { opacity: 1; transform: rotate(11deg) scale(0.94); }
+      80%  { transform: rotate(11deg) scale(1.03); }
+      100% { opacity: 1; transform: rotate(11deg) scale(1); }
+    }
+    @media (max-width: 768px) {
+      .graham-stamp { display: none; }
+    }
+
     .scroll-hint {
       position: absolute;
       bottom: 2.5rem;
@@ -1674,6 +1704,9 @@
     }
 
     @media (max-width: 768px) {
+      /* ── GLOBAL: boost muted text legibility on mobile ── */
+      :root { --muted: rgba(240,234,224,0.72); }
+
       /* ── HERO ── */
       .hero {
         display: flex;
@@ -1811,6 +1844,16 @@
 </head>
 <body>
 
+  <!-- SVG filter for stamp ink roughness -->
+  <svg style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
+    <defs>
+      <filter id="stamp-roughen" x="-5%" y="-5%" width="110%" height="110%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.065" numOctaves="3" seed="4" result="noise"/>
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.8" xChannelSelector="R" yChannelSelector="G"/>
+      </filter>
+    </defs>
+  </svg>
+
   <!-- NAV -->
   <nav>
     <a href="#" class="nav-logo">
@@ -1903,6 +1946,30 @@
         src="images/hero.png"
         alt="Belly Pork Brewing mascot — a pig enjoying a well-earned pint"
       />
+      <div class="graham-stamp" aria-label="Graham Recommends">
+        <svg viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- outer rough border ring -->
+          <circle cx="80" cy="80" r="72" stroke="#080808" stroke-width="4.5" stroke-dasharray="3.5 1.8" opacity="0.92"/>
+          <circle cx="80" cy="80" r="65" stroke="#080808" stroke-width="1.5" opacity="0.55"/>
+          <!-- inner content ring -->
+          <circle cx="80" cy="80" r="56" stroke="#080808" stroke-width="3" opacity="0.7"/>
+          <!-- curved top text path -->
+          <path id="stamp-arc-top" d="M 22 80 A 58 58 0 0 1 138 80" fill="none"/>
+          <text font-family="'Bebas Neue', Georgia, serif" font-size="15" letter-spacing="5" fill="#080808" opacity="0.95">
+            <textPath href="#stamp-arc-top" startOffset="50%" text-anchor="middle">GRAHAM RECOMMENDS</textPath>
+          </text>
+          <!-- curved bottom text path -->
+          <path id="stamp-arc-bottom" d="M 30 88 A 52 52 0 0 0 130 88" fill="none"/>
+          <text font-family="'Syne Mono', 'Courier New', monospace" font-size="9.5" letter-spacing="3.5" fill="#080808" opacity="0.75">
+            <textPath href="#stamp-arc-bottom" startOffset="50%" text-anchor="middle">BELLY PORK BREWING CO.</textPath>
+          </text>
+          <!-- centre star -->
+          <text x="80" y="87" text-anchor="middle" font-size="26" fill="#080808" opacity="0.88" font-family="serif">★</text>
+          <!-- small divider lines either side of star -->
+          <line x1="46" y1="80" x2="58" y2="80" stroke="#080808" stroke-width="1.2" opacity="0.5"/>
+          <line x1="102" y1="80" x2="114" y2="80" stroke="#080808" stroke-width="1.2" opacity="0.5"/>
+        </svg>
+      </div>
     </div>
 
     <div class="scroll-hint">
