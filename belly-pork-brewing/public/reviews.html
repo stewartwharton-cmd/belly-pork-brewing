@@ -2333,7 +2333,42 @@
 
     // ─── START ───
     init();
+  </script>
 
+  <!-- CHAT WIDGET -->
+  <div id="chat-widget">
+    <div id="chat-panel" aria-hidden="true" aria-label="Chat with Graham">
+      <div id="chat-header">
+        <div class="chat-header-info">
+          <div class="chat-avatar">G</div>
+          <div>
+            <p class="chat-header-name">Graham</p>
+            <p class="chat-header-sub">Head of Taste · Belly Pork Brewing</p>
+          </div>
+        </div>
+        <button id="chat-close" aria-label="Close chat">&#x2715;</button>
+      </div>
+      <div id="chat-messages" role="log" aria-live="polite"></div>
+      <div id="chat-input-row">
+        <input id="chat-input" type="text" placeholder="Ask Graham anything..." autocomplete="off" />
+        <button id="chat-send" aria-label="Send message">
+          <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 10 L17 10 M11 4 L17 10 L11 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+    <button id="chat-toggle" aria-expanded="false" aria-controls="chat-panel">
+      <svg viewBox="0 0 20 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M2 6 L18 6 L15.5 26 C15.5 26.8 14.8 27.5 14 27.5 L6 27.5 C5.2 27.5 4.5 26.8 4.5 26 Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="rgba(0,0,0,0.25)"/>
+        <path d="M2 6 C7 10 13 10 18 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <span class="toggle-open">Chat with Graham</span>
+      <span class="toggle-close">Close</span>
+    </button>
+  </div>
+
+  <script>
     // ─── Chat widget ───
     (function () {
       const toggle   = document.getElementById('chat-toggle');
@@ -2445,38 +2480,5 @@
       input.addEventListener('keydown', e => { if (e.key === 'Enter') send(); });
     })();
   </script>
-
-  <!-- CHAT WIDGET -->
-  <div id="chat-widget">
-    <div id="chat-panel" aria-hidden="true" aria-label="Chat with Graham">
-      <div id="chat-header">
-        <div class="chat-header-info">
-          <div class="chat-avatar">G</div>
-          <div>
-            <p class="chat-header-name">Graham</p>
-            <p class="chat-header-sub">Head of Taste · Belly Pork Brewing</p>
-          </div>
-        </div>
-        <button id="chat-close" aria-label="Close chat">&#x2715;</button>
-      </div>
-      <div id="chat-messages" role="log" aria-live="polite"></div>
-      <div id="chat-input-row">
-        <input id="chat-input" type="text" placeholder="Ask Graham anything..." autocomplete="off" />
-        <button id="chat-send" aria-label="Send message">
-          <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M3 10 L17 10 M11 4 L17 10 L11 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </button>
-      </div>
-    </div>
-    <button id="chat-toggle" aria-expanded="false" aria-controls="chat-panel">
-      <svg viewBox="0 0 20 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M2 6 L18 6 L15.5 26 C15.5 26.8 14.8 27.5 14 27.5 L6 27.5 C5.2 27.5 4.5 26.8 4.5 26 Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="rgba(0,0,0,0.25)"/>
-        <path d="M2 6 C7 10 13 10 18 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-      </svg>
-      <span class="toggle-open">Chat with Graham</span>
-      <span class="toggle-close">Close</span>
-    </button>
-  </div>
 </body>
 </html>
