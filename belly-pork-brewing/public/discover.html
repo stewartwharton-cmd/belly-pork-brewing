@@ -1,0 +1,1312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Discover — Belly Pork Brewing Co.</title>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-15VJKBJSRB"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-15VJKBJSRB');
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&family=Syne+Mono&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --magenta: #FF1DBC;
+      --magenta-dim: rgba(255,29,188,0.15);
+      --black: #080808;
+      --off-white: #F0EAE0;
+      --dark: #111111;
+      --mid: #1e1e1e;
+      --muted: rgba(240,234,224,0.5);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--off-white);
+      font-family: 'Syne', sans-serif;
+      overflow-x: hidden;
+    }
+
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--black); }
+    ::-webkit-scrollbar-thumb { background: var(--magenta); }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      inset: 0 0 auto 0;
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 3rem;
+      background: rgba(8,8,8,0.88);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--magenta-dim);
+    }
+
+    .nav-logo img { height: 52px; display: block; }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover,
+    .nav-links a.active { color: var(--magenta); }
+
+    .nav-cta {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      background: var(--magenta);
+      color: var(--black);
+      padding: 0.6rem 1.4rem;
+      text-decoration: none;
+      font-weight: 700;
+      transition: opacity 0.2s;
+    }
+    .nav-cta:hover { opacity: 0.85; }
+
+    /* ─── NAV WEATHER ─── */
+    .nav-weather {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.64rem;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      border: 1px solid var(--magenta-dim);
+      padding: 0.35rem 0.8rem;
+      white-space: nowrap;
+      cursor: default;
+      user-select: none;
+      transition: border-color 0.2s;
+    }
+    .nav-weather:hover { border-color: rgba(255,29,188,0.35); }
+    .nav-weather-icon { width: 11px; height: 11px; flex-shrink: 0; }
+    .nav-weather-label { color: var(--muted); }
+    .nav-weather-sep { color: rgba(255,29,188,0.3); margin: 0 0.1rem; }
+    .nav-weather-temp { color: var(--magenta); font-size: 0.74rem; letter-spacing: 0.04em; }
+
+    @media (max-width: 900px) {
+      .nav-logo img { height: 38px; }
+      .nav-weather {
+        flex-direction: column;
+        align-items: center;
+        gap: 0.05rem;
+        padding: 0.3rem 0.6rem;
+      }
+      .nav-weather-sep { display: none; }
+      .nav-weather-icon { display: none; }
+      .nav-weather-label { display: block; font-size: 0.5rem; letter-spacing: 0.18em; color: var(--muted); line-height: 1; }
+      .nav-weather-temp { font-size: 0.72rem; line-height: 1; }
+    }
+
+    /* ─── HAMBURGER / MOBILE MENU ─── */
+    .nav-burger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem;
+      z-index: 300;
+      min-width: 44px;
+      min-height: 44px;
+    }
+    .nav-burger span {
+      display: block;
+      width: 26px;
+      height: 2px;
+      background: var(--magenta);
+      transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.32s ease;
+    }
+    .nav-burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-burger.open span:nth-child(2) { opacity: 0; }
+    .nav-burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .nav-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 240;
+      background: rgba(0,0,0,0.6);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.35s ease, visibility 0s linear 0.35s;
+      pointer-events: none;
+    }
+    .nav-overlay.open {
+      opacity: 1;
+      visibility: visible;
+      transition: opacity 0.35s ease;
+      pointer-events: auto;
+    }
+
+    .nav-mobile {
+      position: fixed;
+      top: 0; right: 0; bottom: 0;
+      width: min(82vw, 340px);
+      z-index: 250;
+      background: var(--dark);
+      border-left: 1px solid var(--magenta-dim);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 5rem 2.5rem 3rem;
+      gap: 0;
+      transform: translateX(100%);
+      transition: transform 0.38s cubic-bezier(0.4, 0, 0.2, 1), visibility 0s linear 0.38s;
+      visibility: hidden;
+    }
+    .nav-mobile.open {
+      transform: translateX(0);
+      visibility: visible;
+      transition: transform 0.38s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .nav-mobile a {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2rem, 6vw, 2.6rem);
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+      padding: 0.75rem 0;
+      width: 100%;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .nav-mobile a:last-of-type { border-bottom: none; }
+    .nav-mobile a:hover,
+    .nav-mobile a:focus,
+    .nav-mobile a.active-mob { color: var(--magenta); }
+    .nav-mobile-close {
+      position: absolute;
+      top: 1rem; right: 1rem;
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 1.3rem;
+      cursor: pointer;
+      line-height: 1;
+      transition: color 0.2s;
+      min-width: 44px;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .nav-mobile-close:hover { color: var(--magenta); }
+    .nav-mobile .nav-mobile-cta {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      background: var(--magenta);
+      color: var(--black);
+      padding: 0.9rem 1.8rem;
+      font-weight: 700;
+      margin-top: 2rem;
+      width: 100%;
+      text-align: center;
+      border-bottom: none !important;
+    }
+
+    @media (max-width: 900px) {
+      nav { padding: 0.9rem 1.4rem; }
+      .nav-links { display: none; }
+      .nav-cta { display: none; }
+      .nav-burger { display: flex; }
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--dark);
+      border-top: 1px solid var(--magenta-dim);
+      padding: 4rem 5rem 3rem;
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr;
+      gap: 4rem;
+    }
+    .footer-brand img { height: 48px; margin-bottom: 1.2rem; display: block; }
+    .footer-brand p { font-size: 0.9rem; line-height: 1.7; color: var(--muted); max-width: 280px; }
+    .footer-col h4 { font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; letter-spacing: 0.1em; margin-bottom: 1.2rem; color: var(--magenta); }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 0.6rem; }
+    .footer-col ul a {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-col ul a:hover { color: var(--off-white); }
+    .footer-bottom {
+      grid-column: 1 / -1;
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(240,234,224,0.06);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer-bottom p {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      color: rgba(240,234,224,0.25);
+    }
+    .footer-bottom span { color: var(--magenta); }
+
+    @media (max-width: 768px) {
+      footer { grid-template-columns: 1fr; padding: 3rem 1.5rem 2rem; gap: 2rem; }
+      .footer-bottom { flex-direction: column; gap: 0.5rem; text-align: center; }
+    }
+
+    /* ─── HERO ─── */
+    .discover-hero {
+      min-height: 60vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 9rem 5rem 5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .discover-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(var(--magenta-dim) 1px, transparent 1px),
+        linear-gradient(90deg, var(--magenta-dim) 1px, transparent 1px);
+      background-size: 64px 64px;
+      pointer-events: none;
+    }
+
+    .discover-hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 80% at 50% 110%, rgba(8,8,8,0) 0%, var(--black) 70%);
+      pointer-events: none;
+    }
+
+    .discover-hero-content { position: relative; z-index: 10; }
+
+    .discover-eyebrow {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--magenta);
+      margin-bottom: 1.4rem;
+    }
+
+    .discover-h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(4.5rem, 11vw, 10rem);
+      letter-spacing: 0.02em;
+      line-height: 0.88;
+      margin-bottom: 2rem;
+    }
+
+    .discover-h1 .outline {
+      -webkit-text-stroke: 2px var(--off-white);
+      color: transparent;
+    }
+
+    .discover-h1 .magenta { color: var(--magenta); }
+
+    .discover-sub {
+      font-size: clamp(0.95rem, 1.8vw, 1.15rem);
+      color: var(--muted);
+      max-width: 500px;
+      line-height: 1.75;
+      margin-bottom: 2rem;
+    }
+
+    .discover-badges {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .live-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      border: 1px solid var(--magenta-dim);
+      padding: 0.4rem 0.9rem;
+      color: var(--magenta);
+    }
+
+    .live-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--magenta);
+      flex-shrink: 0;
+      animation: live-pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes live-pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.3; transform: scale(0.7); }
+    }
+
+    .hero-brewery-count {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border: 1px solid rgba(240,234,224,0.1);
+      padding: 0.4rem 0.9rem;
+    }
+
+    @media (max-width: 900px) {
+      .discover-hero { padding: 7rem 1.5rem 3.5rem; min-height: 50vh; }
+    }
+
+    /* ─── MAIN ─── */
+    .discover-main {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 3.5rem 5rem 7rem;
+    }
+
+    @media (max-width: 900px) {
+      .discover-main { padding: 2rem 1.5rem 5rem; }
+    }
+
+    /* ─── BELLY PORK PIN ─── */
+    .bpb-pin {
+      background: linear-gradient(135deg, var(--dark) 0%, rgba(255,29,188,0.07) 100%);
+      border: 1px solid var(--magenta);
+      padding: 2rem 2.5rem;
+      margin-bottom: 3rem;
+      position: relative;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .bpb-pin::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; bottom: 0;
+      width: 4px;
+      background: var(--magenta);
+    }
+
+    .bpb-pin::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='0.02'/%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+
+    .local-legend-badge {
+      display: inline-block;
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      background: var(--magenta);
+      color: var(--black);
+      padding: 0.3rem 0.8rem;
+      font-weight: 700;
+      margin-bottom: 0.9rem;
+    }
+
+    .bpb-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      letter-spacing: 0.04em;
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+
+    .bpb-meta {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1rem;
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .bpb-meta-sep { color: rgba(255,29,188,0.3); }
+
+    .bpb-site {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .bpb-site:hover { color: var(--magenta); }
+
+    .bpb-comment {
+      font-style: italic;
+      font-size: 0.95rem;
+      color: var(--magenta);
+      line-height: 1.5;
+    }
+
+    .bpb-rating-block {
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    .bpb-stars {
+      font-size: 1.8rem;
+      color: var(--magenta);
+      letter-spacing: 0.05em;
+      display: block;
+      margin-bottom: 0.4rem;
+    }
+
+    .bpb-rating-label {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.55rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      display: block;
+    }
+
+    @media (max-width: 600px) {
+      .bpb-pin { grid-template-columns: 1fr; }
+      .bpb-rating-block { justify-self: start; }
+    }
+
+    /* ─── CONTROLS BAR ─── */
+    .controls-bar {
+      display: flex;
+      gap: 0.75rem;
+      margin-bottom: 2.5rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .search-wrap {
+      flex: 1;
+      min-width: 200px;
+      position: relative;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 0.9rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+      font-size: 0.9rem;
+      pointer-events: none;
+      line-height: 1;
+    }
+
+    .search-wrap input {
+      width: 100%;
+      background: var(--dark);
+      border: 1px solid rgba(255,29,188,0.2);
+      color: var(--off-white);
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.76rem;
+      letter-spacing: 0.08em;
+      padding: 0.78rem 1rem 0.78rem 2.4rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .search-wrap input:focus { border-color: var(--magenta); }
+    .search-wrap input::placeholder { color: rgba(240,234,224,0.28); }
+
+    .select-wrap { position: relative; }
+    .select-wrap::after {
+      content: '▾';
+      position: absolute;
+      right: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+      color: var(--magenta);
+      font-size: 0.75rem;
+    }
+
+    .controls-bar select {
+      background: var(--dark);
+      border: 1px solid rgba(255,29,188,0.2);
+      color: var(--off-white);
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      padding: 0.78rem 2rem 0.78rem 0.9rem;
+      outline: none;
+      cursor: pointer;
+      transition: border-color 0.2s;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+    .controls-bar select:focus { border-color: var(--magenta); }
+    .controls-bar select option { background: var(--dark); }
+
+    .results-count {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      white-space: nowrap;
+      margin-left: auto;
+    }
+
+    @media (max-width: 700px) {
+      .controls-bar { flex-direction: column; align-items: stretch; }
+      .results-count { margin-left: 0; text-align: center; }
+    }
+
+    /* ─── BREWERY GRID ─── */
+    .brewery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      gap: 1.25rem;
+    }
+
+    /* ─── BREWERY CARD ─── */
+    .brewery-card {
+      background: var(--dark);
+      border: 1px solid rgba(255,29,188,0.12);
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+      position: relative;
+    }
+
+    .brewery-card:hover {
+      border-color: rgba(255,29,188,0.38);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 32px rgba(255,29,188,0.08);
+    }
+
+    .card-type-badge {
+      display: inline-block;
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.54rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      border: 1px solid var(--magenta-dim);
+      color: var(--magenta);
+      padding: 0.2rem 0.55rem;
+      margin-bottom: 0.9rem;
+      align-self: flex-start;
+    }
+
+    .card-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.45rem;
+      letter-spacing: 0.03em;
+      line-height: 1.1;
+      margin-bottom: 0.35rem;
+    }
+
+    .card-location {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1.1rem;
+    }
+
+    .card-divider {
+      border: none;
+      border-top: 1px solid rgba(255,29,188,0.08);
+      margin: 0 0 1rem;
+    }
+
+    .card-graham-label {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.52rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: rgba(240,234,224,0.3);
+      margin-bottom: 0.45rem;
+    }
+
+    .card-stars {
+      font-size: 1rem;
+      letter-spacing: 0.06em;
+      margin-bottom: 0.65rem;
+    }
+
+    .star-filled { color: var(--magenta); }
+    .star-empty { color: rgba(255,29,188,0.18); }
+
+    .card-comment {
+      font-size: 0.82rem;
+      font-style: italic;
+      line-height: 1.55;
+      color: rgba(240,234,224,0.65);
+      flex: 1;
+    }
+
+    .card-footer {
+      margin-top: 1.1rem;
+      padding-top: 0.9rem;
+      border-top: 1px solid rgba(255,29,188,0.06);
+    }
+
+    .card-website {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(240,234,224,0.35);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .card-website:hover { color: var(--magenta); }
+
+    /* ─── LOADING STATE ─── */
+    .loading-state {
+      grid-column: 1 / -1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 6rem 0;
+      gap: 2.5rem;
+    }
+
+    .pint-glass {
+      position: relative;
+      width: 64px;
+      height: 100px;
+    }
+
+    .pint-svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .bubbles-wrap {
+      position: absolute;
+      inset: 14px 12px 20px 12px;
+      overflow: hidden;
+    }
+
+    .bubble {
+      position: absolute;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, rgba(255,29,188,0.75), rgba(255,29,188,0.1));
+      animation: bubble-rise var(--dur, 2s) var(--delay, 0s) ease-in infinite;
+    }
+
+    @keyframes bubble-rise {
+      0%   { opacity: 0.85; transform: translateY(0) translateX(0); }
+      60%  { opacity: 0.5; }
+      100% { opacity: 0; transform: translateY(-110px) translateX(var(--drift, 4px)); }
+    }
+
+    .loading-text {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.78rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--muted);
+      animation: text-fade 1.6s ease-in-out infinite;
+    }
+
+    @keyframes text-fade {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    /* ─── ERROR STATE ─── */
+    .error-state {
+      grid-column: 1 / -1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 5rem 1rem;
+      gap: 1.2rem;
+      text-align: center;
+    }
+
+    .error-icon {
+      font-size: 3.5rem;
+      line-height: 1;
+    }
+
+    .error-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.2rem;
+      letter-spacing: 0.05em;
+      color: var(--magenta);
+    }
+
+    .error-msg {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      max-width: 420px;
+      line-height: 1.7;
+    }
+
+    .error-retry {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      background: none;
+      border: 1px solid var(--magenta-dim);
+      color: var(--magenta);
+      padding: 0.6rem 1.4rem;
+      cursor: pointer;
+      margin-top: 0.5rem;
+      transition: background 0.2s, color 0.2s;
+    }
+    .error-retry:hover { background: var(--magenta); color: var(--black); }
+
+    /* ─── EMPTY STATE ─── */
+    .empty-state {
+      grid-column: 1 / -1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 4rem 1rem;
+      gap: 0.8rem;
+      text-align: center;
+    }
+
+    .empty-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.8rem;
+      color: rgba(240,234,224,0.3);
+    }
+
+    .empty-sub {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      color: rgba(240,234,224,0.2);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="index.html" class="nav-logo">
+      <img
+        src="https://img1.wsimg.com/isteam/ip/c5f4da44-74a7-4ebd-b7a0-a83c516ecd85/Belly%20Pork%20Brewing-37b48db.PNG/:/rs=h:200,cg:true,m/qt=q:100/ll"
+        alt="Belly Pork Brewing"
+      />
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html#about">About</a></li>
+      <li><a href="index.html#beers">Beers</a></li>
+      <li><a href="index.html#process">How We Brew</a></li>
+      <li><a href="index.html#graham">Graham</a></li>
+      <li><a href="taproom.html">Tap Room</a></li>
+      <li><a href="merch.html">Merch</a></li>
+      <li><a href="reviews.html">Reviews</a></li>
+      <li><a href="discover.html" class="active">Discover</a></li>
+    </ul>
+    <div class="nav-weather" id="nav-weather" title="Brewing conditions · Bungay, Suffolk">
+      <svg class="nav-weather-icon" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 1 L4 5 L1 5.5 L3 8 L2.5 11 L6 9.5 L9.5 11 L9 8 L11 5.5 L8 5 Z" fill="rgba(255,29,188,0.2)" stroke="#FF1DBC" stroke-width="0.9" stroke-linejoin="round"/>
+      </svg>
+      <span class="nav-weather-label">Bungay</span>
+      <span class="nav-weather-sep">·</span>
+      <span class="nav-weather-temp" id="nav-weather-temp">—°C</span>
+    </div>
+    <a href="index.html#newsletter" class="nav-cta">Stay Updated</a>
+    <button class="nav-burger" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- MOBILE NAV -->
+  <div class="nav-overlay" id="nav-overlay"></div>
+  <div class="nav-mobile" id="nav-mobile" aria-hidden="true">
+    <button class="nav-mobile-close" aria-label="Close menu">&#x2715;</button>
+    <a href="index.html#about" class="nav-mobile-link">About</a>
+    <a href="index.html#beers" class="nav-mobile-link">Beers</a>
+    <a href="index.html#process" class="nav-mobile-link">How We Brew</a>
+    <a href="index.html#graham" class="nav-mobile-link">Graham</a>
+    <a href="taproom.html" class="nav-mobile-link">Tap Room</a>
+    <a href="merch.html" class="nav-mobile-link">Merch</a>
+    <a href="reviews.html" class="nav-mobile-link">Reviews</a>
+    <a href="discover.html" class="nav-mobile-link active-mob">Discover</a>
+    <a href="index.html#newsletter" class="nav-mobile-cta">Stay Updated</a>
+  </div>
+
+  <!-- HERO -->
+  <section class="discover-hero">
+    <div class="discover-hero-content">
+      <p class="discover-eyebrow">// Open Brewery Database · Live Data</p>
+      <h1 class="discover-h1">
+        Graham's<br>
+        <span class="outline">Guide to</span><br>
+        <span class="magenta">British Beer</span>
+      </h1>
+      <p class="discover-sub">Every brewery in Britain. Rated by one man. Whether they like it or not.</p>
+      <div class="discover-badges">
+        <span class="live-badge">
+          <span class="live-dot"></span>
+          Live brewery data
+        </span>
+        <span class="hero-brewery-count" id="hero-count" style="display:none">
+          <span id="hero-count-num">0</span> breweries loaded
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN -->
+  <main class="discover-main">
+
+    <!-- BELLY PORK PIN -->
+    <div class="bpb-pin">
+      <div>
+        <span class="local-legend-badge">★ Local Legend</span>
+        <div class="bpb-name">Belly Pork Brewing Co.</div>
+        <div class="bpb-meta">
+          <span>Micro</span>
+          <span class="bpb-meta-sep">·</span>
+          <span>Bungay, Suffolk</span>
+          <span class="bpb-meta-sep">·</span>
+          <a href="https://bellyporkbrewing.com" target="_blank" rel="noopener" class="bpb-site">bellyporkbrewing.com ↗</a>
+        </div>
+        <div class="bpb-comment">"Local legend. The benchmark, bor. Five stars — obviously."</div>
+      </div>
+      <div class="bpb-rating-block">
+        <span class="bpb-stars">★★★★★</span>
+        <span class="bpb-rating-label">Graham's Rating</span>
+      </div>
+    </div>
+
+    <!-- CONTROLS -->
+    <div class="controls-bar" id="controls-bar" style="display:none">
+      <div class="search-wrap">
+        <span class="search-icon">⌕</span>
+        <input
+          type="search"
+          id="search-input"
+          placeholder="Search brewery or city..."
+          autocomplete="off"
+        />
+      </div>
+      <div class="select-wrap">
+        <select id="type-filter" aria-label="Filter by type">
+          <option value="">All Types</option>
+          <option value="micro">Micro</option>
+          <option value="nano">Nano</option>
+          <option value="regional">Regional</option>
+          <option value="large">Large</option>
+          <option value="brewpub">Brewpub</option>
+          <option value="bar">Bar</option>
+          <option value="contract">Contract</option>
+          <option value="proprietor">Proprietor</option>
+          <option value="planning">Planning</option>
+        </select>
+      </div>
+      <div class="select-wrap">
+        <select id="sort-select" aria-label="Sort by">
+          <option value="rating-high">Rating: High → Low</option>
+          <option value="rating-low">Rating: Low → High</option>
+          <option value="name-az">Name: A → Z</option>
+          <option value="name-za">Name: Z → A</option>
+        </select>
+      </div>
+      <span class="results-count" id="results-count"></span>
+    </div>
+
+    <!-- BREWERY GRID -->
+    <div class="brewery-grid" id="brewery-grid">
+      <div class="loading-state" id="loading-state">
+        <div class="pint-glass">
+          <svg class="pint-svg" viewBox="0 0 64 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 4 L8 96 L56 96 L54 4 Z" stroke="rgba(255,29,188,0.3)" stroke-width="1.5" fill="rgba(255,29,188,0.03)"/>
+            <line x1="8" y1="16" x2="56" y2="16" stroke="rgba(255,29,188,0.15)" stroke-width="1"/>
+          </svg>
+          <div class="bubbles-wrap" id="bubbles-wrap"></div>
+        </div>
+        <div class="loading-text">Graham is consulting his notes, boy…</div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-brand">
+      <img
+        src="https://img1.wsimg.com/isteam/ip/c5f4da44-74a7-4ebd-b7a0-a83c516ecd85/Belly%20Pork%20Brewing-37b48db.PNG/:/rs=h:200,cg:true,m/qt=q:100/ll"
+        alt="Belly Pork Brewing"
+      />
+      <p>Independent craft beer from Graham's kitchen to your glass. One batch at a time.</p>
+    </div>
+
+    <div class="footer-col">
+      <h4>Navigate</h4>
+      <ul>
+        <li><a href="index.html#about">About Us</a></li>
+        <li><a href="index.html#beers">The Beers</a></li>
+        <li><a href="index.html#process">How We Brew</a></li>
+        <li><a href="index.html#graham">Graham</a></li>
+        <li><a href="reviews.html">Reviews</a></li>
+        <li><a href="discover.html">Discover</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h4>Connect</h4>
+      <ul>
+        <li><a href="https://bellyporkbrewing.com" target="_blank" rel="noopener">bellyporkbrewing.com</a></li>
+        <li><a href="index.html#newsletter">Newsletter</a></li>
+        <li><a href="#">Instagram</a></li>
+        <li><a href="#">Facebook</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2024 Belly Pork Brewing Co. — All Rights Reserved.</p>
+      <p>Powered by <span>vapes</span> and Graham's questionable decisions.</p>
+    </div>
+  </footer>
+
+  <script>
+    // ─── GRAHAM'S COMMENT POOLS ───
+    const COMMENTS = {
+      1: [
+        "Wholly awful, boy. Poured it down the drain.",
+        "That tastes like they swept the floor into the fermenter. Squit.",
+        "My whippet wouldn't touch it, bor, and she ain't fussy.",
+        "Browny could do better and he can't boil an egg.",
+        "One star's generous. That's a crime against barley, boy.",
+        "I've had dishwater with more character, bor."
+      ],
+      2: [
+        "Not wholly terrible. Just mostly terrible, bor.",
+        "Drinkable at a push. A very big push, mind.",
+        "Two out of five and I'm being generous, boy.",
+        "Like a watered-down version of something almost decent.",
+        "They tried, bless 'em. They really tried, bor.",
+        "You'd drink it if there were nowt else. There is, boy."
+      ],
+      3: [
+        "Middling, bor. Like most things outside Suffolk.",
+        "Neither here nor there. Gets the job done, boy.",
+        "Three stars. Won't be rushing back mind, bor.",
+        "Decent enough. Not wholly bad, not wholly good.",
+        "You could do worse. You could do better too, boy.",
+        "Passable for a Tuesday, bor. Nowt special."
+      ],
+      4: [
+        "That's wholly decent, bor. Credit where it's due.",
+        "Better than I expected, boy. Still no Belly Pork mind.",
+        "Rather them than Browny making it, and that's saying something, bor.",
+        "Good beer this. Come to Bungay and I'll show you how to make it great, boy.",
+        "Now we're talking, boy. Not perfect, but wholly close.",
+        "Four stars. Come talk to me when you figure out the other one, bor."
+      ],
+      5: [
+        "Can't touch our Narcoleptic NEIPA but they do try, bor.",
+        "Wholly excellent. Graham gives his blessing. Don't get cocky, boy.",
+        "Top marks, boy. Still think they could learn a thing from us.",
+        "Near-perfect beer. Obviously not as good as mine, but near enough, bor.",
+        "Five stars. Came this close to rivalling Bungay's finest, boy.",
+        "Remarkable for a non-Suffolk operation. Five stars, bor."
+      ]
+    };
+
+    const TYPE_LABELS = {
+      micro: 'Micro', nano: 'Nano', regional: 'Regional', large: 'Large',
+      brewpub: 'Brewpub', bar: 'Bar', contract: 'Contract',
+      proprietor: 'Proprietor', planning: 'Planning'
+    };
+
+    // ─── HASH (djb2 variant) ───
+    function hash(str) {
+      let h = 5381;
+      for (let i = 0; i < str.length; i++) {
+        h = (Math.imul(h, 31) + str.charCodeAt(i)) | 0;
+      }
+      return Math.abs(h);
+    }
+
+    // ─── GRAHAM RATING ───
+    function grahamRating(name) {
+      if (/belly\s*pork/i.test(name)) return 5;
+      const v = hash(name) % 100;
+      if (v < 5)  return 1;
+      if (v < 15) return 2;
+      if (v < 45) return 3;
+      if (v < 85) return 4;
+      return 5;
+    }
+
+    // ─── GRAHAM COMMENT ───
+    function grahamComment(name, rating) {
+      if (/belly\s*pork/i.test(name)) return "Local legend. The benchmark, bor. Five stars — obviously.";
+      const pool = COMMENTS[rating];
+      return pool[hash(name + '\x01') % pool.length];
+    }
+
+    // ─── STARS HTML ───
+    function starsHTML(n) {
+      let s = '';
+      for (let i = 1; i <= 5; i++) {
+        s += `<span class="${i <= n ? 'star-filled' : 'star-empty'}">${i <= n ? '★' : '☆'}</span>`;
+      }
+      return s;
+    }
+
+    // ─── BUILD CARD ───
+    function buildCard(b) {
+      const rating = grahamRating(b.name);
+      const comment = grahamComment(b.name, rating);
+      const loc = [b.city, b.state_province].filter(Boolean).join(', ');
+      const type = TYPE_LABELS[b.brewery_type] || (b.brewery_type ? b.brewery_type.charAt(0).toUpperCase() + b.brewery_type.slice(1) : 'Brewery');
+      const websiteHTML = b.website_url
+        ? `<div class="card-footer"><a href="${escAttr(b.website_url)}" target="_blank" rel="noopener" class="card-website">Website ↗</a></div>`
+        : '';
+
+      return `
+        <article class="brewery-card">
+          <span class="card-type-badge">${escHtml(type)}</span>
+          <div class="card-name">${escHtml(b.name)}</div>
+          ${loc ? `<div class="card-location">${escHtml(loc)}</div>` : ''}
+          <hr class="card-divider">
+          <div class="card-graham-label">Graham's Verdict</div>
+          <div class="card-stars">${starsHTML(rating)}</div>
+          <div class="card-comment">"${escHtml(comment)}"</div>
+          ${websiteHTML}
+        </article>`;
+    }
+
+    function escHtml(s) {
+      return String(s)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function escAttr(s) {
+      return String(s).replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    }
+
+    // ─── STATE ───
+    let allBreweries = [];
+    const grid = document.getElementById('brewery-grid');
+    const controlsBar = document.getElementById('controls-bar');
+    const searchInput = document.getElementById('search-input');
+    const typeFilter = document.getElementById('type-filter');
+    const sortSelect = document.getElementById('sort-select');
+    const resultsCount = document.getElementById('results-count');
+    const heroCount = document.getElementById('hero-count');
+    const heroCountNum = document.getElementById('hero-count-num');
+
+    // ─── RENDER ───
+    function render() {
+      const q = searchInput.value.toLowerCase().trim();
+      const type = typeFilter.value;
+      const sort = sortSelect.value;
+
+      let filtered = allBreweries.filter(b => {
+        const name = (b.name || '').toLowerCase();
+        const city = (b.city || '').toLowerCase();
+        const region = (b.state_province || '').toLowerCase();
+        const matchSearch = !q || name.includes(q) || city.includes(q) || region.includes(q);
+        const matchType = !type || b.brewery_type === type;
+        return matchSearch && matchType;
+      });
+
+      if (sort === 'rating-high') {
+        filtered.sort((a, b) => grahamRating(b.name) - grahamRating(a.name));
+      } else if (sort === 'rating-low') {
+        filtered.sort((a, b) => grahamRating(a.name) - grahamRating(b.name));
+      } else if (sort === 'name-az') {
+        filtered.sort((a, b) => a.name.localeCompare(b.name));
+      } else if (sort === 'name-za') {
+        filtered.sort((a, b) => b.name.localeCompare(a.name));
+      }
+
+      const n = filtered.length;
+      resultsCount.textContent = `${n} ${n === 1 ? 'brewery' : 'breweries'}`;
+
+      if (n === 0) {
+        grid.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-title">Nowt Found, Bor</div>
+            <div class="empty-sub">Graham's looked everywhere. Try a different search.</div>
+          </div>`;
+        return;
+      }
+
+      grid.innerHTML = filtered.map(buildCard).join('');
+    }
+
+    // ─── LOAD BUBBLES ───
+    function spawnBubbles() {
+      const wrap = document.getElementById('bubbles-wrap');
+      if (!wrap) return;
+      wrap.innerHTML = '';
+      const positions = [12, 22, 32, 18, 28, 8, 36];
+      positions.forEach((left, i) => {
+        const b = document.createElement('div');
+        b.className = 'bubble';
+        const size = 3 + (i % 3) * 2;
+        const dur = 1.6 + (i * 0.28);
+        const delay = (i * 0.35) % 2;
+        const drift = (i % 2 === 0 ? 1 : -1) * (3 + i * 2);
+        b.style.cssText = `width:${size}px;height:${size}px;left:${left}px;bottom:0;--dur:${dur}s;--delay:${delay}s;--drift:${drift}px;animation-duration:${dur}s;animation-delay:${delay}s;`;
+        wrap.appendChild(b);
+      });
+    }
+
+    // ─── FETCH ───
+    function showError() {
+      grid.innerHTML = `
+        <div class="error-state">
+          <div class="error-icon">🍺</div>
+          <div class="error-title">That's Not Right, Boy</div>
+          <div class="error-msg">API's down, boy. Browny probably knocked the server over. Give it a minute and try again.</div>
+          <button class="error-retry" onclick="loadBreweries()">Try Again</button>
+        </div>`;
+    }
+
+    async function loadBreweries() {
+      grid.innerHTML = `
+        <div class="loading-state" id="loading-state">
+          <div class="pint-glass">
+            <svg class="pint-svg" viewBox="0 0 64 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10 4 L8 96 L56 96 L54 4 Z" stroke="rgba(255,29,188,0.3)" stroke-width="1.5" fill="rgba(255,29,188,0.03)"/>
+              <line x1="8" y1="16" x2="56" y2="16" stroke="rgba(255,29,188,0.15)" stroke-width="1"/>
+            </svg>
+            <div class="bubbles-wrap" id="bubbles-wrap"></div>
+          </div>
+          <div class="loading-text">Graham is consulting his notes, boy…</div>
+        </div>`;
+      spawnBubbles();
+      controlsBar.style.display = 'none';
+      heroCount.style.display = 'none';
+
+      try {
+        const res = await fetch('https://api.openbrewerydb.org/v1/breweries?by_country=england&per_page=50');
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const data = await res.json();
+        if (!Array.isArray(data)) throw new Error('Bad response');
+
+        allBreweries = data;
+
+        heroCountNum.textContent = data.length;
+        heroCount.style.display = '';
+        controlsBar.style.display = 'flex';
+
+        render();
+      } catch {
+        showError();
+      }
+    }
+
+    // ─── EVENT LISTENERS ───
+    searchInput.addEventListener('input', render);
+    typeFilter.addEventListener('change', render);
+    sortSelect.addEventListener('change', render);
+
+    // ─── NAV ───
+    (function () {
+      const burger = document.querySelector('.nav-burger');
+      const mobileNav = document.getElementById('nav-mobile');
+      const overlay = document.getElementById('nav-overlay');
+
+      function toggleMenu(open) {
+        mobileNav.classList.toggle('open', open);
+        if (overlay) overlay.classList.toggle('open', open);
+        burger.classList.toggle('open', open);
+        burger.setAttribute('aria-expanded', String(open));
+        mobileNav.setAttribute('aria-hidden', String(!open));
+        document.body.style.overflow = open ? 'hidden' : '';
+      }
+
+      burger.addEventListener('click', () => toggleMenu(!mobileNav.classList.contains('open')));
+      document.querySelector('.nav-mobile-close').addEventListener('click', () => toggleMenu(false));
+      if (overlay) overlay.addEventListener('click', () => toggleMenu(false));
+      mobileNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => toggleMenu(false)));
+    })();
+
+    // ─── WEATHER ───
+    (function () {
+      const WEATHER_URL = 'https://api.open-meteo.com/v1/forecast?latitude=52.4543&longitude=1.4382&current=temperature_2m&temperature_unit=celsius&timezone=Europe%2FLondon';
+      const tempEl = document.getElementById('nav-weather-temp');
+      function fetchWeather() {
+        fetch(WEATHER_URL)
+          .then(r => r.json())
+          .then(d => {
+            const t = d.current && d.current.temperature_2m;
+            if (t !== undefined && t !== null) tempEl.textContent = Math.round(t) + '°C';
+          })
+          .catch(() => {});
+      }
+      fetchWeather();
+      setInterval(fetchWeather, 30 * 60 * 1000);
+    })();
+
+    // ─── START ───
+    spawnBubbles();
+    loadBreweries();
+  </script>
+</body>
+</html>
