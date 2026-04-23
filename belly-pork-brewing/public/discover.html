@@ -1217,16 +1217,6 @@
     }
 
     // ─── FETCH ───
-    function showError() {
-      grid.innerHTML = `
-        <div class="error-state">
-          <div class="error-icon">🍺</div>
-          <div class="error-title">That's Not Right, Boy</div>
-          <div class="error-msg">API's down, boy. Browny probably knocked the server over. Give it a minute and try again.</div>
-          <button class="error-retry" onclick="loadBreweries()">Try Again</button>
-        </div>`;
-    }
-
     async function loadBreweries() {
       grid.innerHTML = `
         <div class="loading-state" id="loading-state">
@@ -1244,10 +1234,11 @@
       heroCount.style.display = 'none';
 
       try {
-        const res = await fetch('https://api.openbrewerydb.org/v1/breweries?by_country=england&per_page=50');
+        const res = await fetch('/.netlify/functions/breweries');
         if (!res.ok) throw new Error('HTTP ' + res.status);
-        const data = await res.json();
-        if (!Array.isArray(data)) throw new Error('Bad response');
+        const payload = await res.json();
+        const data = payload.breweries;
+        if (!Array.isArray(data) || data.length === 0) throw new Error('Bad response');
 
         allBreweries = data;
 
@@ -1255,9 +1246,22 @@
         heroCount.style.display = '';
         controlsBar.style.display = 'flex';
 
+        if (payload.source === 'fallback') {
+          const banner = document.createElement('div');
+          banner.style.cssText = 'grid-column:1/-1;font-family:"Syne Mono",monospace;font-size:0.65rem;letter-spacing:0.16em;text-transform:uppercase;color:rgba(240,234,224,0.35);padding:0.6rem 0;margin-bottom:0.5rem;border-bottom:1px solid rgba(255,29,188,0.08);';
+          banner.textContent = '⚠ Live data unavailable — showing a selection of UK craft breweries';
+          grid.prepend(banner);
+        }
+
         render();
       } catch {
-        showError();
+        grid.innerHTML = `
+          <div class="error-state">
+            <div class="error-icon">🍺</div>
+            <div class="error-title">That's Not Right, Boy</div>
+            <div class="error-msg">Something went wrong loading the breweries. Browny probably knocked a cable out. Give it a minute and try again.</div>
+            <button class="error-retry" onclick="loadBreweries()">Try Again</button>
+          </div>`;
       }
     }
 
