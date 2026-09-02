@@ -217,69 +217,77 @@
 
     .merch-hero {
       position: relative;
-      min-height: 80vh;
+      min-height: 100vh;
+      width: 100%;
       overflow: hidden;
       display: flex;
-      align-items: flex-end;
+      align-items: center;
+      justify-content: center;
+      background: var(--black);
+      text-align: center;
+      padding: 9rem 2rem 4rem;
     }
 
-    .merch-hero::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: url('images/merch-hero.jpg') center center / cover no-repeat;
-      filter: grayscale(1);
-      z-index: 0;
-    }
-
-    /* Dark gradient so text is always readable */
+    /* Subtle magenta glow behind the type */
     .merch-hero-overlay {
       position: absolute;
       inset: 0;
-      background:
-        linear-gradient(to right, rgba(8,8,8,0.78) 0%, rgba(8,8,8,0.35) 55%, rgba(8,8,8,0.15) 100%),
-        linear-gradient(to top,   rgba(8,8,8,0.85) 0%, transparent 55%);
+      background: radial-gradient(ellipse 60% 55% at 50% 42%, rgba(255,29,188,0.12), transparent 70%);
       z-index: 1;
+      pointer-events: none;
     }
 
-    /* Content block — bottom-left */
+    /* Content block — centered */
     .merch-hero-content {
       position: relative;
       z-index: 10;
-      padding: 0 5rem 5rem;
-      max-width: 700px;
+      max-width: 900px;
     }
 
     .merch-hero-eyebrow {
       font-family: 'Syne Mono', monospace;
-      font-size: 0.68rem;
-      letter-spacing: 0.38em;
+      font-size: 0.85rem;
+      letter-spacing: 0.5em;
       text-transform: uppercase;
       color: var(--magenta);
-      margin-bottom: 1.2rem;
+      margin-bottom: 1.4rem;
       opacity: 0;
       animation: fadeUp 0.7s ease forwards 0.3s;
     }
 
     .merch-hero-h1 {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(5rem, 10vw, 11rem);
-      line-height: 0.88;
+      font-size: clamp(4.5rem, 15vw, 12rem);
+      line-height: 0.85;
       letter-spacing: 0.01em;
-      margin-bottom: 2.5rem;
+      margin-bottom: 2rem;
       opacity: 0;
       animation: fadeUp 0.7s ease forwards 0.5s;
+    }
+    .merch-hero-h1 .solid {
+      display: block;
+      color: var(--off-white);
     }
     .merch-hero-h1 .outline {
       -webkit-text-stroke: 2px var(--magenta);
       color: transparent;
       display: block;
     }
-    .merch-hero-h1 .solid { display: block; }
+
+    .merch-hero-tagline {
+      font-family: 'Syne', sans-serif;
+      font-weight: 600;
+      font-size: clamp(1rem, 2.2vw, 1.35rem);
+      color: var(--muted);
+      letter-spacing: 0.01em;
+      margin-bottom: 2.8rem;
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards 0.65s;
+    }
 
     .merch-hero-cta {
       opacity: 0;
-      animation: fadeUp 0.7s ease forwards 0.8s;
+      animation: fadeUp 0.7s ease forwards 0.85s;
     }
     .merch-hero-cta .btn-primary {
       display: inline-block;
@@ -315,50 +323,6 @@
       animation-iteration-count: infinite;
       z-index: 6;
       pointer-events: none;
-    }
-
-    /* "Ohhhh Graham" overlay */
-    @keyframes grahamReveal {
-      0%   { opacity: 0; transform: scale(0.94) translateY(10px); letter-spacing: 0.18em; }
-      100% { opacity: 1; transform: scale(1)    translateY(0);     letter-spacing: 0.06em; }
-    }
-    @keyframes grahamPulse {
-      0%, 100% {
-        opacity: 1;
-        text-shadow:
-          0 0 30px rgba(255,29,188,0.65),
-          0 0 70px rgba(255,29,188,0.3),
-          0 2px 8px rgba(0,0,0,0.8);
-      }
-      50% {
-        opacity: 0.78;
-        text-shadow:
-          0 0 55px rgba(255,29,188,0.9),
-          0 0 110px rgba(255,29,188,0.5),
-          0 2px 8px rgba(0,0,0,0.8);
-      }
-    }
-
-    .merch-hero-graham {
-      position: absolute;
-      z-index: 7;
-      right: 6%;
-      bottom: 28%;
-      text-align: right;
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(2.8rem, 4.5vw, 5.5rem);
-      line-height: 1;
-      letter-spacing: 0.06em;
-      color: var(--magenta);
-      text-shadow:
-        0 0 30px rgba(255,29,188,0.65),
-        0 0 70px rgba(255,29,188,0.3),
-        0 2px 8px rgba(0,0,0,0.8);
-      opacity: 0;
-      pointer-events: none;
-      animation:
-        grahamReveal 1.4s cubic-bezier(0.22, 1, 0.36, 1) forwards 2.6s,
-        grahamPulse  4.5s ease-in-out infinite 4.2s;
     }
 
     /* ─── MARQUEE ─── */
@@ -459,127 +423,293 @@
       margin-bottom: 1rem;
     }
 
-    /* Product tabs */
-    .product-tabs {
+    /* ─── PRODUCT CARDS ─── */
+    .product-cards {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+    }
+    .product-card {
+      position: relative;
       display: flex;
+      flex-direction: column;
+      align-items: center;
       gap: 0.6rem;
-    }
-    .product-tab {
-      font-family: 'Syne Mono', monospace;
-      font-size: 0.72rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      padding: 0.65rem 1.4rem;
-      background: transparent;
-      border: 1px solid rgba(240,234,224,0.15);
-      color: var(--muted);
+      padding: 1.8rem 1rem 1.5rem;
+      background: var(--mid);
+      border: 2px solid transparent;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: border-color 0.22s, box-shadow 0.22s, background 0.22s, transform 0.18s;
+      font-family: 'Syne', sans-serif;
+      text-align: center;
     }
-    .product-tab:hover { border-color: var(--magenta); color: var(--off-white); }
-    .product-tab.active {
-      background: var(--magenta);
+    .product-card:hover {
+      border-color: rgba(255,29,188,0.35);
+      transform: translateY(-3px);
+    }
+    .product-card:active {
+      transform: scale(0.97);
+    }
+    .product-card.active {
       border-color: var(--magenta);
-      color: var(--black);
+      box-shadow: 0 0 0 1px rgba(255,29,188,0.15), 0 0 30px rgba(255,29,188,0.18);
+      background: rgba(255,29,188,0.06);
+      transform: translateY(-2px);
+    }
+    .product-card-badge {
+      position: absolute;
+      top: 0.6rem;
+      right: 0.6rem;
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.55rem;
       font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      background: var(--magenta);
+      color: var(--black);
+      padding: 0.28rem 0.5rem;
+      opacity: 0;
+      transform: translateY(-4px) scale(0.9);
+      transition: opacity 0.2s, transform 0.2s;
+      pointer-events: none;
+    }
+    .product-card.active .product-card-badge {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+    .product-card-icon {
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--off-white);
+      opacity: 0.6;
+      transition: opacity 0.2s, color 0.2s, transform 0.25s;
+    }
+    .product-card-icon svg { width: 100%; height: 100%; }
+    .product-card.active .product-card-icon { opacity: 1; color: var(--magenta); }
+    .product-card:hover .product-card-icon { transform: scale(1.06); }
+    .product-card-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.35rem;
+      letter-spacing: 0.03em;
+      color: var(--off-white);
+      line-height: 1;
+    }
+    .product-card-price {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      color: var(--magenta);
+    }
+    .product-card-tagline {
+      font-size: 0.7rem;
+      line-height: 1.35;
+      color: var(--muted);
+      margin-top: 0.1rem;
     }
 
     /* Design grid */
     .design-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 0.8rem;
+      gap: 1rem;
     }
     .design-option {
       aspect-ratio: 1;
       background: var(--mid);
       border: 2px solid transparent;
-      padding: 0.5rem;
+      padding: 0.7rem;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: border-color 0.22s, transform 0.2s, box-shadow 0.22s;
       position: relative;
       overflow: hidden;
     }
-    .design-option:hover { border-color: rgba(255,29,188,0.4); }
-    .design-option.active { border-color: var(--magenta); }
+    .design-option:hover {
+      border-color: rgba(255,29,188,0.4);
+      transform: translateY(-3px);
+    }
+    .design-option.active {
+      border-color: var(--magenta);
+      box-shadow: 0 0 0 1px rgba(255,29,188,0.15), 0 0 24px rgba(255,29,188,0.15);
+    }
     .design-option img {
       width: 100%;
       height: 100%;
       object-fit: contain;
       display: block;
+      transition: transform 0.3s ease;
     }
-    .design-option .design-num {
+    .design-option:hover img { transform: scale(1.08); }
+    .design-option.active::after {
+      content: '✓';
       position: absolute;
-      bottom: 3px;
-      right: 5px;
+      top: 0.5rem;
+      right: 0.5rem;
+      width: 1.6rem;
+      height: 1.6rem;
+      background: var(--magenta);
+      color: var(--black);
+      font-size: 0.85rem;
+      font-weight: 900;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      line-height: 1;
+      box-shadow: 0 2px 10px rgba(255,29,188,0.5);
+    }
+    .design-label {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 1.4rem 0.4rem 0.5rem;
+      background: linear-gradient(to top, rgba(0,0,0,0.78) 0%, transparent 100%);
       font-family: 'Syne Mono', monospace;
-      font-size: 0.55rem;
+      font-size: 0.62rem;
       letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(240,234,224,0.9);
+      text-align: center;
+      pointer-events: none;
+    }
+
+    /* Sticker Pack: all designs shown, non-interactive scattered layout */
+    .design-scatter { display: none; }
+    .mobile-step.sticker-mode .design-grid { display: none; }
+    .mobile-step.sticker-mode .design-scatter { display: block; }
+
+    /* Sticker Pack: colour step is not applicable, hide it entirely */
+    .mobile-step.hidden-for-sticker { display: none !important; }
+    .design-scatter-note {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--magenta);
+      text-align: center;
+      margin-bottom: 1.6rem;
+    }
+    .design-scatter-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.4rem;
+      padding: 0.5rem 0 1rem;
+    }
+    .design-scatter-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .design-scatter-item img {
+      width: 96px;
+      height: 96px;
+      object-fit: contain;
+      background: var(--mid);
+      padding: 0.7rem;
+      box-shadow: 0 10px 28px rgba(0,0,0,0.45);
+      transition: transform 0.25s;
+    }
+    .design-scatter-item:nth-child(odd) img { transform: rotate(-4deg); }
+    .design-scatter-item:nth-child(even) img { transform: rotate(4deg); }
+    .design-scatter-item:hover img { transform: rotate(0deg) scale(1.06); }
+    .design-scatter-item span {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.56rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
       color: var(--muted);
     }
 
     /* Colour swatches */
-    .colour-row {
-      display: flex;
-      align-items: center;
-      gap: 1.2rem;
-    }
     .colour-swatches {
       display: flex;
-      gap: 0.7rem;
+      gap: 2rem;
+      flex-wrap: wrap;
     }
     .colour-swatch {
-      width: 28px;
-      height: 28px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+      background: none;
+      border: none;
+      padding: 0.3rem;
+      cursor: pointer;
+    }
+    .swatch-dot {
+      display: block;
+      width: 64px;
+      height: 64px;
       border-radius: 50%;
       border: 2px solid transparent;
-      cursor: pointer;
-      transition: all 0.2s;
-      position: relative;
+      outline: 3px solid transparent;
+      outline-offset: 5px;
+      transition: transform 0.2s, outline-color 0.2s;
     }
-    .colour-swatch:hover { transform: scale(1.12); }
-    .colour-swatch.active {
-      outline: 2px solid var(--magenta);
-      outline-offset: 2px;
-    }
-    .colour-swatch[data-colour="black"] { background: #1e1e1e; border-color: rgba(240,234,224,0.2); }
-    .colour-swatch[data-colour="white"] { background: #e8dfd0; }
-    .colour-swatch[data-colour="magenta"] { background: #FF1DBC; }
-    .colour-name-label {
+    .colour-swatch:hover .swatch-dot { transform: scale(1.08); }
+    .colour-swatch.active .swatch-dot { outline-color: var(--magenta); }
+    .colour-swatch[data-colour="black"] .swatch-dot { background: #080808; border-color: var(--off-white); }
+    .colour-swatch[data-colour="white"] .swatch-dot { background: #F0EAE0; border-color: #8a8a8a; }
+    .colour-swatch[data-colour="magenta"] .swatch-dot { background: #FF1DBC; border-color: #FF1DBC; }
+    .colour-swatch-name {
       font-family: 'Syne Mono', monospace;
-      font-size: 0.7rem;
-      letter-spacing: 0.2em;
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: var(--off-white);
+      color: var(--muted);
+      transition: color 0.2s;
     }
+    .colour-swatch.active .colour-swatch-name { color: var(--off-white); }
 
-    /* Size buttons */
+    /* Size buttons — large pills */
     .size-options {
       display: flex;
-      gap: 0.5rem;
+      gap: 0.9rem;
+      justify-content: center;
       flex-wrap: wrap;
     }
     .size-btn {
-      font-family: 'Syne Mono', monospace;
-      font-size: 0.72rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      width: 48px;
-      height: 48px;
-      background: transparent;
-      border: 1px solid rgba(240,234,224,0.15);
-      color: var(--muted);
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.3rem;
+      letter-spacing: 0.04em;
+      min-width: 68px;
+      padding: 0.85rem 1.4rem;
+      background: var(--mid);
+      border: 2px solid var(--magenta);
+      border-radius: 999px;
+      color: var(--off-white);
       cursor: pointer;
-      transition: all 0.2s;
+      transition: background 0.2s, color 0.2s, transform 0.15s;
+      text-align: center;
+      line-height: 1;
     }
-    .size-btn:hover { border-color: var(--magenta); color: var(--off-white); }
+    .size-btn:hover { background: rgba(255,29,188,0.14); }
+    .size-btn:active { transform: scale(0.96); }
     .size-btn.active {
       background: var(--magenta);
       border-color: var(--magenta);
       color: var(--black);
       font-weight: 700;
     }
-    .size-btn.one-size { width: auto; padding: 0 1.2rem; }
+    .size-btn.one-size { min-width: auto; padding: 0.85rem 1.6rem; }
+
+    /* Size step: collapses smoothly when hidden for Cap / Sticker Pack */
+    #size-step-group {
+      overflow: hidden;
+      max-height: 220px;
+      opacity: 1;
+      transition: max-height 0.45s cubic-bezier(0.4,0,0.2,1), opacity 0.3s ease, margin-bottom 0.45s ease;
+    }
+    #size-step-group.step-disabled {
+      max-height: 0;
+      opacity: 0;
+      margin-bottom: 0;
+      pointer-events: none;
+    }
 
     /* Order CTA */
     .order-cta-wrap {
@@ -608,71 +738,62 @@
       border: none;
       transition: opacity 0.2s;
     }
-    .btn-primary:hover { opacity: 0.85; }
-
-    /* ─── ORDER SECTION ─── */
-    .order-section {
-      padding: 8rem 5rem;
-      background: var(--dark);
-      border-top: 1px solid var(--magenta-dim);
+    .btn-primary:hover { opacity: 0.88; }
+    .form-submit .btn-primary:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 4px 4px 0 rgba(255,255,255,0.25);
+      opacity: 1;
     }
 
-    .order-inner {
-      display: grid;
-      grid-template-columns: 1fr 1.6fr;
-      gap: 6rem;
-      align-items: start;
-    }
-
-    .order-intro { margin-top: 1.5rem; }
+    /* ─── STEP 6: ORDER SUMMARY + FORM ─── */
+    .order-intro { margin-bottom: 2rem; }
     .order-intro p {
-      font-size: 0.95rem;
-      line-height: 1.8;
+      font-size: 0.9rem;
+      line-height: 1.75;
       color: var(--muted);
-      margin-bottom: 1rem;
+      margin-bottom: 0.9rem;
     }
     .order-intro p strong { color: var(--off-white); }
 
-    /* Order summary card */
+    /* Order summary card: dark, magenta left border */
     .order-summary {
-      margin-top: 2rem;
-      padding: 1.4rem 1.6rem;
-      border: 1px solid var(--magenta-dim);
-      background: var(--magenta-dim);
+      margin-bottom: 2.5rem;
+      padding: 1.6rem 1.7rem;
+      background: var(--mid);
+      border-left: 4px solid var(--magenta);
     }
-    .order-summary-title {
-      font-family: 'Syne Mono', monospace;
-      font-size: 0.65rem;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      color: var(--magenta);
-      margin-bottom: 1rem;
+    .order-summary-heading {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.7rem;
+      letter-spacing: 0.03em;
+      color: var(--off-white);
+      margin-bottom: 1.1rem;
     }
     .order-summary-row {
       display: flex;
       justify-content: space-between;
-      padding: 0.5rem 0;
+      gap: 1rem;
+      padding: 0.55rem 0;
       border-bottom: 1px solid rgba(240,234,224,0.07);
       font-size: 0.85rem;
     }
     .order-summary-row:last-child { border-bottom: none; }
     .order-summary-row span:first-child {
       font-family: 'Syne Mono', monospace;
-      font-size: 0.68rem;
+      font-size: 0.66rem;
       letter-spacing: 0.15em;
       text-transform: uppercase;
       color: var(--muted);
+      flex-shrink: 0;
     }
-    .order-summary-row span:last-child { color: var(--off-white); font-weight: 600; }
+    .order-summary-row span:last-child {
+      color: var(--off-white);
+      font-weight: 600;
+      text-align: right;
+    }
 
     /* Order form */
-    .order-form { display: flex; flex-direction: column; gap: 1.2rem; }
-
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.2rem;
-    }
+    .order-form { display: flex; flex-direction: column; gap: 1.4rem; }
 
     .form-group { display: flex; flex-direction: column; gap: 0.5rem; }
     .form-group label {
@@ -817,23 +938,32 @@
       border-color: var(--magenta);
     }
 
-    /* ─── DESIGN PLACEMENT (T-SHIRT) ─── */
+    /* ─── DESIGN PLACEMENT (T-SHIRT/SWEATSHIRT) ─── */
     .placement-group { display: none; margin-bottom: 2.5rem; }
     .placement-group.visible { display: block; }
-    .placement-options { display: flex; gap: 0.5rem; }
-    .placement-btn {
-      font-family: 'Syne Mono', monospace;
-      font-size: 0.68rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      padding: 0.55rem 1rem;
-      background: transparent;
-      border: 1px solid rgba(240,234,224,0.15);
-      color: var(--muted);
-      cursor: pointer;
-      transition: all 0.2s;
+    .placement-options {
+      display: flex;
+      gap: 0.9rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 0.6rem;
     }
-    .placement-btn:hover { border-color: var(--magenta); color: var(--off-white); }
+    .placement-btn {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.3rem;
+      letter-spacing: 0.04em;
+      padding: 0.85rem 1.6rem;
+      background: var(--mid);
+      border: 2px solid var(--magenta);
+      border-radius: 999px;
+      color: var(--off-white);
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s, transform 0.15s;
+      text-align: center;
+      line-height: 1;
+    }
+    .placement-btn:hover { background: rgba(255,29,188,0.14); }
+    .placement-btn:active { transform: scale(0.96); }
     .placement-btn.active {
       background: var(--magenta);
       border-color: var(--magenta);
@@ -841,14 +971,50 @@
       font-weight: 700;
     }
 
+    /* ─── Sub-labels within a merged step ─── */
+    .config-sublabel {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--off-white);
+      opacity: 0.8;
+      margin-bottom: 0.9rem;
+    }
+    .config-sublabel-note {
+      text-transform: none;
+      letter-spacing: 0;
+      color: var(--muted);
+      opacity: 1;
+      font-weight: 400;
+    }
+
+    /* ─── Skip link for optional sub-sections (mobile step flow only) ─── */
+    .skip-step-link {
+      display: none;
+      background: none;
+      border: none;
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.64rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      cursor: pointer;
+      padding: 0.5rem 0;
+      margin-top: 0.4rem;
+      transition: color 0.2s;
+    }
+    .skip-step-link:hover { color: var(--magenta); }
+
     /* ─── CUSTOM TEXT ─── */
-    .text-input-wrap { position: relative; margin-bottom: 0.8rem; }
+    .custom-text-group { margin-top: 2.5rem; }
+    .text-input-wrap { position: relative; margin-bottom: 0.6rem; }
     .text-input-wrap input {
       width: 100%;
       background: var(--mid);
       border: 1px solid rgba(240,234,224,0.1);
       color: var(--off-white);
-      padding: 0.85rem 3.5rem 0.85rem 1rem;
+      padding: 0.85rem 5.5rem 0.85rem 1rem;
       font-family: 'Syne', sans-serif;
       font-size: 0.9rem;
       transition: border-color 0.2s;
@@ -862,11 +1028,41 @@
       transform: translateY(-50%);
       font-family: 'Syne Mono', monospace;
       font-size: 0.58rem;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.08em;
       color: var(--muted);
       pointer-events: none;
+      white-space: nowrap;
     }
-    .text-position-options { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .custom-text-note {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.72rem;
+      font-style: italic;
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+    .custom-text-preview {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      letter-spacing: 0.03em;
+      color: var(--magenta);
+      line-height: 1.1;
+      min-height: 1.3em;
+      margin-bottom: 1.4rem;
+      word-break: break-word;
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+    .custom-text-preview.visible { opacity: 1; transform: translateY(0); }
+
+    .text-position-group {
+      overflow: hidden;
+      max-height: 0;
+      opacity: 0;
+      transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1), opacity 0.35s ease;
+    }
+    .text-position-group.visible { max-height: 160px; opacity: 1; }
+    .text-position-options { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.9rem; }
     .text-pos-btn {
       font-family: 'Syne Mono', monospace;
       font-size: 0.65rem;
@@ -885,17 +1081,14 @@
       border-color: var(--magenta);
       color: var(--magenta);
     }
-    .text-pos-btn.hidden { display: none; }
 
     /* ─── RESPONSIVE ─── */
     @media (max-width: 1024px) {
-      .merch-hero { min-height: 65vh; }
-      .merch-hero-content { padding: 0 3rem 3.5rem; }
+      .merch-hero-h1 { font-size: clamp(4rem, 13vw, 9rem); }
       .merch-section { grid-template-columns: 1fr; gap: 2rem; padding: 6rem 3rem; }
       .merch-preview { position: static; order: -1; }
       .merch-configurator { order: 1; }
       .mockup-stage { max-width: 260px; }
-      .order-inner { grid-template-columns: 1fr; gap: 3rem; }
     }
 
     @media (max-width: 900px) {
@@ -909,50 +1102,534 @@
     @media (max-width: 768px) {
       :root { --muted: rgba(240,234,224,0.72); }
       /* ── HERO ── */
-      .merch-hero { min-height: 55vh; }
-      .merch-hero-content { padding: 0 1.8rem 3rem; }
-      .merch-hero-h1 { font-size: clamp(3.8rem, 14vw, 6rem); }
-      .merch-hero-graham { font-size: clamp(2rem, 8vw, 3.2rem); right: 3%; bottom: 22%; }
+      .merch-hero { padding: 7rem 1.5rem 3.5rem; }
+      .merch-hero-eyebrow { font-size: 0.7rem; letter-spacing: 0.38em; }
+      .merch-hero-h1 { font-size: clamp(3.5rem, 16vw, 6.5rem); margin-bottom: 1.5rem; }
+      .merch-hero-tagline { margin-bottom: 2.2rem; }
 
       /* ── CONFIGURATOR ── */
-      .merch-section { padding: 3rem 1.5rem; gap: 2rem; }
-      .merch-preview { order: -1; }
-      .merch-configurator { order: 1; }
+      .merch-section { display: flex; flex-direction: column; padding: 0; gap: 0; }
 
-      /* Mockup prominent on mobile */
-      .mockup-stage { max-width: 100%; width: 200px; }
+      /* Sticky live preview at top */
+      .merch-preview {
+        order: -1;
+        padding: 0.6rem 1.5rem 0.5rem;
+        position: sticky;
+        top: 62px;
+        z-index: 50;
+        background: var(--black);
+        border-bottom: 1px solid rgba(240,234,224,0.07);
+      }
+      .merch-configurator { order: 1; padding: 1.2rem 1.5rem 6rem; }
 
-      /* Product tabs */
-      .product-tabs { flex-wrap: wrap; gap: 0.4rem; }
-      .product-tab {
-        padding: 0.65rem 1.1rem;
-        font-size: 0.62rem;
-        min-height: 44px;
+      /* Mockup — compact thumbnail on mobile */
+      .mockup-stage { max-width: 80px; width: 80px; margin: 0 auto; }
+      .preview-label { margin-top: 0.4rem; }
+      .view-toggle { margin-bottom: 0.3rem; }
+      .view-toggle-btn { font-size: 0.55rem; padding: 0.3rem 0.7rem; }
+
+      /* Mobile step flow */
+      .mobile-step-progress { display: block; margin-bottom: 1.6rem; }
+      .mobile-step { display: none; }
+      .mobile-step.active { display: block; }
+      .mobile-step-nav {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-top: 2rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid rgba(240,234,224,0.08);
       }
 
-      /* Design grid — 4 per row, bigger tap targets */
-      .design-grid { grid-template-columns: repeat(4, 1fr); gap: 0.5rem; }
-      .design-option { padding: 0.35rem; min-height: 44px; }
-      .design-option .design-num { font-size: 0.5rem; }
+      /* Product cards — 2x2 grid on mobile, large tap targets */
+      .product-cards { grid-template-columns: repeat(2, 1fr); gap: 0.8rem; }
+      .product-card { padding: 1.6rem 0.8rem 1.3rem; }
+      .product-card-icon { width: 56px; height: 56px; }
+      .product-card-name { font-size: 1.15rem; }
+      .product-card-price { font-size: 0.62rem; }
+      .product-card-tagline { font-size: 0.66rem; }
 
-      /* Colour swatches — bigger touch targets */
-      .colour-swatch { width: 38px; height: 38px; }
-      .colour-swatches { gap: 0.85rem; }
+      /* Design grid — 2 columns, big tap targets */
+      .design-grid { grid-template-columns: repeat(2, 1fr); gap: 0.9rem; }
+      .design-option { padding: 0.6rem; }
+      .design-label { font-size: 0.6rem; padding-top: 1rem; }
+      .design-scatter-grid { gap: 1rem; }
+      .design-scatter-item img { width: 84px; height: 84px; }
 
-      /* Size buttons */
-      .size-btn { min-height: 44px; padding: 0.6rem 1rem; font-size: 0.68rem; }
+      /* Colour swatches — large, centered, easy to tap */
+      .colour-swatches { justify-content: center; gap: 2.2rem; }
+      .swatch-dot { width: 64px; height: 64px; }
 
-      /* Placement + text position buttons */
-      .placement-btn, .text-pos-btn { min-height: 44px; padding: 0.6rem 1rem; }
+      /* Size buttons — full width row */
+      .size-options { flex-wrap: nowrap; gap: 0.5rem; }
+      .size-btn { flex: 1; min-width: 0; min-height: 52px; padding: 0.7rem 0; font-size: 1.05rem; }
+      .size-btn.one-size { flex: 0 1 auto; padding: 0.85rem 1.6rem; }
 
-      /* Order section */
-      .order-section { padding: 4rem 1.8rem; }
-      .order-inner { grid-template-columns: 1fr; gap: 2.5rem; }
-      .form-row { grid-template-columns: 1fr; }
+      /* Placement buttons — full width row, same pill style as size */
+      .placement-options { flex-wrap: nowrap; gap: 0.5rem; }
+      .placement-btn { flex: 1; min-width: 0; min-height: 48px; padding: 0.7rem 0.3rem; font-size: 0.95rem; }
+      .text-pos-btn { min-height: 44px; padding: 0.6rem 0.9rem; font-size: 0.64rem; }
+
+      /* Skip links only make sense in the mobile step-by-step flow */
+      .skip-step-link { display: inline-block; }
 
       /* Footer */
       footer { grid-template-columns: 1fr; padding: 3rem 1.8rem; gap: 2rem; }
       .footer-bottom { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+    }
+
+    /* ─── FEATURED DROP ─── */
+    .featured-drop {
+      background: var(--dark);
+      border-top: 1px solid var(--magenta-dim);
+      border-bottom: 1px solid var(--magenta-dim);
+      padding: 5rem;
+    }
+    .featured-drop-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      max-width: 1100px;
+      margin: 0 auto;
+      align-items: center;
+    }
+    .featured-drop-visual {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .featured-tshirt {
+      width: 100%;
+      max-width: 300px;
+      filter: drop-shadow(0 24px 64px rgba(255,29,188,0.18));
+      transition: filter 0.3s;
+    }
+    .featured-tshirt:hover { filter: drop-shadow(0 32px 80px rgba(255,29,188,0.28)); }
+    .featured-eyebrow {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.38em;
+      text-transform: uppercase;
+      color: var(--magenta);
+      margin-bottom: 1.2rem;
+    }
+    .featured-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(4rem, 6vw, 7.5rem);
+      line-height: 0.88;
+      letter-spacing: 0.01em;
+      color: var(--off-white);
+      margin-bottom: 1.2rem;
+    }
+    .featured-title .outline {
+      -webkit-text-stroke: 2px var(--magenta);
+      color: transparent;
+      display: block;
+    }
+    .featured-desc {
+      font-size: 1rem;
+      line-height: 1.75;
+      color: var(--muted);
+      margin-bottom: 2rem;
+    }
+    .featured-btn {
+      display: inline-block;
+      transition: transform 0.18s, box-shadow 0.18s;
+    }
+    .featured-btn:hover {
+      transform: translate(-3px, -3px);
+      box-shadow: 5px 5px 0 var(--off-white);
+    }
+    @media (max-width: 768px) {
+      .featured-drop { padding: 3rem 1.5rem; }
+      .featured-drop-inner { grid-template-columns: 1fr; gap: 2rem; }
+      .featured-drop-visual { display: none; }
+    }
+
+    /* ─── STICKY ORDER BAR (mobile) ─── */
+    .sticky-order-bar {
+      display: none;
+    }
+    @media (max-width: 768px) {
+      .sticky-order-bar {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        position: fixed;
+        bottom: 0; left: 0; right: 0;
+        background: rgba(17,17,17,0.97);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border-top: 2px solid var(--magenta);
+        padding: 0.8rem 1.25rem;
+        padding-bottom: max(0.8rem, env(safe-area-inset-bottom));
+        z-index: 149;
+        transform: translateY(100%);
+        transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      .sticky-order-bar.visible { transform: translateY(0); }
+    }
+    .sticky-order-info {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      min-width: 0;
+    }
+    .sticky-color-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #1e1e1e;
+      border: 1.5px solid rgba(240,234,224,0.25);
+      flex-shrink: 0;
+      transition: background 0.3s;
+    }
+    .sticky-summary-text {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--off-white);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .sticky-order-btn {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      background: var(--magenta);
+      color: var(--black);
+      font-weight: 700;
+      border: none;
+      border-radius: 999px;
+      text-decoration: none;
+      padding: 0.75rem 1.3rem;
+      white-space: nowrap;
+      flex-shrink: 0;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.15s;
+    }
+    .sticky-order-btn:hover { opacity: 0.88; }
+    .sticky-order-btn:active { transform: scale(0.96); }
+
+    /* ─── FLOATING LABEL FORM ─── */
+    .order-form { gap: 1.6rem; }
+    .form-group-float {
+      position: relative;
+    }
+    .form-group-float input,
+    .form-group-float textarea {
+      width: 100%;
+      background: var(--mid);
+      border: none;
+      border-bottom: 2px solid rgba(240,234,224,0.16);
+      border-radius: 0;
+      color: var(--off-white);
+      font-family: 'Syne', sans-serif;
+      font-size: 0.95rem;
+      padding: 1.1rem 1rem 0.9rem;
+      transition: border-color 0.25s, padding-top 0.22s;
+      resize: vertical;
+      -webkit-appearance: none;
+    }
+    .form-group-float textarea { min-height: 96px; }
+    .form-group-float input::placeholder,
+    .form-group-float textarea::placeholder { color: var(--muted); opacity: 0.75; }
+    .form-group-float input:focus,
+    .form-group-float textarea:focus {
+      outline: none;
+      border-bottom-color: var(--magenta);
+    }
+    .form-group-float label {
+      position: absolute;
+      top: 0.9rem;
+      left: 1rem;
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--muted);
+      opacity: 0;
+      transform: translateY(4px);
+      pointer-events: none;
+      transition: opacity 0.2s ease, transform 0.2s ease, color 0.2s ease;
+    }
+    .form-group-float input:focus,
+    .form-group-float input:not(:placeholder-shown),
+    .form-group-float textarea:focus,
+    .form-group-float textarea:not(:placeholder-shown) {
+      padding-top: 1.65rem;
+      padding-bottom: 0.35rem;
+    }
+    .form-group-float input:focus + label,
+    .form-group-float input:not(:placeholder-shown) + label,
+    .form-group-float textarea:focus + label,
+    .form-group-float textarea:not(:placeholder-shown) + label {
+      opacity: 1;
+      transform: translateY(0);
+      top: 0.4rem;
+      color: var(--magenta);
+    }
+
+    /* ─── SUBMIT BUTTON ─── */
+    .btn-submit-order {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.15rem;
+      letter-spacing: 0.06em;
+      padding: 1.1rem 2rem;
+      transition: transform 0.18s, box-shadow 0.18s, opacity 0.18s;
+    }
+    .btn-submit-order .btn-submit-loading {
+      display: none;
+      align-items: center;
+      gap: 0.6rem;
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .btn-submit-order.loading .btn-submit-label { display: none; }
+    .btn-submit-order.loading .btn-submit-loading { display: inline-flex; }
+    .btn-submit-order.loading { cursor: default; opacity: 0.85; }
+    .btn-submit-spinner {
+      display: inline-block;
+      animation: spinPig 0.9s linear infinite;
+    }
+    @keyframes spinPig {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+    .form-submit .btn-submit-order:hover {
+      transform: translate(-3px, -3px);
+      box-shadow: 5px 5px 0 var(--off-white);
+      opacity: 1;
+    }
+
+    /* ─── PROGRESS DOTS ─── */
+    .progress-dots {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      margin-bottom: 0.6rem;
+    }
+    .progress-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: transparent;
+      border: 1.5px solid rgba(240,234,224,0.28);
+      padding: 0;
+      cursor: default;
+      transition: background 0.25s, border-color 0.25s, transform 0.15s;
+    }
+    .progress-dot.completed {
+      background: var(--magenta);
+      border-color: var(--magenta);
+      cursor: pointer;
+    }
+    .progress-dot.completed:hover { transform: scale(1.25); }
+    .progress-dot.current {
+      background: var(--magenta);
+      border-color: var(--magenta);
+      animation: dotPulse 1.7s ease-in-out infinite;
+    }
+    @keyframes dotPulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(255,29,188,0.55); }
+      50%      { box-shadow: 0 0 0 5px rgba(255,29,188,0); }
+    }
+
+    /* ─── SUCCESS OVERLAY ─── */
+    .success-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: var(--black);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.45s ease;
+    }
+    .success-overlay.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .confetti-layer {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    .confetti-piece {
+      position: absolute;
+      top: -12px;
+      width: 8px;
+      height: 14px;
+      opacity: 0.95;
+      animation-name: confettiFall;
+      animation-timing-function: cubic-bezier(0.4, 0.1, 0.6, 0.9);
+      animation-fill-mode: forwards;
+    }
+    @keyframes confettiFall {
+      0%   { transform: translateY(0) rotate(0deg); opacity: 1; }
+      85%  { opacity: 1; }
+      100% { transform: translateY(105vh) rotate(600deg); opacity: 0; }
+    }
+    .success-content {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 2rem 1.5rem;
+      max-width: 600px;
+      width: 100%;
+    }
+    .success-pig {
+      font-size: 3.5rem;
+      line-height: 1;
+      margin-bottom: 1.2rem;
+      display: block;
+      animation: successPop 0.65s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    }
+    @keyframes successPop {
+      from { transform: scale(0.3) rotate(-20deg); opacity: 0; }
+      to   { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+    .success-headline {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3.5rem, 15vw, 8rem);
+      line-height: 0.88;
+      letter-spacing: 0.02em;
+      color: var(--magenta);
+      margin-bottom: 1.4rem;
+      animation: successSlide 0.55s cubic-bezier(0.22, 1, 0.36, 1) both 0.15s;
+    }
+    @keyframes successSlide {
+      from { transform: translateY(20px); opacity: 0; }
+      to   { transform: translateY(0); opacity: 1; }
+    }
+    .success-sub {
+      font-size: 0.95rem;
+      font-style: italic;
+      line-height: 1.75;
+      color: var(--muted);
+      margin-bottom: 1.5rem;
+      max-width: 440px;
+      margin-left: auto;
+      margin-right: auto;
+      animation: successSlide 0.55s cubic-bezier(0.22, 1, 0.36, 1) both 0.25s;
+    }
+    .success-selection-tag {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--magenta);
+      padding: 0.6rem 1.4rem;
+      border: 1px solid var(--magenta-dim);
+      display: inline-block;
+      margin-bottom: 2rem;
+      animation: successSlide 0.55s cubic-bezier(0.22, 1, 0.36, 1) both 0.3s;
+    }
+    .success-actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      animation: successSlide 0.55s cubic-bezier(0.22, 1, 0.36, 1) both 0.4s;
+    }
+    .success-btn {
+      display: inline-block;
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 0.85rem 1.8rem;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s, background 0.2s, opacity 0.2s;
+    }
+    .success-btn-secondary {
+      color: var(--off-white);
+      border: 1px solid rgba(240,234,224,0.2);
+      background: none;
+    }
+    .success-btn-secondary:hover { border-color: var(--magenta); color: var(--magenta); }
+    .success-btn-primary {
+      color: var(--black);
+      background: var(--magenta);
+      border: 1px solid var(--magenta);
+      font-weight: 700;
+    }
+    .success-btn-primary:hover { opacity: 0.88; }
+
+    /* push chat toggle above order bar on mobile */
+    @media (max-width: 768px) {
+      #chat-widget { bottom: calc(1.2rem + 58px); }
+      #chat-panel { bottom: 58px; height: calc(85svh - 58px); }
+    }
+
+    /* ─── MOBILE STEP FLOW ─── */
+    .mobile-step-progress {
+      display: none;
+    }
+    .progress-label {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin: 0;
+    }
+    .mobile-step-nav {
+      display: none;
+    }
+    .step-back-btn {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      background: transparent;
+      border: 1px solid rgba(240,234,224,0.18);
+      color: var(--muted);
+      padding: 0.95rem 1.4rem;
+      cursor: pointer;
+      min-height: 54px;
+      transition: all 0.2s;
+    }
+    .step-back-btn:hover { color: var(--off-white); border-color: rgba(240,234,224,0.38); }
+    .step-back-btn:disabled { opacity: 0.3; cursor: default; pointer-events: none; }
+    .step-next-btn {
+      flex: 1;
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.78rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      background: var(--magenta);
+      border: none;
+      color: var(--black);
+      padding: 0.95rem 2rem;
+      cursor: pointer;
+      min-height: 54px;
+      font-weight: 700;
+      transition: opacity 0.2s, transform 0.15s;
+    }
+    .step-next-btn:active { transform: scale(0.98); }
+    .step-next-btn:hover { opacity: 0.88; }
+
+    /* Desktop: mobile-step is transparent to layout */
+    @media (min-width: 769px) {
+      .mobile-step { display: contents; }
+      .mobile-step-progress { display: none !important; }
+      .mobile-step-nav { display: none !important; }
     }
 
     /* ─── CHAT WIDGET ─── */
@@ -1159,18 +1836,16 @@
     <span class="bubble" style="left:22%; width:6px;  height:6px;  bottom:30%; animation-name:bubbleRiseB; animation-duration:7.3s; animation-delay:5.0s"></span>
     <span class="bubble" style="left:47%; width:9px;  height:9px;  bottom:0%;  animation-name:bubbleRiseA; animation-duration:8.7s; animation-delay:2.4s"></span>
 
-    <!-- "Ohhhh Graham" overlay — right side of hero -->
-    <p class="merch-hero-graham" aria-hidden="true">Ohhhh Graham</p>
-
-    <!-- Hero content — bottom left -->
+    <!-- Hero content — centered -->
     <div class="merch-hero-content">
-      <p class="merch-hero-eyebrow">// Limited Runs &nbsp;·&nbsp; Made To Order &nbsp;·&nbsp; No Bollocks</p>
+      <p class="merch-hero-eyebrow">Drop 001</p>
       <h1 class="merch-hero-h1">
         <span class="solid">Belly Pork</span>
         <span class="outline">Merch</span>
       </h1>
+      <p class="merch-hero-tagline">Limited runs. Made to order. Graham approved.</p>
       <div class="merch-hero-cta">
-        <a href="#configure" class="btn-primary">Build Your Order &darr;</a>
+        <a href="#configure" class="btn-primary">Configure Yours &rarr;</a>
       </div>
     </div>
 
@@ -1192,113 +1867,358 @@
     </div>
   </div>
 
+  <!-- FEATURED DROP -->
+  <section class="featured-drop">
+    <div class="featured-drop-inner">
+
+      <div class="featured-drop-visual">
+        <svg class="featured-tshirt" viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <clipPath id="feat-clip"><rect x="43" y="74" width="114" height="146"/></clipPath>
+            <filter id="feat-shadow"><feDropShadow dx="0" dy="10" stdDeviation="18" flood-color="rgba(255,29,188,0.2)"/></filter>
+            <linearGradient id="feat-lat" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%"   stop-color="rgba(0,0,0,0.28)"/>
+              <stop offset="50%"  stop-color="rgba(255,255,255,0.04)"/>
+              <stop offset="100%" stop-color="rgba(0,0,0,0.28)"/>
+            </linearGradient>
+            <linearGradient id="feat-vert" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%"   stop-color="rgba(255,255,255,0.08)"/>
+              <stop offset="100%" stop-color="rgba(0,0,0,0.14)"/>
+            </linearGradient>
+          </defs>
+          <path d="M 63 12 C 71 26 100 30 100 30 C 100 30 129 26 137 12 L 153 22 L 196 14 L 200 66 L 157 76 L 157 218 L 43 218 L 43 76 L 0 66 L 4 14 Z" fill="#1e1e1e" filter="url(#feat-shadow)"/>
+          <path d="M 4 14 L 0 66 L 43 76 L 55 30 Z" fill="rgba(0,0,0,0.18)"/>
+          <path d="M 196 14 L 200 66 L 157 76 L 145 30 Z" fill="rgba(0,0,0,0.18)"/>
+          <path d="M 63 12 C 71 26 100 30 100 30 C 100 30 129 26 137 12 L 153 22 L 196 14 L 200 66 L 157 76 L 157 218 L 43 218 L 43 76 L 0 66 L 4 14 Z" fill="url(#feat-lat)"/>
+          <path d="M 63 12 C 71 26 100 30 100 30 C 100 30 129 26 137 12 L 153 22 L 196 14 L 200 66 L 157 76 L 157 218 L 43 218 L 43 76 L 0 66 L 4 14 Z" fill="url(#feat-vert)"/>
+          <path d="M 65 13 C 73 27 100 31 100 31 C 100 31 127 27 135 13" fill="none" stroke="rgba(0,0,0,0.4)" stroke-width="7" stroke-linecap="round"/>
+          <path d="M 65 13 C 73 27 100 31 100 31 C 100 31 127 27 135 13" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="5.5" stroke-linecap="round"/>
+          <line x1="63" y1="12" x2="43" y2="76" stroke="rgba(0,0,0,0.3)" stroke-width="1.2"/>
+          <line x1="137" y1="12" x2="157" y2="76" stroke="rgba(0,0,0,0.3)" stroke-width="1.2"/>
+          <image href="images/design1.png" x="56" y="84" width="88" height="88" clip-path="url(#feat-clip)" preserveAspectRatio="xMidYMid meet"/>
+          <path d="M 63 12 C 71 26 100 30 100 30 C 100 30 129 26 137 12 L 153 22 L 196 14 L 200 66 L 157 76 L 157 218 L 43 218 L 43 76 L 0 66 L 4 14 Z" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+        </svg>
+      </div>
+
+      <div class="featured-drop-copy">
+        <p class="featured-eyebrow">✦ Featured Drop</p>
+        <h2 class="featured-title">
+          <span class="outline">The Pig</span>
+          Tee
+        </h2>
+        <p class="featured-desc">Limited run. Made to order.<br>Graham approved.</p>
+        <a href="#configure" class="btn-primary featured-btn">Configure Yours &rarr;</a>
+      </div>
+
+    </div>
+  </section>
+
   <!-- MERCH CONFIGURATOR -->
   <section class="merch-section" id="configure">
 
     <!-- LEFT: OPTIONS -->
     <div class="merch-configurator">
 
-      <!-- Product type -->
-      <div class="config-group">
-        <p class="config-label">// 01 — Choose Product</p>
-        <div class="product-tabs">
-          <button class="product-tab active" data-product="tshirt">T-Shirt</button>
-          <button class="product-tab" data-product="sweatshirt">Sweatshirt</button>
-          <button class="product-tab" data-product="cap">Cap</button>
+      <!-- Mobile progress indicator -->
+      <div class="mobile-step-progress" id="mobile-step-progress">
+        <div class="progress-dots" id="progress-dots" role="tablist" aria-label="Configurator progress">
+          <button type="button" class="progress-dot current" data-step="1" aria-label="Step 1"></button>
+          <button type="button" class="progress-dot" data-step="2" aria-label="Step 2" disabled></button>
+          <button type="button" class="progress-dot" data-step="3" aria-label="Step 3" disabled></button>
+          <button type="button" class="progress-dot" data-step="4" aria-label="Step 4" disabled></button>
+          <button type="button" class="progress-dot" data-step="5" aria-label="Step 5" disabled></button>
+          <button type="button" class="progress-dot" data-step="6" aria-label="Step 6" disabled></button>
         </div>
+        <p class="progress-label" id="progress-label">Step 1 of 6</p>
       </div>
 
-      <!-- Design selector -->
-      <div class="config-group">
-        <p class="config-label">// 02 — Choose Design</p>
-        <div class="design-grid">
-          <button class="design-option active" data-design="1" aria-label="Design 1">
-            <img src="images/design1.png" alt="Design 1" />
-            <span class="design-num">01</span>
-          </button>
-          <button class="design-option" data-design="2" aria-label="Design 2">
-            <img src="images/design2.png" alt="Design 2" />
-            <span class="design-num">02</span>
-          </button>
-          <button class="design-option" data-design="3" aria-label="Design 3">
-            <img src="images/design3.png" alt="Design 3" />
-            <span class="design-num">03</span>
-          </button>
-          <button class="design-option" data-design="4" aria-label="Design 4">
-            <img src="images/design4.png" alt="Design 4" />
-            <span class="design-num">04</span>
-          </button>
-          <button class="design-option" data-design="5" aria-label="Design 5">
-            <img src="images/design5.png" alt="Design 5" />
-            <span class="design-num">05</span>
-          </button>
-          <button class="design-option" data-design="6" aria-label="Design 6">
-            <img src="images/design6.png" alt="Design 6" />
-            <span class="design-num">06</span>
-          </button>
-        </div>
-      </div>
-
-      <!-- Colour selector -->
-      <div class="config-group">
-        <p class="config-label">// 03 — Choose Colour</p>
-        <div class="colour-row">
-          <div class="colour-swatches">
-            <button class="colour-swatch active" data-colour="black" data-colour-value="#1e1e1e" data-colour-name="Black" aria-label="Black"></button>
-            <button class="colour-swatch" data-colour="white" data-colour-value="#e8dfd0" data-colour-name="White" aria-label="White"></button>
-            <button class="colour-swatch" data-colour="magenta" data-colour-value="#FF1DBC" data-colour-name="Magenta" aria-label="Magenta"></button>
+      <!-- ── STEP 1: Product ── -->
+      <div class="mobile-step active" data-step="1" id="mobile-step-1">
+        <div class="config-group">
+          <p class="config-label">// 01 — WHAT ARE YOU AFTER, BOY</p>
+          <div class="product-cards">
+            <button class="product-card active" data-product="tshirt">
+              <span class="product-card-badge">Selected</span>
+              <div class="product-card-icon">
+                <svg viewBox="0 0 56 62" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M18 3C20 9 28 11 28 11C28 11 36 9 38 3L46 6.5L56 3.5L56 21L43 23.5L43 62L13 62L13 23.5L0 21L0 3.5Z" fill="currentColor"/>
+                </svg>
+              </div>
+              <p class="product-card-name">T-Shirt</p>
+              <p class="product-card-price">£25</p>
+              <p class="product-card-tagline">Lip-smackingly good. Graham recommends.</p>
+            </button>
+            <button class="product-card" data-product="sweatshirt">
+              <span class="product-card-badge">Selected</span>
+              <div class="product-card-icon">
+                <svg viewBox="0 0 56 66" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M20 3C22 12 26 16 28 16C30 16 34 12 36 3L44 6L56 2.5L56 19L45 21.5L44 61L12 61L11 21.5L0 19L0 2.5Z" fill="currentColor"/>
+                  <rect x="11" y="57" width="34" height="6" rx="1.5" fill="currentColor" opacity="0.45"/>
+                </svg>
+              </div>
+              <p class="product-card-name">Sweatshirt</p>
+              <p class="product-card-price">£45</p>
+              <p class="product-card-tagline">Wholly comfortable, boy. Graham recommends.</p>
+            </button>
+            <button class="product-card" data-product="cap">
+              <span class="product-card-badge">Selected</span>
+              <div class="product-card-icon">
+                <svg viewBox="0 0 56 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M5 26C5 12 15 2 28 2C41 2 51 12 51 26Z" fill="currentColor"/>
+                  <path d="M2 27Q28 32 54 27L52 35Q28 39 4 35Z" fill="currentColor" opacity="0.7"/>
+                </svg>
+              </div>
+              <p class="product-card-name">Cap</p>
+              <p class="product-card-price">£30</p>
+              <p class="product-card-tagline">Looks the part. Graham recommends.</p>
+            </button>
+            <button class="product-card" data-product="sticker">
+              <span class="product-card-badge">Selected</span>
+              <div class="product-card-icon">
+                <svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M4 4H40L52 16V52H4Z" fill="currentColor"/>
+                  <path d="M40 4V16H52Z" fill="currentColor" opacity="0.45"/>
+                </svg>
+              </div>
+              <p class="product-card-name">Sticker Pack</p>
+              <p class="product-card-price">£8</p>
+              <p class="product-card-tagline">Stick 'em everywhere, bor. Graham recommends.</p>
+            </button>
           </div>
-          <span class="colour-name-label" id="colour-name-display">Black</span>
         </div>
       </div>
 
-      <!-- Size selector -->
-      <div class="config-group">
-        <p class="config-label">// 04 — Choose Size</p>
-        <div class="size-options" id="size-options">
-          <button class="size-btn" data-size="S">S</button>
-          <button class="size-btn active" data-size="M">M</button>
-          <button class="size-btn" data-size="L">L</button>
-          <button class="size-btn" data-size="XL">XL</button>
-          <button class="size-btn" data-size="XXL">XXL</button>
+      <!-- ── STEP 2: Design ── -->
+      <div class="mobile-step" data-step="2" id="mobile-step-2">
+        <div class="config-group">
+          <p class="config-label">// 02 — PICK YOUR DESIGN, BOY</p>
+          <div class="design-grid">
+            <button class="design-option active" data-design="1" aria-label="The Pig">
+              <img src="images/design1.png" alt="The Pig" />
+              <span class="design-label">The Pig</span>
+            </button>
+            <button class="design-option" data-design="2" aria-label="Hops &amp; Glory">
+              <img src="images/design2.png" alt="Hops &amp; Glory" />
+              <span class="design-label">Hops &amp; Glory</span>
+            </button>
+            <button class="design-option" data-design="3" aria-label="Suffolk Bred">
+              <img src="images/design3.png" alt="Suffolk Bred" />
+              <span class="design-label">Suffolk Bred</span>
+            </button>
+            <button class="design-option" data-design="4" aria-label="Pig Out">
+              <img src="images/design4.png" alt="Pig Out" />
+              <span class="design-label">Pig Out</span>
+            </button>
+            <button class="design-option" data-design="5" aria-label="Brewing Co">
+              <img src="images/design5.png" alt="Brewing Co" />
+              <span class="design-label">Brewing Co</span>
+            </button>
+            <button class="design-option" data-design="6" aria-label="Graham's Pick">
+              <img src="images/design6.png" alt="Graham's Pick" />
+              <span class="design-label">Graham's Pick</span>
+            </button>
+          </div>
+
+          <!-- Sticker Pack: all designs included, nothing to select -->
+          <div class="design-scatter" id="design-scatter">
+            <p class="design-scatter-note">All included in your pack</p>
+            <div class="design-scatter-grid">
+              <div class="design-scatter-item"><img src="images/design1.png" alt="The Pig" /><span>The Pig</span></div>
+              <div class="design-scatter-item"><img src="images/design2.png" alt="Hops &amp; Glory" /><span>Hops &amp; Glory</span></div>
+              <div class="design-scatter-item"><img src="images/design3.png" alt="Suffolk Bred" /><span>Suffolk Bred</span></div>
+              <div class="design-scatter-item"><img src="images/design4.png" alt="Pig Out" /><span>Pig Out</span></div>
+              <div class="design-scatter-item"><img src="images/design5.png" alt="Brewing Co" /><span>Brewing Co</span></div>
+              <div class="design-scatter-item"><img src="images/design6.png" alt="Graham's Pick" /><span>Graham's Pick</span></div>
+            </div>
+          </div>
         </div>
       </div>
 
-      <!-- Design placement (t-shirt + sweatshirt) -->
-      <div class="placement-group" id="design-placement-group">
-        <p class="config-label">// 05 — Design Placement</p>
-        <div class="placement-options">
-          <button class="placement-btn active" data-placement="front">Front</button>
-          <button class="placement-btn" data-placement="back">Back</button>
-          <button class="placement-btn" data-placement="both">Front &amp; Back</button>
+      <!-- ── STEP 3: Colour ── -->
+      <div class="mobile-step" data-step="3" id="mobile-step-3">
+        <div class="config-group">
+          <p class="config-label">// 03 — CHOOSE YOUR COLOUR, BOY</p>
+          <div class="colour-swatches">
+            <button class="colour-swatch active" data-colour="black" data-colour-value="#080808" data-colour-name="Black" aria-label="Black">
+              <span class="swatch-dot"></span>
+              <span class="colour-swatch-name">Black</span>
+            </button>
+            <button class="colour-swatch" data-colour="white" data-colour-value="#F0EAE0" data-colour-name="White" aria-label="White">
+              <span class="swatch-dot"></span>
+              <span class="colour-swatch-name">White</span>
+            </button>
+            <button class="colour-swatch" data-colour="magenta" data-colour-value="#FF1DBC" data-colour-name="Magenta" aria-label="Magenta">
+              <span class="swatch-dot"></span>
+              <span class="colour-swatch-name">Magenta</span>
+            </button>
+          </div>
         </div>
       </div>
 
-      <!-- Custom text -->
-      <div class="config-group">
-        <p class="config-label">// 06 — Custom Text <span style="font-weight:400;color:var(--muted)">(optional)</span></p>
-        <div class="text-input-wrap">
-          <input
-            type="text"
-            id="custom-text-input"
-            maxlength="20"
-            placeholder="e.g. BELLY PORK CREW"
-            autocomplete="off"
-          />
-          <span class="text-char-count" id="text-char-count">0/20</span>
-        </div>
-        <p class="config-label" style="margin-bottom:0.6rem">// Text Position</p>
-        <div class="text-position-options">
-          <button class="text-pos-btn" data-pos="top">Top</button>
-          <button class="text-pos-btn active" data-pos="middle">Middle</button>
-          <button class="text-pos-btn" data-pos="bottom">Bottom</button>
+      <!-- ── STEP 4: Size ── -->
+      <div class="mobile-step" data-step="4" id="mobile-step-4">
+        <div class="config-group" id="size-step-group">
+          <p class="config-label">// 04 — YOUR SIZE, BOY</p>
+          <div class="size-options" id="size-options">
+            <button class="size-btn" data-size="S">S</button>
+            <button class="size-btn active" data-size="M">M</button>
+            <button class="size-btn" data-size="L">L</button>
+            <button class="size-btn" data-size="XL">XL</button>
+            <button class="size-btn" data-size="XXL">XXL</button>
+          </div>
         </div>
       </div>
 
-      <!-- CTA -->
-      <div class="order-cta-wrap">
-        <p>Happy with your choices? Scroll down to place your order request — no payment needed up front, we'll be in touch to confirm.</p>
-        <a href="#order" class="btn-primary">Place Order Request</a>
+      <!-- ── STEP 5: Placement + Custom Text + CTA ── -->
+      <div class="mobile-step" data-step="5" id="mobile-step-5">
+        <div class="config-group">
+          <p class="config-label">// 05 — MAKE IT YOURS, BOY</p>
+
+          <div class="placement-group" id="design-placement-group">
+            <p class="config-sublabel">Placement</p>
+            <div class="placement-options">
+              <button class="placement-btn active" data-placement="front">Front</button>
+              <button class="placement-btn" data-placement="back">Back</button>
+              <button class="placement-btn" data-placement="both">Front &amp; Back</button>
+            </div>
+            <button type="button" class="skip-step-link" data-skip="placement">Skip this &rarr;</button>
+          </div>
+
+          <div class="custom-text-group">
+            <p class="config-sublabel">Custom Text <span class="config-sublabel-note">(optional)</span></p>
+            <div class="text-input-wrap">
+              <input
+                type="text"
+                id="custom-text-input"
+                maxlength="20"
+                placeholder="e.g. BELLY PORK, YOUR NAME, BROWNY IS RUBBISH..."
+                autocomplete="off"
+              />
+              <span class="text-char-count" id="text-char-count">20 left</span>
+            </div>
+            <p class="custom-text-note">Printed in Belly Pork magenta. Obviously.</p>
+            <p class="custom-text-preview" id="custom-text-preview" aria-hidden="true"></p>
+
+            <div class="text-position-group" id="text-position-group">
+              <p class="config-sublabel">Text Position</p>
+              <div class="text-position-options">
+                <button class="text-pos-btn" data-pos="top">Top</button>
+                <button class="text-pos-btn active" data-pos="middle">Centre</button>
+                <button class="text-pos-btn" data-pos="bottom">Bottom</button>
+              </div>
+            </div>
+
+            <button type="button" class="skip-step-link" data-skip="text">Skip this &rarr;</button>
+          </div>
+        </div>
+        <div class="order-cta-wrap">
+          <p>Happy with your choices? Let's get it requested — no payment needed up front, we'll be in touch to confirm.</p>
+          <button type="button" class="btn-primary" id="place-order-cta">Continue to Order &rarr;</button>
+        </div>
+      </div>
+
+      <!-- ── STEP 6: Order Summary + Form ── -->
+      <div class="mobile-step" data-step="6" id="mobile-step-6">
+        <div class="config-group">
+          <p class="config-label">// 06 — NEARLY THERE, BOY</p>
+          <div class="order-intro">
+            <p>Fill in the form and we'll confirm your order and sort out payment. <strong>No money changes hands until we've spoken.</strong></p>
+            <p>We batch orders every few weeks, so lead time is typically 2&ndash;3 weeks. Graham will let you know if his enthusiasm for packaging has waned.</p>
+          </div>
+
+          <!-- Order summary (synced with configurator) -->
+          <div class="order-summary">
+            <p class="order-summary-heading">Your Order</p>
+            <div class="order-summary-row">
+              <span>Product</span>
+              <span id="sum-product">T-Shirt &middot; £25</span>
+            </div>
+            <div class="order-summary-row">
+              <span>Design</span>
+              <span id="sum-design">The Pig</span>
+            </div>
+            <div class="order-summary-row" id="sum-placement-row" style="display:none">
+              <span>Placement</span>
+              <span id="sum-placement">Front</span>
+            </div>
+            <div class="order-summary-row">
+              <span>Colour</span>
+              <span id="sum-colour">Black</span>
+            </div>
+            <div class="order-summary-row" id="sum-size-row">
+              <span>Size</span>
+              <span id="sum-size">M</span>
+            </div>
+            <div class="order-summary-row" id="sum-text-row" style="display:none">
+              <span>Custom Text</span>
+              <span id="sum-text">&mdash;</span>
+            </div>
+            <div class="order-summary-row" id="sum-text-pos-row" style="display:none">
+              <span>Text Position</span>
+              <span id="sum-text-pos">&mdash;</span>
+            </div>
+          </div>
+
+          <!-- Netlify form -->
+          <form
+            class="order-form"
+            id="order-form"
+            name="merch-order"
+            method="POST"
+            data-netlify="true"
+            netlify-honeypot="bot-field"
+          >
+            <!-- Hidden fields for Netlify -->
+            <input type="hidden" name="form-name" value="merch-order" />
+            <p style="display:none"><label>Don't fill this in: <input name="bot-field" /></label></p>
+
+            <!-- Selection carried through to form -->
+            <input type="hidden" name="product" id="form-product" value="T-Shirt" />
+            <input type="hidden" name="design" id="form-design" value="Design 1" />
+            <input type="hidden" name="design-placement" id="form-placement" value="Front" />
+            <input type="hidden" name="colour" id="form-colour" value="Black" />
+            <input type="hidden" name="size" id="form-size" value="M" />
+            <input type="hidden" name="custom-text" id="form-custom-text" value="" />
+            <input type="hidden" name="text-position" id="form-text-position" value="Chest" />
+
+            <div class="form-group-float">
+              <input type="text" id="field-name" name="name" placeholder="Your name, not Browny's" required />
+              <label for="field-name">Full Name</label>
+            </div>
+
+            <div class="form-group-float">
+              <input type="email" id="field-email" name="email" placeholder="your@email.com" required />
+              <label for="field-email">Email</label>
+            </div>
+
+            <div class="form-group-float">
+              <textarea id="field-address" name="address" placeholder="Where shall we send it, boy" rows="3" required></textarea>
+              <label for="field-address">Delivery Address</label>
+            </div>
+
+            <div class="form-group-float">
+              <textarea id="field-notes" name="notes" placeholder="Anything else Graham should know" rows="3"></textarea>
+              <label for="field-notes">Notes (optional)</label>
+            </div>
+
+            <div class="form-submit">
+              <button type="submit" class="btn-primary btn-submit-order">
+                <span class="btn-submit-label">Request This &rarr;</span>
+                <span class="btn-submit-loading">
+                  <span class="btn-submit-spinner" aria-hidden="true">&#128058;</span>
+                  Graham is noting this down&hellip;
+                </span>
+              </button>
+            </div>
+            <p class="form-note">No payment now &nbsp;&middot;&nbsp; Made to order &nbsp;&middot;&nbsp; 2&ndash;3 weeks &nbsp;&middot;&nbsp; Graham approved</p>
+          </form>
+        </div>
+      </div>
+
+      <!-- Mobile step navigation -->
+      <div class="mobile-step-nav" id="mobile-step-nav">
+        <button class="step-back-btn" id="step-back" disabled>← Back</button>
+        <button class="step-next-btn" id="step-next">Next →</button>
       </div>
 
     </div>
@@ -1723,111 +2643,29 @@
 
   </section>
 
-  <!-- ORDER FORM -->
-  <section class="order-section" id="order">
-    <div class="order-inner">
-
-      <div>
-        <p class="section-label">// Place Your Order</p>
-        <h2 class="section-title">Request<br>Your Merch</h2>
-        <div class="order-intro">
-          <p>Fill in the form and we'll confirm your order and sort out payment. <strong>No money changes hands until we've spoken.</strong></p>
-          <p>We batch orders every few weeks, so lead time is typically 2–3 weeks. Graham will let you know if his enthusiasm for packaging has waned.</p>
-        </div>
-
-        <!-- Order summary (synced with configurator) -->
-        <div class="order-summary">
-          <p class="order-summary-title">// Your Selection</p>
-          <div class="order-summary-row">
-            <span>Product</span>
-            <span id="sum-product">T-Shirt</span>
-          </div>
-          <div class="order-summary-row">
-            <span>Design</span>
-            <span id="sum-design">Design 1</span>
-          </div>
-          <div class="order-summary-row" id="sum-placement-row" style="display:none">
-            <span>Placement</span>
-            <span id="sum-placement">Front</span>
-          </div>
-          <div class="order-summary-row">
-            <span>Colour</span>
-            <span id="sum-colour">Black</span>
-          </div>
-          <div class="order-summary-row">
-            <span>Size</span>
-            <span id="sum-size">M</span>
-          </div>
-          <div class="order-summary-row">
-            <span>Custom Text</span>
-            <span id="sum-text">—</span>
-          </div>
-          <div class="order-summary-row" id="sum-text-pos-row">
-            <span>Text Position</span>
-            <span id="sum-text-pos">—</span>
-          </div>
-        </div>
-      </div>
-
-      <div>
-        <!-- Netlify form -->
-        <form
-          class="order-form"
-          id="order-form"
-          name="merch-order"
-          method="POST"
-          data-netlify="true"
-          netlify-honeypot="bot-field"
-        >
-          <!-- Hidden fields for Netlify -->
-          <input type="hidden" name="form-name" value="merch-order" />
-          <p style="display:none"><label>Don't fill this in: <input name="bot-field" /></label></p>
-
-          <!-- Selection carried through to form -->
-          <input type="hidden" name="product" id="form-product" value="T-Shirt" />
-          <input type="hidden" name="design" id="form-design" value="Design 1" />
-          <input type="hidden" name="design-placement" id="form-placement" value="Front" />
-          <input type="hidden" name="colour" id="form-colour" value="Black" />
-          <input type="hidden" name="size" id="form-size" value="M" />
-          <input type="hidden" name="custom-text" id="form-custom-text" value="" />
-          <input type="hidden" name="text-position" id="form-text-position" value="Chest" />
-
-          <div class="form-row">
-            <div class="form-group">
-              <label for="field-name">Your Name</label>
-              <input type="text" id="field-name" name="name" placeholder="First & last name" required />
-            </div>
-            <div class="form-group">
-              <label for="field-email">Email Address</label>
-              <input type="email" id="field-email" name="email" placeholder="you@example.com" required />
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label for="field-address">Delivery Address</label>
-            <textarea id="field-address" name="address" placeholder="Street, town, postcode, country" rows="3" required></textarea>
-          </div>
-
-          <div class="form-group">
-            <label for="field-notes">Notes (optional)</label>
-            <textarea id="field-notes" name="notes" placeholder="Anything else we should know — special instructions, gift wrap, questions for Graham..." rows="3"></textarea>
-          </div>
-
-          <div class="form-submit">
-            <button type="submit" class="btn-primary">Send Order Request &rarr;</button>
-          </div>
-          <p class="form-note">No payment required now &mdash; we'll be in touch to confirm your order and arrange payment.</p>
-        </form>
-
-        <!-- Success state -->
-        <div class="form-success" id="form-success">
-          <h3>Order Received.</h3>
-          <p>Cheers &mdash; we've got your request. Someone (probably not Graham) will be in touch within a couple of days to confirm and sort payment.</p>
-        </div>
-      </div>
-
+  <!-- STICKY ORDER BAR (mobile) -->
+  <div class="sticky-order-bar" id="sticky-order-bar">
+    <div class="sticky-order-info">
+      <span class="sticky-color-dot" id="sticky-color-dot"></span>
+      <p class="sticky-summary-text" id="sticky-summary-text">Black T-Shirt &middot; The Pig &middot; M</p>
     </div>
-  </section>
+    <button type="button" class="sticky-order-btn" id="sticky-order-btn">Continue &rarr;</button>
+  </div>
+
+  <!-- SUCCESS OVERLAY -->
+  <div class="success-overlay" id="success-overlay" aria-hidden="true">
+    <div class="confetti-layer" id="confetti-layer"></div>
+    <div class="success-content">
+      <span class="success-pig">🐷</span>
+      <h2 class="success-headline">ORDERED, BOY.</h2>
+      <p class="success-sub">"Right then. Someone competent will be in touch. It won't be Browny &mdash; I've hidden his phone."</p>
+      <div class="success-selection-tag" id="success-selection-tag">Black T-Shirt &middot; The Pig &middot; M</div>
+      <div class="success-actions">
+        <a href="index.html" class="success-btn success-btn-secondary">Back to Site</a>
+        <button type="button" class="success-btn success-btn-primary" id="success-share">Share Your Order</button>
+      </div>
+    </div>
+  </div>
 
   <!-- FOOTER -->
   <footer>
@@ -1873,7 +2711,7 @@
       product: 'tshirt',
       design: '1',
       colour: 'black',
-      colourValue: '#1e1e1e',
+      colourValue: '#080808',
       colourName: 'Black',
       size: 'M',
       tshirtView: 'front',
@@ -1938,13 +2776,28 @@
         document.getElementById('view-toggle').classList.add('visible');
         document.getElementById('design-placement-group').classList.add('visible');
       } else {
-        document.getElementById('svg-' + product).classList.add('active');
+        const svg = document.getElementById('svg-' + product);
+        if (svg) svg.classList.add('active');
         document.getElementById('view-toggle').classList.remove('visible');
         document.getElementById('design-placement-group').classList.remove('visible');
       }
 
       updateTextPositionButtons(product);
       applyCustomText(state.customText);
+
+      // Sticker Pack: designs shown as "all included", colour step skipped entirely
+      const step2 = document.getElementById('mobile-step-2');
+      if (step2) step2.classList.toggle('sticker-mode', product === 'sticker');
+      const step3 = document.getElementById('mobile-step-3');
+      if (step3) step3.classList.toggle('hidden-for-sticker', product === 'sticker');
+
+      // Size step: not applicable to Cap or Sticker Pack — collapse it smoothly
+      const sizeGroup = document.getElementById('size-step-group');
+      if (sizeGroup) sizeGroup.classList.toggle('step-disabled', product === 'cap' || product === 'sticker');
+
+      // Placement + custom text step: not applicable to Sticker Pack
+      const step5 = document.getElementById('mobile-step-5');
+      if (step5) step5.classList.toggle('hidden-for-sticker', product === 'sticker');
     }
 
     // ─── Toggle front/back view (t-shirt + sweatshirt) ───
@@ -2018,18 +2871,30 @@
       // All three positions (top/middle/bottom) work for all products — nothing to hide
     }
 
-    // ─── Sync preview label + order summary + hidden form fields ───
-    function syncUI() {
-      const productNames = { tshirt: 'T-Shirt', sweatshirt: 'Sweatshirt', cap: 'Cap' };
-      const placementNames = { front: 'Front', back: 'Back', both: 'Front & Back' };
-      const posNames = { top: 'Top', middle: 'Middle', bottom: 'Bottom' };
-      const pName = productNames[state.product];
+    // ─── Design names ───
+    const designNames = { '1': 'The Pig', '2': 'Hops & Glory', '3': 'Suffolk Bred', '4': 'Pig Out', '5': 'Brewing Co', '6': "Graham's Pick" };
 
-      document.getElementById('preview-label-design').textContent = `Design ${state.design}`;
+    // ─── Sync preview label + order summary + hidden form fields + sticky bar ───
+    const PRICES = { tshirt: '£25', sweatshirt: '£45', cap: '£30', sticker: '£8' };
+
+    function syncUI() {
+      const productNames = { tshirt: 'T-Shirt', sweatshirt: 'Sweatshirt', cap: 'Cap', sticker: 'Sticker Pack' };
+      const placementNames = { front: 'Front', back: 'Back', both: 'Front & Back' };
+      const posNames = { top: 'Top', middle: 'Centre', bottom: 'Bottom' };
+      const pName = productNames[state.product];
+      const dName = designNames[state.design] || ('Design ' + state.design);
+
+      document.getElementById('preview-label-design').textContent = dName;
       document.getElementById('preview-label-detail').textContent = `${pName} · ${state.colourName} · ${state.size}`;
 
-      document.getElementById('sum-product').textContent = pName;
-      document.getElementById('sum-design').textContent = `Design ${state.design}`;
+      // Sticky order bar
+      const stickyText = document.getElementById('sticky-summary-text');
+      const stickyDot  = document.getElementById('sticky-color-dot');
+      if (stickyText) stickyText.textContent = `${state.colourName} ${pName} · ${dName} · ${state.size}`;
+      if (stickyDot)  stickyDot.style.background = state.colourValue;
+
+      document.getElementById('sum-product').textContent = `${pName} · ${PRICES[state.product]}`;
+      document.getElementById('sum-design').textContent = dName;
       document.getElementById('sum-colour').textContent = state.colourName;
       document.getElementById('sum-size').textContent = state.size;
       document.getElementById('sum-text').textContent = state.customText || '—';
@@ -2041,8 +2906,14 @@
         document.getElementById('sum-placement').textContent = placementNames[state.designPlacement];
       }
 
-      document.getElementById('form-product').value = pName;
-      document.getElementById('form-design').value = `Design ${state.design}`;
+      // Custom text rows only shown once text has actually been entered
+      const textRow = document.getElementById('sum-text-row');
+      if (textRow) textRow.style.display = state.customText ? '' : 'none';
+      const textPosRow = document.getElementById('sum-text-pos-row');
+      if (textPosRow) textPosRow.style.display = state.customText ? '' : 'none';
+
+      document.getElementById('form-product').value = `${pName} (${PRICES[state.product]})`;
+      document.getElementById('form-design').value = dName;
       document.getElementById('form-colour').value = state.colourName;
       document.getElementById('form-size').value = state.size;
       document.getElementById('form-custom-text').value = state.customText;
@@ -2057,6 +2928,9 @@
       if (product === 'cap') {
         container.innerHTML = '<button class="size-btn one-size active" data-size="One Size">One Size</button>';
         state.size = 'One Size';
+      } else if (product === 'sticker') {
+        container.innerHTML = '<button class="size-btn one-size active" data-size="Pack of 10">Pack of 10</button>';
+        state.size = 'Pack of 10';
       } else {
         const cur = SIZES_STANDARD.includes(state.size) ? state.size : DEFAULT_SIZE;
         container.innerHTML = SIZES_STANDARD.map(s =>
@@ -2067,10 +2941,10 @@
       }
     }
 
-    // ─── Event: product tabs ───
-    document.querySelectorAll('.product-tab').forEach(btn => {
+    // ─── Event: product cards ───
+    document.querySelectorAll('.product-card').forEach(btn => {
       btn.addEventListener('click', () => {
-        document.querySelectorAll('.product-tab').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.product-card').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         state.product = btn.dataset.product;
         applyProduct(state.product);
@@ -2098,7 +2972,6 @@
         state.colour     = btn.dataset.colour;
         state.colourValue = btn.dataset.colourValue;
         state.colourName  = btn.dataset.colourName;
-        document.getElementById('colour-name-display').textContent = state.colourName;
         applyColour(state.colourValue, state.colourName);
         syncUI();
       });
@@ -2137,7 +3010,14 @@
     document.getElementById('custom-text-input').addEventListener('input', e => {
       const text = e.target.value.slice(0, 20);
       e.target.value = text;
-      document.getElementById('text-char-count').textContent = `${text.length}/20`;
+      document.getElementById('text-char-count').textContent = `${20 - text.length} left`;
+
+      const preview = document.getElementById('custom-text-preview');
+      preview.textContent = text.toUpperCase();
+      preview.classList.toggle('visible', text.length > 0);
+
+      document.getElementById('text-position-group').classList.toggle('visible', text.length > 0);
+
       applyCustomText(text);
     });
 
@@ -2145,6 +3025,112 @@
     document.querySelectorAll('.text-pos-btn').forEach(btn => {
       btn.addEventListener('click', () => applyTextPosition(btn.dataset.pos));
     });
+
+    // ─── Event: "Skip this →" links (optional sub-sections, mobile flow) ───
+    document.querySelectorAll('.skip-step-link').forEach(btn => {
+      btn.addEventListener('click', () => document.getElementById('step-next').click());
+    });
+
+    // ─── Mobile step flow ───
+    const TOTAL_STEPS = 6;
+    let currentStep = 1;
+
+    function isMobile() { return window.innerWidth <= 768; }
+
+    // Some steps don't apply to every product — step past them in either direction.
+    // Colour (3): not applicable to Sticker Pack.
+    // Size (4): not applicable to Cap or Sticker Pack.
+    // Placement + Custom Text (5): not applicable to Sticker Pack.
+    function isStepSkipped(n) {
+      if (n === 3) return state.product === 'sticker';
+      if (n === 4) return state.product === 'cap' || state.product === 'sticker';
+      if (n === 5) return state.product === 'sticker';
+      return false;
+    }
+    function adjacentStep(from, dir) {
+      let n = from + dir;
+      while (n >= 1 && n <= TOTAL_STEPS && isStepSkipped(n)) n += dir;
+      return n;
+    }
+
+    function updateProgressDots() {
+      document.querySelectorAll('.progress-dot').forEach(dot => {
+        const n = parseInt(dot.dataset.step, 10);
+        const skipped = isStepSkipped(n);
+        dot.classList.toggle('completed', n < currentStep && !skipped);
+        dot.classList.toggle('current', n === currentStep);
+        dot.disabled = skipped || n >= currentStep;
+      });
+    }
+
+    function goToStep(n) {
+      if (n < 1 || n > TOTAL_STEPS) return;
+      document.getElementById('mobile-step-' + currentStep).classList.remove('active');
+      currentStep = n;
+      document.getElementById('mobile-step-' + currentStep).classList.add('active');
+
+      // Progress
+      updateProgressDots();
+      document.getElementById('progress-label').textContent = 'Step ' + currentStep + ' of ' + TOTAL_STEPS;
+
+      // Buttons
+      const backBtn = document.getElementById('step-back');
+      const nextBtn = document.getElementById('step-next');
+      backBtn.disabled = currentStep === 1;
+      const onFinalStep = adjacentStep(currentStep, 1) > TOTAL_STEPS;
+      nextBtn.textContent = onFinalStep ? 'Place Order →' : 'Next →';
+
+      const stickyBtn = document.getElementById('sticky-order-btn');
+      if (stickyBtn) stickyBtn.textContent = onFinalStep ? 'Request Order →' : 'Continue →';
+
+      // Scroll configurator to top when step changes on mobile
+      if (isMobile()) {
+        const section = document.getElementById('configure');
+        if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+
+    // Shared by the step-next pill, the sticky bar button and the step-5 CTA
+    function handlePrimaryAdvance() {
+      const next = adjacentStep(currentStep, 1);
+      if (next <= TOTAL_STEPS) {
+        goToStep(next);
+      } else {
+        document.getElementById('order-form').requestSubmit();
+      }
+    }
+
+    document.getElementById('step-back').addEventListener('click', () => goToStep(adjacentStep(currentStep, -1)));
+    document.getElementById('step-next').addEventListener('click', handlePrimaryAdvance);
+    document.getElementById('place-order-cta').addEventListener('click', handlePrimaryAdvance);
+
+    const stickyOrderBtn = document.getElementById('sticky-order-btn');
+    stickyOrderBtn.addEventListener('click', () => {
+      if (navigator.vibrate) navigator.vibrate(10);
+      handlePrimaryAdvance();
+    });
+
+    // Tap a completed dot to jump back to that step
+    document.querySelectorAll('.progress-dot').forEach(dot => {
+      dot.addEventListener('click', () => {
+        if (dot.classList.contains('completed')) goToStep(parseInt(dot.dataset.step, 10));
+      });
+    });
+
+    // Reveal the sticky bar (mobile) once the configurator is in view
+    const stickyBar = document.getElementById('sticky-order-bar');
+    if (stickyBar && 'IntersectionObserver' in window) {
+      const configureSection = document.getElementById('configure');
+      new IntersectionObserver(entries => {
+        entries.forEach(entry => stickyBar.classList.toggle('visible', entry.isIntersecting));
+      }, { threshold: 0.02 }).observe(configureSection);
+    } else if (stickyBar) {
+      stickyBar.classList.add('visible');
+    }
+
+    // Initialise progress indicator (without scrolling)
+    updateProgressDots();
+    document.getElementById('progress-label').textContent = 'Step 1 of ' + TOTAL_STEPS;
 
     // ─── Mobile nav toggle ───
     const burger = document.querySelector('.nav-burger');
@@ -2167,12 +3153,75 @@
     if (navOverlay) navOverlay.addEventListener('click', () => toggleMenu(false));
     mobileNav.querySelectorAll('a').forEach(link => link.addEventListener('click', () => toggleMenu(false)));
 
-    // ─── Netlify form submission ───
-    const orderForm  = document.getElementById('order-form');
-    const formSuccess = document.getElementById('form-success');
+    // ─── Confetti (CSS-driven) ───
+    const CONFETTI_COLORS = ['#FF1DBC', '#ff6dd6', '#F0EAE0', '#ffffff'];
+    let confettiTimeout;
 
-    orderForm.addEventListener('submit', async e => {
+    function startConfetti() {
+      const layer = document.getElementById('confetti-layer');
+      layer.innerHTML = '';
+      for (let i = 0; i < 90; i++) {
+        const piece = document.createElement('span');
+        piece.className = 'confetti-piece';
+        piece.style.left = Math.random() * 100 + '%';
+        piece.style.background = CONFETTI_COLORS[Math.floor(Math.random() * CONFETTI_COLORS.length)];
+        piece.style.width = (Math.random() * 5 + 5) + 'px';
+        piece.style.height = (Math.random() * 8 + 8) + 'px';
+        piece.style.animationDuration = (Math.random() * 1.6 + 2.2) + 's';
+        piece.style.animationDelay = (Math.random() * 0.6) + 's';
+        layer.appendChild(piece);
+      }
+      clearTimeout(confettiTimeout);
+      confettiTimeout = setTimeout(() => { layer.innerHTML = ''; }, 4500);
+    }
+
+    function stopConfetti() {
+      clearTimeout(confettiTimeout);
+      document.getElementById('confetti-layer').innerHTML = '';
+    }
+
+    // ─── Success overlay controls ───
+    const successOverlay = document.getElementById('success-overlay');
+
+    function orderSummaryText() {
+      const productNames = { tshirt: 'T-Shirt', sweatshirt: 'Sweatshirt', cap: 'Cap', sticker: 'Sticker Pack' };
+      return `${state.colourName} ${productNames[state.product]} · ${designNames[state.design] || 'Design ' + state.design} · ${state.size}`;
+    }
+
+    function showSuccess() {
+      document.getElementById('success-selection-tag').textContent = orderSummaryText();
+      successOverlay.classList.add('visible');
+      successOverlay.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      setTimeout(startConfetti, 300);
+    }
+
+    // ─── Share your order ───
+    document.getElementById('success-share').addEventListener('click', async () => {
+      const shareBtn = document.getElementById('success-share');
+      const text = `I just ordered a ${orderSummaryText()} from Belly Pork Brewing Co. 🐷`;
+      if (navigator.share) {
+        try { await navigator.share({ title: 'Belly Pork Merch', text, url: location.origin + '/merch.html' }); }
+        catch {} // user cancelled — nothing to do
+      } else {
+        try {
+          await navigator.clipboard.writeText(`${text} ${location.origin}/merch.html`);
+          const original = shareBtn.textContent;
+          shareBtn.textContent = 'Copied!';
+          setTimeout(() => { shareBtn.textContent = original; }, 2000);
+        } catch {
+          alert(text);
+        }
+      }
+    });
+
+    // ─── Netlify form submission ───
+    document.getElementById('order-form').addEventListener('submit', async e => {
       e.preventDefault();
+      const orderForm = e.target;
+      const submitBtn = orderForm.querySelector('[type="submit"]');
+      submitBtn.classList.add('loading');
+      submitBtn.disabled = true;
       try {
         const res = await fetch('/', {
           method: 'POST',
@@ -2180,14 +3229,18 @@
           body: new URLSearchParams(new FormData(orderForm)).toString()
         });
         if (res.ok) {
-          orderForm.style.display = 'none';
-          formSuccess.style.display = 'block';
-          formSuccess.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          showSuccess();
+          submitBtn.classList.remove('loading');
+          submitBtn.disabled = false;
         } else {
           alert('Something went wrong. Please try again or drop us an email directly.');
+          submitBtn.classList.remove('loading');
+          submitBtn.disabled = false;
         }
       } catch {
         alert('Something went wrong. Please try again or drop us an email directly.');
+        submitBtn.classList.remove('loading');
+        submitBtn.disabled = false;
       }
     });
 
