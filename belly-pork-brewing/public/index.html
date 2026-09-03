@@ -15,200 +15,13 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&family=Syne+Mono&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/global.css" />
   <style>
     :root {
-      --magenta: #FF1DBC;
-      --magenta-dim: rgba(255,29,188,0.15);
-      --black: #080808;
-      --off-white: #F0EAE0;
-      --dark: #111111;
-      --mid: #1e1e1e;
-      --muted: rgba(240,234,224,0.5);
       --page-pad: 1.5rem;
     }
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-
-    body {
-      background: var(--black);
-      color: var(--off-white);
-      font-family: 'Syne', sans-serif;
-      overflow-x: hidden;
-    }
-
-    ::-webkit-scrollbar { width: 4px; }
-    ::-webkit-scrollbar-track { background: var(--black); }
-    ::-webkit-scrollbar-thumb { background: var(--magenta); }
-
-    /* ─── NAV ─── */
-    nav {
-      position: fixed;
-      inset: 0 0 auto 0;
-      z-index: 200;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0.85rem 1.5rem;
-      background: rgba(8,8,8,0.92);
-      backdrop-filter: blur(16px);
-      border-bottom: 1px solid var(--magenta-dim);
-    }
-
-    .nav-logo img { height: 44px; display: block; }
-
-    .nav-primary {
-      display: none;
-      gap: 2.5rem;
-      list-style: none;
-    }
-    .nav-primary a {
-      font-family: 'Syne Mono', monospace;
-      font-size: 0.72rem;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--muted);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-    .nav-primary a:hover { color: var(--magenta); }
-
-    /* Burger always visible */
-    .nav-burger {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      gap: 5px;
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 0.5rem;
-      z-index: 300;
-      min-width: 48px;
-      min-height: 48px;
-    }
-    .nav-burger span {
-      display: block;
-      width: 22px;
-      height: 2px;
-      background: var(--magenta);
-      transition: transform 0.32s cubic-bezier(0.4,0,0.2,1), opacity 0.32s ease;
-    }
-    .nav-burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-    .nav-burger.open span:nth-child(2) { opacity: 0; }
-    .nav-burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-
-    /* ─── NAV DRAWER ─── */
-    .nav-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 240;
-      background: rgba(0,0,0,0.6);
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.35s ease, visibility 0s linear 0.35s;
-      pointer-events: none;
-    }
-    .nav-overlay.open {
-      opacity: 1;
-      visibility: visible;
-      transition: opacity 0.35s ease;
-      pointer-events: auto;
-    }
-
-    .nav-mobile {
-      position: fixed;
-      top: 0; right: 0; bottom: 0;
-      width: min(82vw, 340px);
-      z-index: 250;
-      background: var(--dark);
-      border-left: 1px solid var(--magenta-dim);
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      justify-content: center;
-      padding: 5rem 2.5rem 3rem;
-      transform: translateX(100%);
-      transition: transform 0.38s cubic-bezier(0.4,0,0.2,1), visibility 0s linear 0.38s;
-      visibility: hidden;
-    }
-    .nav-mobile.open {
-      transform: translateX(0);
-      visibility: visible;
-      transition: transform 0.38s cubic-bezier(0.4,0,0.2,1);
-    }
-    .nav-mobile a {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(2rem, 6vw, 2.6rem);
-      letter-spacing: 0.06em;
-      color: var(--muted);
-      text-decoration: none;
-      transition: color 0.2s;
-      padding: 0.75rem 0;
-      width: 100%;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-      min-height: 48px;
-      display: flex;
-      align-items: center;
-    }
-    .nav-mobile a:last-of-type { border-bottom: none; }
-    .nav-mobile a:hover,
-    .nav-mobile a:focus { color: var(--magenta); }
-    .nav-mobile-close {
-      position: absolute;
-      top: 1rem; right: 1rem;
-      background: none;
-      border: none;
-      color: var(--muted);
-      font-size: 1.3rem;
-      cursor: pointer;
-      transition: color 0.2s;
-      min-width: 48px;
-      min-height: 48px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .nav-mobile-close:hover { color: var(--magenta); }
-    .nav-mobile .nav-mobile-cta {
-      font-family: 'Syne Mono', monospace;
-      font-size: 0.72rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      background: var(--magenta);
-      color: var(--black);
-      padding: 0.9rem 1.8rem;
-      font-weight: 700;
-      margin-top: 2rem;
-      width: 100%;
-      text-align: center;
-      border-bottom: none !important;
-      justify-content: center;
-    }
-
-    @media (min-width: 900px) {
-      nav { padding: 0.85rem 2.5rem; }
-      .nav-logo img { height: 52px; }
-      .nav-primary { display: flex; }
-    }
-
-    /* ─── SHARED ─── */
-    .section-label {
-      font-family: 'Syne Mono', monospace;
-      font-size: 0.68rem;
-      letter-spacing: 0.38em;
-      text-transform: uppercase;
-      color: var(--magenta);
-      margin-bottom: 1.2rem;
-    }
-
-    .section-title {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(3.2rem, 10vw, 6rem);
-      line-height: 0.92;
-      margin-bottom: 1.5rem;
-    }
+    body { font-family: 'Syne', sans-serif; }
 
     /* ─── HERO ─── */
     .hero {
@@ -217,6 +30,7 @@
       flex-direction: column;
       position: relative;
       overflow: hidden;
+      padding-top: 80px; /* mobile: clear the fixed nav — no override on desktop grid */
     }
 
     .hero::after {
@@ -228,12 +42,12 @@
       z-index: 5;
     }
 
-    /* Mobile: image on top, text below */
+    /* Mobile: image on top, text below — container matches the image's
+       true 1:1 aspect ratio so nothing gets cropped */
     .hero-right {
       order: -1;
-      height: 78vw;
-      min-height: 300px;
-      max-height: 480px;
+      aspect-ratio: 1 / 1;
+      height: auto;
       position: relative;
       overflow: hidden;
       flex-shrink: 0;
@@ -243,7 +57,7 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      object-position: center 12%;
+      object-position: center center;
       display: block;
       opacity: 0;
       animation: fadeIn 1.2s ease forwards 0.2s;
@@ -312,7 +126,7 @@
 
     .hero-h1 {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(5.5rem, 22vw, 10rem);
+      font-size: clamp(3.5rem, 12vw, 6rem);
       line-height: 0.86;
       letter-spacing: 0.01em;
       margin-bottom: 1.6rem;
@@ -341,6 +155,17 @@
     .hero-buttons {
       opacity: 0;
       animation: fadeUp 0.7s ease forwards 0.9s;
+    }
+
+    .hero-trust-line {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 1.4rem;
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards 1.05s;
     }
 
     .btn-primary {
@@ -396,9 +221,11 @@
         display: grid;
         grid-template-columns: 55% 45%;
         min-height: 100svh;
+        padding-top: 0;
       }
       .hero-right {
         order: 0;
+        aspect-ratio: auto;
         height: auto;
         max-height: none;
       }
@@ -418,6 +245,7 @@
         padding: 9rem 4rem 6rem 5rem;
         justify-content: center;
       }
+      .hero-h1 { font-size: clamp(5.5rem, 22vw, 10rem); }
       .hero-sub { font-size: 1.05rem; }
       .scroll-hint {
         display: flex;
@@ -498,30 +326,16 @@
     }
     .beers-header .section-title { margin-bottom: 0; }
 
-    /* Mobile carousel */
+    /* Mobile: full width stacked cards (no horizontal scroll) */
     .beers-carousel {
       display: flex;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      gap: 1rem;
+      flex-direction: column;
+      gap: 1.2rem;
       padding: 2rem var(--page-pad) 1.5rem;
-      scrollbar-width: none;
-      -webkit-overflow-scrolling: touch;
     }
-    .beers-carousel::-webkit-scrollbar { display: none; }
 
-    /* Carousel scroll indicator */
-    .carousel-hint {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0 var(--page-pad) 0.5rem;
-      font-family: 'Syne Mono', monospace;
-      font-size: 0.58rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: rgba(240,234,224,0.22);
-    }
+    /* Carousel scroll indicator — only relevant for a horizontal layout, unused now */
+    .carousel-hint { display: none; }
     .carousel-hint-line {
       flex: 1;
       height: 1px;
@@ -530,8 +344,7 @@
 
     /* Beer cards */
     .beer-card {
-      flex: 0 0 min(82vw, 300px);
-      scroll-snap-align: start;
+      width: 100%;
       perspective: 1000px;
       cursor: pointer;
       min-height: 380px;
@@ -649,7 +462,7 @@
       font-size: 0.58rem;
       letter-spacing: 0.22em;
       text-transform: uppercase;
-      color: rgba(240,234,224,0.2);
+      color: var(--muted);
     }
 
     /* Rating widget */
@@ -672,7 +485,7 @@
       border: none;
       cursor: pointer;
       padding: 0.15rem;
-      color: rgba(240,234,224,0.18);
+      color: rgba(240,234,224,0.45);
       transition: color 0.15s, transform 0.15s;
       width: 26px;
       flex-shrink: 0;
@@ -691,7 +504,7 @@
       font-family: 'Syne Mono', monospace;
       font-size: 0.6rem;
       letter-spacing: 0.15em;
-      color: rgba(240,234,224,0.28);
+      color: var(--muted);
       margin-top: 0.5rem;
     }
 
@@ -717,7 +530,7 @@
       .beer-card-front,
       .beer-card-back { padding: 3rem 2.5rem; border: none; }
       .beer-name { font-size: 2.8rem; }
-      .beer-flip-hint { font-size: 0.6rem; opacity: 0.4; color: rgba(240,234,224,0.4); animation: none; }
+      .beer-flip-hint { font-size: 0.6rem; opacity: 1; color: var(--muted); animation: none; }
       .beer-card-inner { min-height: 420px; }
     }
 
@@ -748,7 +561,7 @@
 
     /* ─── ABOUT ─── */
     .about {
-      padding: 5rem var(--page-pad);
+      padding: 4rem var(--page-pad);
       display: flex;
       flex-direction: column;
       gap: 3rem;
@@ -831,7 +644,7 @@
 
     /* ─── GRAHAM ─── */
     .graham {
-      padding: 5rem var(--page-pad);
+      padding: 4rem var(--page-pad);
       background: var(--dark);
       display: flex;
       flex-direction: column;
@@ -932,7 +745,7 @@
 
     /* ─── NEWSLETTER ─── */
     .newsletter {
-      padding: 5rem var(--page-pad);
+      padding: 4rem var(--page-pad);
       text-align: center;
       position: relative;
       overflow: hidden;
@@ -972,7 +785,7 @@
       min-height: 52px;
     }
     .newsletter-form input:focus { border-color: var(--magenta); }
-    .newsletter-form input::placeholder { color: rgba(240,234,224,0.3); }
+    .newsletter-form input::placeholder { color: var(--muted); }
     .newsletter-form button {
       background: var(--magenta);
       color: var(--black);
@@ -1039,7 +852,7 @@
       font-family: 'Syne Mono', monospace;
       font-size: 0.62rem;
       letter-spacing: 0.18em;
-      color: rgba(240,234,224,0.25);
+      color: var(--muted);
     }
     .footer-bottom span { color: var(--magenta); }
 
@@ -1196,7 +1009,7 @@
       outline: none;
       min-height: 52px;
     }
-    #chat-input::placeholder { color: rgba(240,234,224,0.25); }
+    #chat-input::placeholder { color: var(--muted); }
     #chat-send {
       background: var(--magenta);
       border: none;
@@ -1298,18 +1111,18 @@
   </svg>
 
   <!-- NAV -->
-  <nav>
-    <a href="#" class="nav-logo">
-      <img
-        src="https://img1.wsimg.com/isteam/ip/c5f4da44-74a7-4ebd-b7a0-a83c516ecd85/Belly%20Pork%20Brewing-37b48db.PNG/:/rs=h:200,cg:true,m/qt=q:100/ll"
-        alt="Belly Pork Brewing"
-      />
+  <nav class="site-nav">
+    <a href="index.html" class="nav-logo">
+      <img src="https://img1.wsimg.com/isteam/ip/c5f4da44-74a7-4ebd-b7a0-a83c516ecd85/Belly%20Pork%20Brewing-37b48db.PNG/:/rs=h:200,cg:true,m/qt=q:100/ll" alt="Belly Pork Brewing Co." height="52" />
     </a>
-    <ul class="nav-primary">
-      <li><a href="#beers">Beers</a></li>
-      <li><a href="#about">About</a></li>
+    <ul class="nav-links">
+      <li><a href="index.html#about">About</a></li>
+      <li><a href="index.html#beers">Beers</a></li>
       <li><a href="merch.html">Merch</a></li>
+      <li><a href="reviews.html">Reviews</a></li>
+      <li><a href="discover.html">Discover</a></li>
     </ul>
+    <a href="index.html#newsletter" class="btn-primary nav-cta">Stay Updated</a>
     <button class="nav-burger" aria-label="Toggle menu" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
@@ -1319,14 +1132,12 @@
   <div class="nav-overlay" id="nav-overlay"></div>
   <div class="nav-mobile" id="nav-mobile" aria-hidden="true">
     <button class="nav-mobile-close" aria-label="Close menu">&#x2715;</button>
-    <a href="#beers">Beers</a>
-    <a href="#about">About</a>
+    <a href="index.html#about">About</a>
+    <a href="index.html#beers">Beers</a>
     <a href="merch.html">Merch</a>
-    <a href="taproom.html">Tap Room</a>
     <a href="reviews.html">Reviews</a>
     <a href="discover.html">Discover</a>
-    <a href="#graham">Graham</a>
-    <a href="#newsletter" class="nav-mobile-cta">Stay Updated</a>
+    <a href="index.html#newsletter" class="btn-primary nav-mobile-cta">Stay Updated</a>
   </div>
 
   <!-- HERO -->
@@ -1359,6 +1170,7 @@
       <div class="hero-buttons">
         <a href="#beers" class="btn-primary">See the Beers</a>
       </div>
+      <p class="hero-trust-line">Est. 2024 &middot; Brewed in Suffolk &middot; Graham Approved</p>
     </div>
 
     <div class="hero-right">
@@ -1592,7 +1404,9 @@
     <div class="footer-brand">
       <img
         src="https://img1.wsimg.com/isteam/ip/c5f4da44-74a7-4ebd-b7a0-a83c516ecd85/Belly%20Pork%20Brewing-37b48db.PNG/:/rs=h:200,cg:true,m/qt=q:100/ll"
-        alt="Belly Pork Brewing"
+        alt="Belly Pork Brewing Co."
+        height="44"
+        loading="lazy"
       />
       <p>Independent craft beer from Graham's kitchen to your glass. One batch at a time.</p>
     </div>
@@ -1800,8 +1614,16 @@
       card.addEventListener('click', () => card.classList.toggle('flipped'));
     });
 
-    // ─── Nav ───
+    // ─── Nav (identical on every page) ───
     (function () {
+      const segments = location.pathname.split('/').filter(Boolean);
+      const path = (segments[segments.length - 1] || 'index').replace(/.html$/, '');
+      document.querySelectorAll('.nav-links a, .nav-mobile a').forEach(a => {
+        const href = a.getAttribute('href') || '';
+        if (href.includes('#')) return; // anchor links aren't page-level
+        if (href.replace(/.html$/, '') === path) a.classList.add('active');
+      });
+
       const burger  = document.querySelector('.nav-burger');
       const drawer  = document.getElementById('nav-mobile');
       const overlay = document.getElementById('nav-overlay');

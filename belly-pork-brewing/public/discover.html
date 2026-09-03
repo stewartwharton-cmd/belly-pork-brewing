@@ -15,233 +15,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&family=Syne+Mono&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/global.css" />
   <style>
-    :root {
-      --magenta: #FF1DBC;
-      --magenta-dim: rgba(255,29,188,0.15);
-      --black: #080808;
-      --off-white: #F0EAE0;
-      --dark: #111111;
-      --mid: #1e1e1e;
-      --muted: rgba(240,234,224,0.5);
-    }
-
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-
-    body {
-      background: var(--black);
-      color: var(--off-white);
-      font-family: 'Syne', sans-serif;
-      overflow-x: hidden;
-    }
-
-    ::-webkit-scrollbar { width: 4px; }
-    ::-webkit-scrollbar-track { background: var(--black); }
-    ::-webkit-scrollbar-thumb { background: var(--magenta); }
-
-    /* ─── NAV ─── */
-    nav {
-      position: fixed;
-      inset: 0 0 auto 0;
-      z-index: 200;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1rem 3rem;
-      background: rgba(8,8,8,0.88);
-      backdrop-filter: blur(16px);
-      border-bottom: 1px solid var(--magenta-dim);
-    }
-
-    .nav-logo img { height: 52px; display: block; }
-
-    .nav-links {
-      display: flex;
-      gap: 2.5rem;
-      list-style: none;
-    }
-
-    .nav-links a {
-      font-family: 'Syne Mono', monospace;
-      font-size: 0.72rem;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--muted);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-    .nav-links a:hover,
-    .nav-links a.active { color: var(--magenta); }
-
-    .nav-cta {
-      font-family: 'Syne Mono', monospace;
-      font-size: 0.7rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      background: var(--magenta);
-      color: var(--black);
-      padding: 0.6rem 1.4rem;
-      text-decoration: none;
-      font-weight: 700;
-      transition: opacity 0.2s;
-    }
-    .nav-cta:hover { opacity: 0.85; }
-
-    /* ─── NAV WEATHER ─── */
-    .nav-weather {
-      display: flex;
-      align-items: center;
-      gap: 0.45rem;
-      font-family: 'Syne Mono', monospace;
-      font-size: 0.64rem;
-      letter-spacing: 0.13em;
-      text-transform: uppercase;
-      border: 1px solid var(--magenta-dim);
-      padding: 0.35rem 0.8rem;
-      white-space: nowrap;
-      cursor: default;
-      user-select: none;
-      transition: border-color 0.2s;
-    }
-    .nav-weather:hover { border-color: rgba(255,29,188,0.35); }
-    .nav-weather-icon { width: 11px; height: 11px; flex-shrink: 0; }
-    .nav-weather-label { color: var(--muted); }
-    .nav-weather-sep { color: rgba(255,29,188,0.3); margin: 0 0.1rem; }
-    .nav-weather-temp { color: var(--magenta); font-size: 0.74rem; letter-spacing: 0.04em; }
-
-    @media (max-width: 900px) {
-      .nav-logo img { height: 38px; }
-      .nav-weather {
-        flex-direction: column;
-        align-items: center;
-        gap: 0.05rem;
-        padding: 0.3rem 0.6rem;
-      }
-      .nav-weather-sep { display: none; }
-      .nav-weather-icon { display: none; }
-      .nav-weather-label { display: block; font-size: 0.5rem; letter-spacing: 0.18em; color: var(--muted); line-height: 1; }
-      .nav-weather-temp { font-size: 0.72rem; line-height: 1; }
-    }
-
-    /* ─── HAMBURGER / MOBILE MENU ─── */
-    .nav-burger {
-      display: none;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      gap: 5px;
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 0.5rem;
-      z-index: 300;
-      min-width: 44px;
-      min-height: 44px;
-    }
-    .nav-burger span {
-      display: block;
-      width: 26px;
-      height: 2px;
-      background: var(--magenta);
-      transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.32s ease;
-    }
-    .nav-burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-    .nav-burger.open span:nth-child(2) { opacity: 0; }
-    .nav-burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-
-    .nav-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 240;
-      background: rgba(0,0,0,0.6);
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.35s ease, visibility 0s linear 0.35s;
-      pointer-events: none;
-    }
-    .nav-overlay.open {
-      opacity: 1;
-      visibility: visible;
-      transition: opacity 0.35s ease;
-      pointer-events: auto;
-    }
-
-    .nav-mobile {
-      position: fixed;
-      top: 0; right: 0; bottom: 0;
-      width: min(82vw, 340px);
-      z-index: 250;
-      background: var(--dark);
-      border-left: 1px solid var(--magenta-dim);
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      justify-content: center;
-      padding: 5rem 2.5rem 3rem;
-      gap: 0;
-      transform: translateX(100%);
-      transition: transform 0.38s cubic-bezier(0.4, 0, 0.2, 1), visibility 0s linear 0.38s;
-      visibility: hidden;
-    }
-    .nav-mobile.open {
-      transform: translateX(0);
-      visibility: visible;
-      transition: transform 0.38s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    .nav-mobile a {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(2rem, 6vw, 2.6rem);
-      letter-spacing: 0.06em;
-      color: var(--muted);
-      text-decoration: none;
-      transition: color 0.2s;
-      padding: 0.75rem 0;
-      width: 100%;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-    }
-    .nav-mobile a:last-of-type { border-bottom: none; }
-    .nav-mobile a:hover,
-    .nav-mobile a:focus,
-    .nav-mobile a.active-mob { color: var(--magenta); }
-    .nav-mobile-close {
-      position: absolute;
-      top: 1rem; right: 1rem;
-      background: none;
-      border: none;
-      color: var(--muted);
-      font-size: 1.3rem;
-      cursor: pointer;
-      line-height: 1;
-      transition: color 0.2s;
-      min-width: 44px;
-      min-height: 44px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .nav-mobile-close:hover { color: var(--magenta); }
-    .nav-mobile .nav-mobile-cta {
-      font-family: 'Syne Mono', monospace;
-      font-size: 0.72rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      background: var(--magenta);
-      color: var(--black);
-      padding: 0.9rem 1.8rem;
-      font-weight: 700;
-      margin-top: 2rem;
-      width: 100%;
-      text-align: center;
-      border-bottom: none !important;
-    }
-
-    @media (max-width: 900px) {
-      nav { padding: 0.9rem 1.4rem; }
-      .nav-links { display: none; }
-      .nav-cta { display: none; }
-      .nav-burger { display: flex; }
-    }
 
     /* ─── FOOTER ─── */
     footer {
@@ -279,7 +54,7 @@
       font-family: 'Syne Mono', monospace;
       font-size: 0.65rem;
       letter-spacing: 0.18em;
-      color: rgba(240,234,224,0.25);
+      color: var(--muted);
     }
     .footer-bottom span { color: var(--magenta); }
 
@@ -560,7 +335,7 @@
       transition: border-color 0.2s;
     }
     .search-wrap input:focus { border-color: var(--magenta); }
-    .search-wrap input::placeholder { color: rgba(240,234,224,0.28); }
+    .search-wrap input::placeholder { color: var(--muted); }
 
     .select-wrap { position: relative; }
     .select-wrap::after {
@@ -672,7 +447,7 @@
       font-size: 0.52rem;
       letter-spacing: 0.25em;
       text-transform: uppercase;
-      color: rgba(240,234,224,0.3);
+      color: var(--muted);
       margin-bottom: 0.45rem;
     }
 
@@ -707,7 +482,7 @@
       font-size: 0.6rem;
       letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: rgba(240,234,224,0.35);
+      color: var(--muted);
       text-decoration: none;
       transition: color 0.2s;
     }
@@ -830,46 +605,32 @@
     .empty-title {
       font-family: 'Bebas Neue', sans-serif;
       font-size: 1.8rem;
-      color: rgba(240,234,224,0.3);
+      color: var(--muted);
     }
 
     .empty-sub {
       font-family: 'Syne Mono', monospace;
       font-size: 0.7rem;
       letter-spacing: 0.15em;
-      color: rgba(240,234,224,0.2);
+      color: var(--muted);
     }
   </style>
 </head>
 <body>
 
   <!-- NAV -->
-  <nav>
+  <nav class="site-nav">
     <a href="index.html" class="nav-logo">
-      <img
-        src="https://img1.wsimg.com/isteam/ip/c5f4da44-74a7-4ebd-b7a0-a83c516ecd85/Belly%20Pork%20Brewing-37b48db.PNG/:/rs=h:200,cg:true,m/qt=q:100/ll"
-        alt="Belly Pork Brewing"
-      />
+      <img src="https://img1.wsimg.com/isteam/ip/c5f4da44-74a7-4ebd-b7a0-a83c516ecd85/Belly%20Pork%20Brewing-37b48db.PNG/:/rs=h:200,cg:true,m/qt=q:100/ll" alt="Belly Pork Brewing Co." height="52" />
     </a>
     <ul class="nav-links">
       <li><a href="index.html#about">About</a></li>
       <li><a href="index.html#beers">Beers</a></li>
-      <li><a href="index.html#process">How We Brew</a></li>
-      <li><a href="index.html#graham">Graham</a></li>
-      <li><a href="taproom.html">Tap Room</a></li>
       <li><a href="merch.html">Merch</a></li>
       <li><a href="reviews.html">Reviews</a></li>
-      <li><a href="discover.html" class="active">Discover</a></li>
+      <li><a href="discover.html">Discover</a></li>
     </ul>
-    <div class="nav-weather" id="nav-weather" title="Brewing conditions · Bungay, Suffolk">
-      <svg class="nav-weather-icon" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M6 1 L4 5 L1 5.5 L3 8 L2.5 11 L6 9.5 L9.5 11 L9 8 L11 5.5 L8 5 Z" fill="rgba(255,29,188,0.2)" stroke="#FF1DBC" stroke-width="0.9" stroke-linejoin="round"/>
-      </svg>
-      <span class="nav-weather-label">Bungay</span>
-      <span class="nav-weather-sep">·</span>
-      <span class="nav-weather-temp" id="nav-weather-temp">—°C</span>
-    </div>
-    <a href="index.html#newsletter" class="nav-cta">Stay Updated</a>
+    <a href="index.html#newsletter" class="btn-primary nav-cta">Stay Updated</a>
     <button class="nav-burger" aria-label="Toggle menu" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
@@ -879,15 +640,12 @@
   <div class="nav-overlay" id="nav-overlay"></div>
   <div class="nav-mobile" id="nav-mobile" aria-hidden="true">
     <button class="nav-mobile-close" aria-label="Close menu">&#x2715;</button>
-    <a href="index.html#about" class="nav-mobile-link">About</a>
-    <a href="index.html#beers" class="nav-mobile-link">Beers</a>
-    <a href="index.html#process" class="nav-mobile-link">How We Brew</a>
-    <a href="index.html#graham" class="nav-mobile-link">Graham</a>
-    <a href="taproom.html" class="nav-mobile-link">Tap Room</a>
-    <a href="merch.html" class="nav-mobile-link">Merch</a>
-    <a href="reviews.html" class="nav-mobile-link">Reviews</a>
-    <a href="discover.html" class="nav-mobile-link active-mob">Discover</a>
-    <a href="index.html#newsletter" class="nav-mobile-cta">Stay Updated</a>
+    <a href="index.html#about">About</a>
+    <a href="index.html#beers">Beers</a>
+    <a href="merch.html">Merch</a>
+    <a href="reviews.html">Reviews</a>
+    <a href="discover.html">Discover</a>
+    <a href="index.html#newsletter" class="btn-primary nav-mobile-cta">Stay Updated</a>
   </div>
 
   <!-- HERO -->
@@ -992,7 +750,9 @@
     <div class="footer-brand">
       <img
         src="https://img1.wsimg.com/isteam/ip/c5f4da44-74a7-4ebd-b7a0-a83c516ecd85/Belly%20Pork%20Brewing-37b48db.PNG/:/rs=h:200,cg:true,m/qt=q:100/ll"
-        alt="Belly Pork Brewing"
+        alt="Belly Pork Brewing Co."
+        height="44"
+        loading="lazy"
       />
       <p>Independent craft beer from Graham's kitchen to your glass. One batch at a time.</p>
     </div>
@@ -1248,7 +1008,7 @@
 
         if (payload.source === 'fallback') {
           const banner = document.createElement('div');
-          banner.style.cssText = 'grid-column:1/-1;font-family:"Syne Mono",monospace;font-size:0.65rem;letter-spacing:0.16em;text-transform:uppercase;color:rgba(240,234,224,0.35);padding:0.6rem 0;margin-bottom:0.5rem;border-bottom:1px solid rgba(255,29,188,0.08);';
+          banner.style.cssText = 'grid-column:1/-1;font-family:"Syne Mono",monospace;font-size:0.65rem;letter-spacing:0.16em;text-transform:uppercase;color:rgba(240,234,224,0.55);padding:0.6rem 0;margin-bottom:0.5rem;border-bottom:1px solid rgba(255,29,188,0.08);';
           banner.textContent = '⚠ Live data unavailable — showing a selection of UK craft breweries';
           grid.prepend(banner);
         }
@@ -1270,8 +1030,16 @@
     typeFilter.addEventListener('change', render);
     sortSelect.addEventListener('change', render);
 
-    // ─── NAV ───
+    // ─── Nav (identical on every page) ───
     (function () {
+      const segments = location.pathname.split('/').filter(Boolean);
+      const path = (segments[segments.length - 1] || 'index').replace(/.html$/, '');
+      document.querySelectorAll('.nav-links a, .nav-mobile a').forEach(a => {
+        const href = a.getAttribute('href') || '';
+        if (href.includes('#')) return; // anchor links aren't page-level
+        if (href.replace(/.html$/, '') === path) a.classList.add('active');
+      });
+
       const burger = document.querySelector('.nav-burger');
       const mobileNav = document.getElementById('nav-mobile');
       const overlay = document.getElementById('nav-overlay');
@@ -1289,23 +1057,6 @@
       document.querySelector('.nav-mobile-close').addEventListener('click', () => toggleMenu(false));
       if (overlay) overlay.addEventListener('click', () => toggleMenu(false));
       mobileNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => toggleMenu(false)));
-    })();
-
-    // ─── WEATHER ───
-    (function () {
-      const WEATHER_URL = 'https://api.open-meteo.com/v1/forecast?latitude=52.4543&longitude=1.4382&current=temperature_2m&temperature_unit=celsius&timezone=Europe%2FLondon';
-      const tempEl = document.getElementById('nav-weather-temp');
-      function fetchWeather() {
-        fetch(WEATHER_URL)
-          .then(r => r.json())
-          .then(d => {
-            const t = d.current && d.current.temperature_2m;
-            if (t !== undefined && t !== null) tempEl.textContent = Math.round(t) + '°C';
-          })
-          .catch(() => {});
-      }
-      fetchWeather();
-      setInterval(fetchWeather, 30 * 60 * 1000);
     })();
 
     // ─── START ───

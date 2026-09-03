@@ -15,196 +15,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&family=Syne+Mono&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/global.css" />
   <style>
-    :root {
-      --magenta: #FF1DBC;
-      --magenta-dim: rgba(255,29,188,0.15);
-      --black: #080808;
-      --off-white: #F0EAE0;
-      --dark: #111111;
-      --mid: #1e1e1e;
-      --muted: rgba(240,234,224,0.5);
-    }
-
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-
-    body {
-      background: var(--black);
-      color: var(--off-white);
-      font-family: 'Syne', sans-serif;
-      overflow-x: hidden;
-    }
-
-    ::-webkit-scrollbar { width: 4px; }
-    ::-webkit-scrollbar-track { background: var(--black); }
-    ::-webkit-scrollbar-thumb { background: var(--magenta); }
-
-    /* ─── NAV ─── */
-    nav {
-      position: fixed;
-      inset: 0 0 auto 0;
-      z-index: 200;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1rem 3rem;
-      background: rgba(8,8,8,0.88);
-      backdrop-filter: blur(16px);
-      border-bottom: 1px solid var(--magenta-dim);
-    }
-
-    .nav-logo img {
-      height: 52px;
-      display: block;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 2.5rem;
-      list-style: none;
-    }
-
-    .nav-links a {
-      font-family: 'Syne Mono', monospace;
-      font-size: 0.72rem;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--muted);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-    .nav-links a:hover,
-    .nav-links a.active { color: var(--magenta); }
-
-    .nav-cta {
-      font-family: 'Syne Mono', monospace;
-      font-size: 0.7rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      background: var(--magenta);
-      color: var(--black);
-      padding: 0.6rem 1.4rem;
-      text-decoration: none;
-      font-weight: 700;
-      transition: opacity 0.2s;
-    }
-    .nav-cta:hover { opacity: 0.85; }
-
-    /* ─── HAMBURGER / MOBILE MENU ─── */
-    .nav-burger {
-      display: none;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      gap: 5px;
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 0.5rem;
-      z-index: 300;
-      min-width: 44px;
-      min-height: 44px;
-    }
-    .nav-burger span {
-      display: block;
-      width: 26px;
-      height: 2px;
-      background: var(--magenta);
-      transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.32s ease;
-    }
-    .nav-burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-    .nav-burger.open span:nth-child(2) { opacity: 0; }
-    .nav-burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-
-    /* ─── NAV OVERLAY ─── */
-    .nav-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 240;
-      background: rgba(0,0,0,0.6);
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.35s ease, visibility 0s linear 0.35s;
-      pointer-events: none;
-    }
-    .nav-overlay.open {
-      opacity: 1;
-      visibility: visible;
-      transition: opacity 0.35s ease;
-      pointer-events: auto;
-    }
-
-    .nav-mobile {
-      position: fixed;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      width: min(82vw, 340px);
-      z-index: 250;
-      background: var(--dark);
-      border-left: 1px solid var(--magenta-dim);
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      justify-content: center;
-      padding: 5rem 2.5rem 3rem;
-      gap: 0;
-      transform: translateX(100%);
-      transition: transform 0.38s cubic-bezier(0.4, 0, 0.2, 1), visibility 0s linear 0.38s;
-      visibility: hidden;
-    }
-    .nav-mobile.open {
-      transform: translateX(0);
-      visibility: visible;
-      transition: transform 0.38s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    .nav-mobile-close {
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-      background: none;
-      border: none;
-      color: var(--muted);
-      font-size: 1.3rem;
-      cursor: pointer;
-      line-height: 1;
-      transition: color 0.2s;
-      min-width: 44px;
-      min-height: 44px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .nav-mobile-close:hover { color: var(--magenta); }
-    .nav-mobile a {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(2rem, 6vw, 2.6rem);
-      letter-spacing: 0.06em;
-      color: var(--muted);
-      text-decoration: none;
-      transition: color 0.2s;
-      padding: 0.75rem 0;
-      width: 100%;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-    }
-    .nav-mobile a:last-of-type { border-bottom: none; }
-    .nav-mobile a:hover, .nav-mobile a:focus { color: var(--magenta); }
-    .nav-mobile .nav-mobile-cta {
-      font-family: 'Syne Mono', monospace;
-      font-size: 0.72rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      background: var(--magenta);
-      color: var(--black);
-      padding: 0.9rem 1.8rem;
-      font-weight: 700;
-      margin-top: 2rem;
-      width: 100%;
-      text-align: center;
-      border-bottom: none !important;
-    }
-
     /* ─── HERO ─── */
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(20px); }
@@ -368,46 +180,14 @@
 
     /* ─── MERCH CONFIGURATOR ─── */
     .merch-section {
-      display: grid;
-      grid-template-columns: 1fr 1.1fr;
-      gap: 5rem;
+      display: flex;
+      justify-content: center;
       padding: 8rem 5rem;
-      align-items: start;
     }
 
-    .merch-preview {
-      position: sticky;
-      top: 7rem;
-    }
-
-    .mockup-stage {
-      position: relative;
-      max-width: 320px;
-      margin: 0 auto;
-    }
-
-    .mockup-svg {
+    .merch-configurator {
       width: 100%;
-      height: auto;
-      display: none;
-      filter: drop-shadow(0 12px 40px rgba(0,0,0,0.6));
-    }
-    .mockup-svg.active { display: block; }
-
-    .preview-label {
-      text-align: center;
-      margin-top: 1.5rem;
-      font-family: 'Syne Mono', monospace;
-      font-size: 0.68rem;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-    .preview-label strong {
-      color: var(--magenta);
-      display: block;
-      font-size: 0.8rem;
-      margin-bottom: 0.3rem;
+      max-width: 640px;
     }
 
     /* ─── CONFIG GROUPS ─── */
@@ -723,22 +503,6 @@
       margin-bottom: 1rem;
       line-height: 1.6;
     }
-    .btn-primary {
-      display: inline-block;
-      font-family: 'Syne Mono', monospace;
-      font-size: 0.75rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      background: var(--magenta);
-      color: var(--black);
-      padding: 1rem 2.2rem;
-      font-weight: 700;
-      text-decoration: none;
-      cursor: pointer;
-      border: none;
-      transition: opacity 0.2s;
-    }
-    .btn-primary:hover { opacity: 0.88; }
     .form-submit .btn-primary:hover {
       transform: translate(-2px, -2px);
       box-shadow: 4px 4px 0 rgba(255,255,255,0.25);
@@ -907,36 +671,10 @@
       font-family: 'Syne Mono', monospace;
       font-size: 0.62rem;
       letter-spacing: 0.15em;
-      color: rgba(240,234,224,0.25);
+      color: var(--muted);
       text-transform: uppercase;
     }
     .footer-bottom span { color: var(--magenta); }
-
-    /* ─── FRONT/BACK TOGGLE ─── */
-    .view-toggle {
-      display: none;
-      justify-content: center;
-      margin-bottom: 1rem;
-    }
-    .view-toggle.visible { display: flex; }
-    .view-toggle-btn {
-      font-family: 'Syne Mono', monospace;
-      font-size: 0.65rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      padding: 0.45rem 1.3rem;
-      background: var(--mid);
-      border: 1px solid rgba(240,234,224,0.12);
-      color: var(--muted);
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    .view-toggle-btn:first-child { border-right: none; }
-    .view-toggle-btn.active {
-      background: var(--black);
-      color: var(--magenta);
-      border-color: var(--magenta);
-    }
 
     /* ─── DESIGN PLACEMENT (T-SHIRT/SWEATSHIRT) ─── */
     .placement-group { display: none; margin-bottom: 2.5rem; }
@@ -1085,19 +823,9 @@
     /* ─── RESPONSIVE ─── */
     @media (max-width: 1024px) {
       .merch-hero-h1 { font-size: clamp(4rem, 13vw, 9rem); }
-      .merch-section { grid-template-columns: 1fr; gap: 2rem; padding: 6rem 3rem; }
-      .merch-preview { position: static; order: -1; }
-      .merch-configurator { order: 1; }
-      .mockup-stage { max-width: 260px; }
+      .merch-section { padding: 6rem 3rem; }
     }
 
-    @media (max-width: 900px) {
-      nav { padding: 0.9rem 1.4rem; }
-      .nav-logo img { height: 38px; }
-      .nav-links { display: none; }
-      .nav-cta { display: none; }
-      .nav-burger { display: flex; }
-    }
 
     @media (max-width: 768px) {
       :root { --muted: rgba(240,234,224,0.72); }
@@ -1108,25 +836,8 @@
       .merch-hero-tagline { margin-bottom: 2.2rem; }
 
       /* ── CONFIGURATOR ── */
-      .merch-section { display: flex; flex-direction: column; padding: 0; gap: 0; }
-
-      /* Sticky live preview at top */
-      .merch-preview {
-        order: -1;
-        padding: 0.6rem 1.5rem 0.5rem;
-        position: sticky;
-        top: 62px;
-        z-index: 50;
-        background: var(--black);
-        border-bottom: 1px solid rgba(240,234,224,0.07);
-      }
-      .merch-configurator { order: 1; padding: 1.2rem 1.5rem 6rem; }
-
-      /* Mockup — compact thumbnail on mobile */
-      .mockup-stage { max-width: 80px; width: 80px; margin: 0 auto; }
-      .preview-label { margin-top: 0.4rem; }
-      .view-toggle { margin-bottom: 0.3rem; }
-      .view-toggle-btn { font-size: 0.55rem; padding: 0.3rem 0.7rem; }
+      .merch-section { padding: 0; }
+      .merch-configurator { padding: 1.2rem 1.5rem 6rem; }
 
       /* Mobile step flow */
       .mobile-step-progress { display: block; margin-bottom: 1.6rem; }
@@ -1571,10 +1282,10 @@
     }
     .success-btn-primary:hover { opacity: 0.88; }
 
-    /* push chat toggle above order bar on mobile */
+    /* push chat toggle above the sticky order bar on mobile */
     @media (max-width: 768px) {
-      #chat-widget { bottom: calc(1.2rem + 58px); }
-      #chat-panel { bottom: 58px; height: calc(85svh - 58px); }
+      #chat-widget { bottom: calc(1.2rem + 74px); }
+      #chat-panel { bottom: 74px; height: calc(85svh - 74px); }
     }
 
     /* ─── MOBILE STEP FLOW ─── */
@@ -1729,7 +1440,7 @@
       flex: 1; background: var(--black); border: none; color: var(--off-white);
       font-family: 'Syne', sans-serif; font-size: 0.88rem; padding: 0.9rem 1rem; outline: none;
     }
-    #chat-input::placeholder { color: rgba(240,234,224,0.25); }
+    #chat-input::placeholder { color: var(--muted); }
     #chat-send {
       background: var(--magenta); border: none; color: var(--black);
       padding: 0 1.1rem; cursor: pointer; display: flex; align-items: center;
@@ -1775,24 +1486,18 @@
 <body>
 
   <!-- NAV -->
-  <nav>
+  <nav class="site-nav">
     <a href="index.html" class="nav-logo">
-      <img
-        src="https://img1.wsimg.com/isteam/ip/c5f4da44-74a7-4ebd-b7a0-a83c516ecd85/Belly%20Pork%20Brewing-37b48db.PNG/:/rs=h:200,cg:true,m/qt=q:100/ll"
-        alt="Belly Pork Brewing"
-      />
+      <img src="https://img1.wsimg.com/isteam/ip/c5f4da44-74a7-4ebd-b7a0-a83c516ecd85/Belly%20Pork%20Brewing-37b48db.PNG/:/rs=h:200,cg:true,m/qt=q:100/ll" alt="Belly Pork Brewing Co." height="52" />
     </a>
     <ul class="nav-links">
       <li><a href="index.html#about">About</a></li>
       <li><a href="index.html#beers">Beers</a></li>
-      <li><a href="index.html#process">How We Brew</a></li>
-      <li><a href="index.html#graham">Graham</a></li>
-      <li><a href="taproom.html">Tap Room</a></li>
-      <li><a href="merch.html" class="active">Merch</a></li>
+      <li><a href="merch.html">Merch</a></li>
       <li><a href="reviews.html">Reviews</a></li>
       <li><a href="discover.html">Discover</a></li>
     </ul>
-    <a href="index.html#newsletter" class="nav-cta">Stay Updated</a>
+    <a href="index.html#newsletter" class="btn-primary nav-cta">Stay Updated</a>
     <button class="nav-burger" aria-label="Toggle menu" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
@@ -1804,13 +1509,10 @@
     <button class="nav-mobile-close" aria-label="Close menu">&#x2715;</button>
     <a href="index.html#about">About</a>
     <a href="index.html#beers">Beers</a>
-    <a href="index.html#process">How We Brew</a>
-    <a href="index.html#graham">Graham</a>
-    <a href="taproom.html">Tap Room</a>
     <a href="merch.html">Merch</a>
     <a href="reviews.html">Reviews</a>
     <a href="discover.html">Discover</a>
-    <a href="index.html#newsletter" class="nav-mobile-cta">Stay Updated</a>
+    <a href="index.html#newsletter" class="btn-primary nav-mobile-cta">Stay Updated</a>
   </div>
 
   <!-- HERO -->
@@ -1994,27 +1696,27 @@
           <p class="config-label">// 02 — PICK YOUR DESIGN, BOY</p>
           <div class="design-grid">
             <button class="design-option active" data-design="1" aria-label="The Pig">
-              <img src="images/design1.png" alt="The Pig" />
+              <img src="images/design1.png" alt="The Pig" loading="lazy" />
               <span class="design-label">The Pig</span>
             </button>
             <button class="design-option" data-design="2" aria-label="Hops &amp; Glory">
-              <img src="images/design2.png" alt="Hops &amp; Glory" />
+              <img src="images/design2.png" alt="Hops &amp; Glory" loading="lazy" />
               <span class="design-label">Hops &amp; Glory</span>
             </button>
             <button class="design-option" data-design="3" aria-label="Suffolk Bred">
-              <img src="images/design3.png" alt="Suffolk Bred" />
+              <img src="images/design3.png" alt="Suffolk Bred" loading="lazy" />
               <span class="design-label">Suffolk Bred</span>
             </button>
             <button class="design-option" data-design="4" aria-label="Pig Out">
-              <img src="images/design4.png" alt="Pig Out" />
+              <img src="images/design4.png" alt="Pig Out" loading="lazy" />
               <span class="design-label">Pig Out</span>
             </button>
             <button class="design-option" data-design="5" aria-label="Brewing Co">
-              <img src="images/design5.png" alt="Brewing Co" />
+              <img src="images/design5.png" alt="Brewing Co" loading="lazy" />
               <span class="design-label">Brewing Co</span>
             </button>
             <button class="design-option" data-design="6" aria-label="Graham's Pick">
-              <img src="images/design6.png" alt="Graham's Pick" />
+              <img src="images/design6.png" alt="Graham's Pick" loading="lazy" />
               <span class="design-label">Graham's Pick</span>
             </button>
           </div>
@@ -2023,12 +1725,12 @@
           <div class="design-scatter" id="design-scatter">
             <p class="design-scatter-note">All included in your pack</p>
             <div class="design-scatter-grid">
-              <div class="design-scatter-item"><img src="images/design1.png" alt="The Pig" /><span>The Pig</span></div>
-              <div class="design-scatter-item"><img src="images/design2.png" alt="Hops &amp; Glory" /><span>Hops &amp; Glory</span></div>
-              <div class="design-scatter-item"><img src="images/design3.png" alt="Suffolk Bred" /><span>Suffolk Bred</span></div>
-              <div class="design-scatter-item"><img src="images/design4.png" alt="Pig Out" /><span>Pig Out</span></div>
-              <div class="design-scatter-item"><img src="images/design5.png" alt="Brewing Co" /><span>Brewing Co</span></div>
-              <div class="design-scatter-item"><img src="images/design6.png" alt="Graham's Pick" /><span>Graham's Pick</span></div>
+              <div class="design-scatter-item"><img src="images/design1.png" alt="The Pig" loading="lazy" /><span>The Pig</span></div>
+              <div class="design-scatter-item"><img src="images/design2.png" alt="Hops &amp; Glory" loading="lazy" /><span>Hops &amp; Glory</span></div>
+              <div class="design-scatter-item"><img src="images/design3.png" alt="Suffolk Bred" loading="lazy" /><span>Suffolk Bred</span></div>
+              <div class="design-scatter-item"><img src="images/design4.png" alt="Pig Out" loading="lazy" /><span>Pig Out</span></div>
+              <div class="design-scatter-item"><img src="images/design5.png" alt="Brewing Co" loading="lazy" /><span>Brewing Co</span></div>
+              <div class="design-scatter-item"><img src="images/design6.png" alt="Graham's Pick" loading="lazy" /><span>Graham's Pick</span></div>
             </div>
           </div>
         </div>
@@ -2223,424 +1925,6 @@
 
     </div>
 
-    <!-- RIGHT: MOCKUP PREVIEW -->
-    <div class="merch-preview">
-      <div class="mockup-stage">
-
-        <!-- FRONT/BACK TOGGLE (t-shirt only) -->
-        <div class="view-toggle" id="view-toggle">
-          <button class="view-toggle-btn active" data-view="front">&#9664; Front</button>
-          <button class="view-toggle-btn" data-view="back">Back &#9654;</button>
-        </div>
-
-        <!-- T-Shirt FRONT SVG -->
-        <svg id="svg-tshirt" class="mockup-svg active" viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <clipPath id="tshirt-body-clip">
-              <rect x="43" y="74" width="114" height="146"/>
-            </clipPath>
-            <filter id="tshirt-shadow">
-              <feDropShadow dx="0" dy="6" stdDeviation="11" flood-color="rgba(0,0,0,0.6)"/>
-            </filter>
-            <!-- Lateral shading: dark at edges, slight highlight at centre -->
-            <linearGradient id="tshirt-lat-grad" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%"   stop-color="rgba(0,0,0,0.28)"/>
-              <stop offset="20%"  stop-color="rgba(0,0,0,0.06)"/>
-              <stop offset="50%"  stop-color="rgba(255,255,255,0.04)"/>
-              <stop offset="80%"  stop-color="rgba(0,0,0,0.06)"/>
-              <stop offset="100%" stop-color="rgba(0,0,0,0.28)"/>
-            </linearGradient>
-            <!-- Vertical depth: lighter at top, darker at bottom hem -->
-            <linearGradient id="tshirt-vert-grad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%"   stop-color="rgba(255,255,255,0.08)"/>
-              <stop offset="35%"  stop-color="rgba(255,255,255,0)"/>
-              <stop offset="100%" stop-color="rgba(0,0,0,0.14)"/>
-            </linearGradient>
-          </defs>
-          <!-- Base fill -->
-          <path id="tshirt-fill"
-            d="M 63 12 C 71 26 100 30 100 30 C 100 30 129 26 137 12 L 153 22 L 196 14 L 200 66 L 157 76 L 157 218 L 43 218 L 43 76 L 0 66 L 4 14 Z"
-            fill="#1e1e1e" filter="url(#tshirt-shadow)"
-          />
-          <!-- Sleeve inner shadow – underside of both sleeves -->
-          <path d="M 4 14 L 0 66 L 43 76 L 55 30 Z" fill="rgba(0,0,0,0.18)"/>
-          <path d="M 196 14 L 200 66 L 157 76 L 145 30 Z" fill="rgba(0,0,0,0.18)"/>
-          <!-- Lateral shading -->
-          <path d="M 63 12 C 71 26 100 30 100 30 C 100 30 129 26 137 12 L 153 22 L 196 14 L 200 66 L 157 76 L 157 218 L 43 218 L 43 76 L 0 66 L 4 14 Z" fill="url(#tshirt-lat-grad)"/>
-          <!-- Vertical shading -->
-          <path d="M 63 12 C 71 26 100 30 100 30 C 100 30 129 26 137 12 L 153 22 L 196 14 L 200 66 L 157 76 L 157 218 L 43 218 L 43 76 L 0 66 L 4 14 Z" fill="url(#tshirt-vert-grad)"/>
-          <!-- Shoulder seam lines -->
-          <line x1="63" y1="12" x2="43" y2="76" stroke="rgba(0,0,0,0.3)" stroke-width="1.2"/>
-          <line x1="137" y1="12" x2="157" y2="76" stroke="rgba(0,0,0,0.3)" stroke-width="1.2"/>
-          <line x1="63" y1="12" x2="43" y2="76" stroke="rgba(255,255,255,0.05)" stroke-width="0.6" stroke-dasharray="3 2"/>
-          <line x1="137" y1="12" x2="157" y2="76" stroke="rgba(255,255,255,0.05)" stroke-width="0.6" stroke-dasharray="3 2"/>
-          <!-- Ribbed collar band -->
-          <path d="M 65 13 C 73 27 100 31 100 31 C 100 31 127 27 135 13"
-            fill="none" stroke="rgba(0,0,0,0.4)" stroke-width="7" stroke-linecap="round"/>
-          <path d="M 65 13 C 73 27 100 31 100 31 C 100 31 127 27 135 13"
-            fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="5.5" stroke-linecap="round"/>
-          <path d="M 65 13 C 73 27 100 31 100 31 C 100 31 127 27 135 13"
-            fill="none" stroke="rgba(0,0,0,0.22)" stroke-width="1.5" stroke-linecap="round"
-            stroke-dasharray="2.5 2.2"/>
-          <!-- Hem stitch -->
-          <line x1="43" y1="215" x2="157" y2="215" stroke="rgba(255,255,255,0.07)" stroke-width="0.8" stroke-dasharray="3 2.5"/>
-          <!-- Side seam shadow -->
-          <rect x="43" y="76" width="4" height="142" fill="rgba(0,0,0,0.14)"/>
-          <rect x="153" y="76" width="4" height="142" fill="rgba(0,0,0,0.14)"/>
-          <!-- Design image -->
-          <image id="tshirt-design"
-            href="images/design1.png"
-            x="56" y="84" width="88" height="88"
-            clip-path="url(#tshirt-body-clip)"
-            preserveAspectRatio="xMidYMid meet"
-          />
-          <!-- Chest text -->
-          <text id="tshirt-front-text"
-            x="100" y="106" text-anchor="middle"
-            font-family="'Bebas Neue', sans-serif" font-size="9"
-            fill="#FF1DBC" letter-spacing="1.5" display="none"></text>
-          <!-- Sleeve text -->
-          <text id="tshirt-sleeve-text"
-            x="26" y="45" text-anchor="middle"
-            font-family="'Bebas Neue', sans-serif" font-size="6.5"
-            fill="#FF1DBC" letter-spacing="1"
-            transform="rotate(-75 26 45)" display="none"></text>
-          <!-- Outer outline -->
-          <path id="tshirt-outline"
-            d="M 63 12 C 71 26 100 30 100 30 C 100 30 129 26 137 12 L 153 22 L 196 14 L 200 66 L 157 76 L 157 218 L 43 218 L 43 76 L 0 66 L 4 14 Z"
-            fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="1"
-          />
-        </svg>
-
-        <!-- T-Shirt BACK SVG -->
-        <svg id="svg-tshirt-back" class="mockup-svg" viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <clipPath id="tshirt-back-clip">
-              <rect x="43" y="74" width="114" height="146"/>
-            </clipPath>
-            <filter id="tshirt-back-shadow">
-              <feDropShadow dx="0" dy="6" stdDeviation="11" flood-color="rgba(0,0,0,0.6)"/>
-            </filter>
-            <linearGradient id="tshirt-back-lat" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%"   stop-color="rgba(0,0,0,0.28)"/>
-              <stop offset="20%"  stop-color="rgba(0,0,0,0.06)"/>
-              <stop offset="50%"  stop-color="rgba(255,255,255,0.04)"/>
-              <stop offset="80%"  stop-color="rgba(0,0,0,0.06)"/>
-              <stop offset="100%" stop-color="rgba(0,0,0,0.28)"/>
-            </linearGradient>
-            <linearGradient id="tshirt-back-vert" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%"   stop-color="rgba(255,255,255,0.08)"/>
-              <stop offset="35%"  stop-color="rgba(255,255,255,0)"/>
-              <stop offset="100%" stop-color="rgba(0,0,0,0.14)"/>
-            </linearGradient>
-          </defs>
-          <path id="tshirt-back-fill"
-            d="M 70 16 C 82 22 118 22 130 16 L 153 22 L 196 14 L 200 66 L 157 76 L 157 218 L 43 218 L 43 76 L 0 66 L 4 14 Z"
-            fill="#1e1e1e" filter="url(#tshirt-back-shadow)"
-          />
-          <!-- Sleeve inner shadow -->
-          <path d="M 4 14 L 0 66 L 43 76 L 55 30 Z" fill="rgba(0,0,0,0.18)"/>
-          <path d="M 196 14 L 200 66 L 157 76 L 145 30 Z" fill="rgba(0,0,0,0.18)"/>
-          <path d="M 70 16 C 82 22 118 22 130 16 L 153 22 L 196 14 L 200 66 L 157 76 L 157 218 L 43 218 L 43 76 L 0 66 L 4 14 Z" fill="url(#tshirt-back-lat)"/>
-          <path d="M 70 16 C 82 22 118 22 130 16 L 153 22 L 196 14 L 200 66 L 157 76 L 157 218 L 43 218 L 43 76 L 0 66 L 4 14 Z" fill="url(#tshirt-back-vert)"/>
-          <!-- Shoulder seam lines -->
-          <line x1="70" y1="16" x2="43" y2="76" stroke="rgba(0,0,0,0.3)" stroke-width="1.2"/>
-          <line x1="130" y1="16" x2="157" y2="76" stroke="rgba(0,0,0,0.3)" stroke-width="1.2"/>
-          <line x1="70" y1="16" x2="43" y2="76" stroke="rgba(255,255,255,0.05)" stroke-width="0.6" stroke-dasharray="3 2"/>
-          <line x1="130" y1="16" x2="157" y2="76" stroke="rgba(255,255,255,0.05)" stroke-width="0.6" stroke-dasharray="3 2"/>
-          <!-- Back neck band (flat, ribbed) -->
-          <path d="M 72 17 C 84 23 116 23 128 17"
-            fill="none" stroke="rgba(0,0,0,0.4)" stroke-width="7" stroke-linecap="round"/>
-          <path d="M 72 17 C 84 23 116 23 128 17"
-            fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="5.5" stroke-linecap="round"/>
-          <path d="M 72 17 C 84 23 116 23 128 17"
-            fill="none" stroke="rgba(0,0,0,0.22)" stroke-width="1.5" stroke-linecap="round"
-            stroke-dasharray="2.5 2.2"/>
-          <!-- Centre back seam (subtle) -->
-          <line x1="100" y1="20" x2="100" y2="218" stroke="rgba(0,0,0,0.12)" stroke-width="1"/>
-          <!-- Hem stitch -->
-          <line x1="43" y1="215" x2="157" y2="215" stroke="rgba(255,255,255,0.07)" stroke-width="0.8" stroke-dasharray="3 2.5"/>
-          <!-- Side seam shadow -->
-          <rect x="43" y="76" width="4" height="142" fill="rgba(0,0,0,0.14)"/>
-          <rect x="153" y="76" width="4" height="142" fill="rgba(0,0,0,0.14)"/>
-          <image id="tshirt-back-design"
-            href="" x="50" y="88" width="100" height="100"
-            clip-path="url(#tshirt-back-clip)"
-            preserveAspectRatio="xMidYMid meet"
-            display="none"
-          />
-          <text id="tshirt-back-text"
-            x="100" y="158" text-anchor="middle"
-            font-family="'Bebas Neue', sans-serif" font-size="11"
-            fill="#FF1DBC" letter-spacing="2" display="none"></text>
-          <path id="tshirt-back-outline"
-            d="M 70 16 C 82 22 118 22 130 16 L 153 22 L 196 14 L 200 66 L 157 76 L 157 218 L 43 218 L 43 76 L 0 66 L 4 14 Z"
-            fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="1"
-          />
-          <text x="100" y="13" text-anchor="middle"
-            font-family="'Syne Mono', monospace" font-size="5.5"
-            fill="rgba(255,29,188,0.4)" letter-spacing="2">BACK VIEW</text>
-        </svg>
-
-        <!-- Sweatshirt SVG (crew neck) -->
-        <svg id="svg-sweatshirt" class="mockup-svg" viewBox="0 0 200 234" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <clipPath id="sweatshirt-body-clip">
-              <rect x="38" y="72" width="124" height="148"/>
-            </clipPath>
-            <filter id="sweatshirt-shadow">
-              <feDropShadow dx="0" dy="6" stdDeviation="11" flood-color="rgba(0,0,0,0.6)"/>
-            </filter>
-            <linearGradient id="sweatshirt-lat" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%"   stop-color="rgba(0,0,0,0.30)"/>
-              <stop offset="20%"  stop-color="rgba(0,0,0,0.07)"/>
-              <stop offset="50%"  stop-color="rgba(255,255,255,0.04)"/>
-              <stop offset="80%"  stop-color="rgba(0,0,0,0.07)"/>
-              <stop offset="100%" stop-color="rgba(0,0,0,0.30)"/>
-            </linearGradient>
-            <linearGradient id="sweatshirt-vert" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%"   stop-color="rgba(255,255,255,0.08)"/>
-              <stop offset="35%"  stop-color="rgba(255,255,255,0)"/>
-              <stop offset="100%" stop-color="rgba(0,0,0,0.16)"/>
-            </linearGradient>
-          </defs>
-          <!-- Main body (boxy crew-neck silhouette, longer sleeves than t-shirt) -->
-          <path id="sweatshirt-fill"
-            d="M 70 16 C 76 32 90 40 100 40 C 110 40 124 32 130 16
-               L 148 22 L 192 12 L 196 60 L 160 70
-               L 158 214 L 42 214
-               L 40 70 L 4 60 L 8 12
-               L 52 22 Z"
-            fill="#1e1e1e" filter="url(#sweatshirt-shadow)"
-          />
-          <!-- Sleeve underside shadow -->
-          <path d="M 8 12 L 4 60 L 40 70 L 52 28 Z" fill="rgba(0,0,0,0.18)"/>
-          <path d="M 192 12 L 196 60 L 160 70 L 148 28 Z" fill="rgba(0,0,0,0.18)"/>
-          <!-- Lateral + vertical shading -->
-          <path d="M 70 16 C 76 32 90 40 100 40 C 110 40 124 32 130 16 L 148 22 L 192 12 L 196 60 L 160 70 L 158 214 L 42 214 L 40 70 L 4 60 L 8 12 L 52 22 Z" fill="url(#sweatshirt-lat)"/>
-          <path d="M 70 16 C 76 32 90 40 100 40 C 110 40 124 32 130 16 L 148 22 L 192 12 L 196 60 L 160 70 L 158 214 L 42 214 L 40 70 L 4 60 L 8 12 L 52 22 Z" fill="url(#sweatshirt-vert)"/>
-          <!-- Shoulder seam lines -->
-          <line x1="70" y1="16" x2="40" y2="70" stroke="rgba(0,0,0,0.3)" stroke-width="1.2"/>
-          <line x1="130" y1="16" x2="160" y2="70" stroke="rgba(0,0,0,0.3)" stroke-width="1.2"/>
-          <line x1="70" y1="16" x2="40" y2="70" stroke="rgba(255,255,255,0.05)" stroke-width="0.6" stroke-dasharray="3 2"/>
-          <line x1="130" y1="16" x2="160" y2="70" stroke="rgba(255,255,255,0.05)" stroke-width="0.6" stroke-dasharray="3 2"/>
-          <!-- Ribbed crew-neck collar band -->
-          <path d="M 68 17 C 76 33 92 41 100 41 C 108 41 124 33 132 17"
-            fill="none" stroke="rgba(0,0,0,0.45)" stroke-width="9" stroke-linecap="round"/>
-          <path d="M 68 17 C 76 33 92 41 100 41 C 108 41 124 33 132 17"
-            fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="7" stroke-linecap="round"/>
-          <path d="M 68 17 C 76 33 92 41 100 41 C 108 41 124 33 132 17"
-            fill="none" stroke="rgba(0,0,0,0.25)" stroke-width="2" stroke-linecap="round"
-            stroke-dasharray="2.2 2"/>
-          <!-- Ribbed sleeve cuffs (short band at end of each sleeve) -->
-          <!-- Left cuff area -->
-          <path d="M 4 52 L 4 60 L 40 70 L 40 61 Z" fill="rgba(0,0,0,0.35)"/>
-          <path d="M 4 52 L 4 60 L 40 70 L 40 61 Z" fill="rgba(255,255,255,0.04)"/>
-          <line x1="4" y1="52" x2="40" y2="61" stroke="rgba(0,0,0,0.4)" stroke-width="1.2"/>
-          <line x1="4" y1="54" x2="40" y2="63" stroke="rgba(255,255,255,0.06)" stroke-width="0.7" stroke-dasharray="2 1.8"/>
-          <!-- Right cuff area -->
-          <path d="M 196 52 L 196 60 L 160 70 L 160 61 Z" fill="rgba(0,0,0,0.35)"/>
-          <path d="M 196 52 L 196 60 L 160 70 L 160 61 Z" fill="rgba(255,255,255,0.04)"/>
-          <line x1="196" y1="52" x2="160" y2="61" stroke="rgba(0,0,0,0.4)" stroke-width="1.2"/>
-          <line x1="196" y1="54" x2="160" y2="63" stroke="rgba(255,255,255,0.06)" stroke-width="0.7" stroke-dasharray="2 1.8"/>
-          <!-- Ribbed hem band at bottom -->
-          <rect x="42" y="204" width="116" height="10" fill="rgba(0,0,0,0.32)"/>
-          <rect x="42" y="204" width="116" height="10" fill="rgba(255,255,255,0.03)"/>
-          <line x1="42" y1="204" x2="158" y2="204" stroke="rgba(0,0,0,0.4)" stroke-width="1.2"/>
-          <line x1="42" y1="206" x2="158" y2="206" stroke="rgba(255,255,255,0.06)" stroke-width="0.7" stroke-dasharray="2 1.8"/>
-          <line x1="42" y1="208" x2="158" y2="208" stroke="rgba(255,255,255,0.06)" stroke-width="0.7" stroke-dasharray="2 1.8"/>
-          <!-- Side seam shadow -->
-          <rect x="40" y="70" width="5" height="144" fill="rgba(0,0,0,0.15)"/>
-          <rect x="155" y="70" width="5" height="144" fill="rgba(0,0,0,0.15)"/>
-          <!-- Design image -->
-          <image id="sweatshirt-design"
-            href="images/design1.png"
-            x="52" y="82" width="96" height="88"
-            clip-path="url(#sweatshirt-body-clip)"
-            preserveAspectRatio="xMidYMid meet"
-          />
-          <text id="sweatshirt-front-text"
-            x="100" y="148" text-anchor="middle"
-            font-family="'Bebas Neue', sans-serif" font-size="10"
-            fill="#FF1DBC" letter-spacing="1.5" display="none"></text>
-          <path id="sweatshirt-outline"
-            d="M 70 16 C 76 32 90 40 100 40 C 110 40 124 32 130 16 L 148 22 L 192 12 L 196 60 L 160 70 L 158 214 L 42 214 L 40 70 L 4 60 L 8 12 L 52 22 Z"
-            fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="1"
-          />
-        </svg>
-
-        <!-- Sweatshirt BACK SVG -->
-        <svg id="svg-sweatshirt-back" class="mockup-svg" viewBox="0 0 200 234" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <clipPath id="sweatshirt-back-body-clip">
-              <rect x="38" y="72" width="124" height="130"/>
-            </clipPath>
-            <filter id="sweatshirt-back-shadow">
-              <feDropShadow dx="0" dy="6" stdDeviation="11" flood-color="rgba(0,0,0,0.6)"/>
-            </filter>
-            <linearGradient id="sweatshirt-back-lat" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%"   stop-color="rgba(0,0,0,0.30)"/>
-              <stop offset="20%"  stop-color="rgba(0,0,0,0.07)"/>
-              <stop offset="50%"  stop-color="rgba(255,255,255,0.04)"/>
-              <stop offset="80%"  stop-color="rgba(0,0,0,0.07)"/>
-              <stop offset="100%" stop-color="rgba(0,0,0,0.30)"/>
-            </linearGradient>
-            <linearGradient id="sweatshirt-back-vert" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%"   stop-color="rgba(255,255,255,0.08)"/>
-              <stop offset="35%"  stop-color="rgba(255,255,255,0)"/>
-              <stop offset="100%" stop-color="rgba(0,0,0,0.16)"/>
-            </linearGradient>
-          </defs>
-          <!-- Flat back neckline -->
-          <path id="sweatshirt-back-fill"
-            d="M 76 20 C 88 24 112 24 124 20
-               L 148 22 L 192 12 L 196 60 L 160 70
-               L 158 214 L 42 214
-               L 40 70 L 4 60 L 8 12 L 52 22 Z"
-            fill="#1e1e1e" filter="url(#sweatshirt-back-shadow)"
-          />
-          <path d="M 8 12 L 4 60 L 40 70 L 52 28 Z" fill="rgba(0,0,0,0.18)"/>
-          <path d="M 192 12 L 196 60 L 160 70 L 148 28 Z" fill="rgba(0,0,0,0.18)"/>
-          <path d="M 76 20 C 88 24 112 24 124 20 L 148 22 L 192 12 L 196 60 L 160 70 L 158 214 L 42 214 L 40 70 L 4 60 L 8 12 L 52 22 Z" fill="url(#sweatshirt-back-lat)"/>
-          <path d="M 76 20 C 88 24 112 24 124 20 L 148 22 L 192 12 L 196 60 L 160 70 L 158 214 L 42 214 L 40 70 L 4 60 L 8 12 L 52 22 Z" fill="url(#sweatshirt-back-vert)"/>
-          <!-- Shoulder seam lines -->
-          <line x1="76" y1="20" x2="40" y2="70" stroke="rgba(0,0,0,0.3)" stroke-width="1.2"/>
-          <line x1="124" y1="20" x2="160" y2="70" stroke="rgba(0,0,0,0.3)" stroke-width="1.2"/>
-          <line x1="76" y1="20" x2="40" y2="70" stroke="rgba(255,255,255,0.05)" stroke-width="0.6" stroke-dasharray="3 2"/>
-          <line x1="124" y1="20" x2="160" y2="70" stroke="rgba(255,255,255,0.05)" stroke-width="0.6" stroke-dasharray="3 2"/>
-          <!-- Flat back neck band -->
-          <path d="M 78 21 C 90 25 110 25 122 21"
-            fill="none" stroke="rgba(0,0,0,0.45)" stroke-width="9" stroke-linecap="round"/>
-          <path d="M 78 21 C 90 25 110 25 122 21"
-            fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="7" stroke-linecap="round"/>
-          <path d="M 78 21 C 90 25 110 25 122 21"
-            fill="none" stroke="rgba(0,0,0,0.25)" stroke-width="2" stroke-linecap="round"
-            stroke-dasharray="2.2 2"/>
-          <!-- Centre back seam -->
-          <line x1="100" y1="24" x2="100" y2="214" stroke="rgba(0,0,0,0.12)" stroke-width="1"/>
-          <!-- Left cuff -->
-          <path d="M 4 52 L 4 60 L 40 70 L 40 61 Z" fill="rgba(0,0,0,0.35)"/>
-          <line x1="4" y1="52" x2="40" y2="61" stroke="rgba(0,0,0,0.4)" stroke-width="1.2"/>
-          <line x1="4" y1="54" x2="40" y2="63" stroke="rgba(255,255,255,0.06)" stroke-width="0.7" stroke-dasharray="2 1.8"/>
-          <!-- Right cuff -->
-          <path d="M 196 52 L 196 60 L 160 70 L 160 61 Z" fill="rgba(0,0,0,0.35)"/>
-          <line x1="196" y1="52" x2="160" y2="61" stroke="rgba(0,0,0,0.4)" stroke-width="1.2"/>
-          <line x1="196" y1="54" x2="160" y2="63" stroke="rgba(255,255,255,0.06)" stroke-width="0.7" stroke-dasharray="2 1.8"/>
-          <!-- Ribbed hem -->
-          <rect x="42" y="204" width="116" height="10" fill="rgba(0,0,0,0.32)"/>
-          <line x1="42" y1="204" x2="158" y2="204" stroke="rgba(0,0,0,0.4)" stroke-width="1.2"/>
-          <line x1="42" y1="206" x2="158" y2="206" stroke="rgba(255,255,255,0.06)" stroke-width="0.7" stroke-dasharray="2 1.8"/>
-          <line x1="42" y1="208" x2="158" y2="208" stroke="rgba(255,255,255,0.06)" stroke-width="0.7" stroke-dasharray="2 1.8"/>
-          <!-- Side seam shadows -->
-          <rect x="40" y="70" width="5" height="144" fill="rgba(0,0,0,0.15)"/>
-          <rect x="155" y="70" width="5" height="144" fill="rgba(0,0,0,0.15)"/>
-          <!-- Design image (back) -->
-          <image id="sweatshirt-back-design"
-            href="images/design1.png"
-            x="52" y="82" width="96" height="80"
-            clip-path="url(#sweatshirt-back-body-clip)"
-            preserveAspectRatio="xMidYMid meet"
-            display="none"
-          />
-          <text id="sweatshirt-back-text"
-            x="100" y="148" text-anchor="middle"
-            font-family="'Bebas Neue', sans-serif" font-size="10"
-            fill="#FF1DBC" letter-spacing="1.5" display="none"></text>
-          <path id="sweatshirt-back-outline"
-            d="M 76 20 C 88 24 112 24 124 20 L 148 22 L 192 12 L 196 60 L 160 70 L 158 214 L 42 214 L 40 70 L 4 60 L 8 12 L 52 22 Z"
-            fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="1"
-          />
-          <text x="100" y="13" text-anchor="middle"
-            font-family="'Syne Mono', monospace" font-size="5.5"
-            fill="rgba(255,29,188,0.4)" letter-spacing="2">BACK VIEW</text>
-        </svg>
-
-        <!-- Snapback Cap SVG (5-panel, curved dome) -->
-        <svg id="svg-cap" class="mockup-svg" viewBox="0 0 200 148" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <clipPath id="cap-crown-clip">
-              <path d="M 22 88 C 22 44 46 10 100 8 C 154 10 178 44 178 88 Z"/>
-            </clipPath>
-            <filter id="cap-shadow">
-              <feDropShadow dx="0" dy="6" stdDeviation="11" flood-color="rgba(0,0,0,0.6)"/>
-            </filter>
-            <!-- Crown shading: lighter top-left, darker sides -->
-            <radialGradient id="cap-crown-grad" cx="38%" cy="30%" r="65%">
-              <stop offset="0%"   stop-color="rgba(255,255,255,0.12)"/>
-              <stop offset="55%"  stop-color="rgba(255,255,255,0)"/>
-              <stop offset="100%" stop-color="rgba(0,0,0,0.20)"/>
-            </radialGradient>
-            <linearGradient id="cap-brim-grad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%"   stop-color="rgba(0,0,0,0.22)"/>
-              <stop offset="40%"  stop-color="rgba(0,0,0,0)"/>
-              <stop offset="100%" stop-color="rgba(0,0,0,0.10)"/>
-            </linearGradient>
-          </defs>
-          <!-- Crown dome (curved path) -->
-          <path id="cap-fill"
-            d="M 22 88 C 22 44 46 10 100 8 C 154 10 178 44 178 88 Z"
-            fill="#1e1e1e" filter="url(#cap-shadow)"
-          />
-          <!-- Crown shading overlay -->
-          <path d="M 22 88 C 22 44 46 10 100 8 C 154 10 178 44 178 88 Z" fill="url(#cap-crown-grad)"/>
-          <!-- Panel seam lines (5-panel: two seams from top button down) -->
-          <line x1="100" y1="8" x2="48" y2="88" stroke="rgba(0,0,0,0.32)" stroke-width="1.4"/>
-          <line x1="100" y1="8" x2="152" y2="88" stroke="rgba(0,0,0,0.32)" stroke-width="1.4"/>
-          <line x1="100" y1="8" x2="48" y2="88" stroke="rgba(255,255,255,0.06)" stroke-width="0.7" stroke-dasharray="3 2.5"/>
-          <line x1="100" y1="8" x2="152" y2="88" stroke="rgba(255,255,255,0.06)" stroke-width="0.7" stroke-dasharray="3 2.5"/>
-          <!-- Crown outline -->
-          <path id="cap-outline"
-            d="M 22 88 C 22 44 46 10 100 8 C 154 10 178 44 178 88"
-            fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="1"
-          />
-          <!-- Sweatband (thin darker ring at base of crown) -->
-          <path d="M 22 88 C 46 96 154 96 178 88" fill="none" stroke="rgba(0,0,0,0.45)" stroke-width="5"/>
-          <path d="M 22 88 C 46 96 154 96 178 88" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="3"/>
-          <!-- Brim -->
-          <path id="cap-fill2"
-            d="M 8 90 Q 100 98 192 90 L 188 114 Q 100 120 12 114 Z"
-            fill="#1e1e1e"
-          />
-          <!-- Brim shading -->
-          <path d="M 8 90 Q 100 98 192 90 L 188 114 Q 100 120 12 114 Z" fill="url(#cap-brim-grad)"/>
-          <!-- Brim underside hint (darker under-brim) -->
-          <path d="M 12 114 Q 100 120 188 114 L 188 116 Q 100 122 12 116 Z" fill="rgba(0,0,0,0.35)"/>
-          <!-- Brim outline -->
-          <path d="M 8 90 Q 100 98 192 90 L 188 114 Q 100 120 12 114 Z"
-            fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.8"/>
-          <!-- Snapback strap -->
-          <rect x="72" y="105" width="56" height="7" rx="3.5" fill="rgba(0,0,0,0.55)"/>
-          <rect x="72" y="105" width="56" height="7" rx="3.5" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="0.7"/>
-          <!-- Strap holes -->
-          <circle cx="86"  cy="108.5" r="1.5" fill="rgba(255,255,255,0.12)"/>
-          <circle cx="100" cy="108.5" r="1.5" fill="rgba(255,255,255,0.12)"/>
-          <circle cx="114" cy="108.5" r="1.5" fill="rgba(255,255,255,0.12)"/>
-          <!-- Top button -->
-          <circle cx="100" cy="9" r="5" fill="rgba(0,0,0,0.5)"/>
-          <circle cx="100" cy="9" r="2.5" fill="rgba(255,255,255,0.14)"/>
-          <!-- Design image on front centre panel -->
-          <image id="cap-design"
-            href="images/design1.png"
-            x="42" y="14" width="116" height="72"
-            clip-path="url(#cap-crown-clip)"
-            preserveAspectRatio="xMidYMid meet"
-          />
-          <!-- Custom text -->
-          <text id="cap-text"
-            x="100" y="64" text-anchor="middle"
-            font-family="'Bebas Neue', sans-serif" font-size="11"
-            fill="#FF1DBC" letter-spacing="2" display="none"></text>
-        </svg>
-
-        <!-- Preview label -->
-        <div class="preview-label" id="preview-label">
-          <strong id="preview-label-design">Design 1</strong>
-          <span id="preview-label-detail">T-Shirt &middot; Black &middot; M</span>
-        </div>
-
-      </div>
-    </div>
-
   </section>
 
   <!-- STICKY ORDER BAR (mobile) -->
@@ -2672,7 +1956,9 @@
     <div class="footer-brand">
       <img
         src="https://img1.wsimg.com/isteam/ip/c5f4da44-74a7-4ebd-b7a0-a83c516ecd85/Belly%20Pork%20Brewing-37b48db.PNG/:/rs=h:200,cg:true,m/qt=q:100/ll"
-        alt="Belly Pork Brewing"
+        alt="Belly Pork Brewing Co."
+        height="44"
+        loading="lazy"
       />
       <p>Independent craft beer from Graham's kitchen to your glass. One batch at a time.</p>
     </div>
@@ -2714,7 +2000,6 @@
       colourValue: '#080808',
       colourName: 'Black',
       size: 'M',
-      tshirtView: 'front',
       designPlacement: 'front',
       customText: '',
       textPosition: 'middle'
@@ -2723,67 +2008,11 @@
     const SIZES_STANDARD = ['S', 'M', 'L', 'XL', 'XXL'];
     const DEFAULT_SIZE = 'M';
 
-    // ─── Outline stroke: visible on light garments ───
-    function outlineStroke(colourName) {
-      return colourName === 'White' ? 'rgba(0,0,0,0.18)' : 'rgba(255,255,255,0.1)';
-    }
-
-    // ─── Apply garment colour ───
-    function applyColour(colourValue, colourName) {
-      ['tshirt-fill', 'tshirt-back-fill', 'sweatshirt-fill', 'sweatshirt-back-fill', 'cap-fill', 'cap-fill2'].forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.setAttribute('fill', colourValue);
-      });
-      const stroke = outlineStroke(colourName);
-      ['tshirt-outline', 'tshirt-back-outline', 'sweatshirt-outline', 'sweatshirt-back-outline', 'cap-outline'].forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.setAttribute('stroke', stroke);
-      });
-    }
-
-    // ─── Apply design image to all SVGs, then enforce placement visibility ───
-    function applyDesign(designNum) {
-      const src = `images/design${designNum}.png`;
-      ['tshirt-design', 'tshirt-back-design', 'sweatshirt-design', 'sweatshirt-back-design', 'cap-design'].forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.setAttribute('href', src);
-      });
-      applyPlacement();
-    }
-
-    // ─── Show/hide design image per placement (t-shirt + sweatshirt) ───
-    function applyPlacement() {
-      [['tshirt-design', 'tshirt-back-design'], ['sweatshirt-design', 'sweatshirt-back-design']].forEach(([fId, bId]) => {
-        const f = document.getElementById(fId);
-        const b = document.getElementById(bId);
-        if (f) f.setAttribute('display', state.designPlacement === 'back'  ? 'none' : 'inline');
-        if (b) b.setAttribute('display', state.designPlacement === 'front' ? 'none' : 'inline');
-      });
-    }
-
-    // ─── Switch active product SVG ───
+    // ─── Switch product: toggle which steps/sub-sections apply ───
     function applyProduct(product) {
-      document.querySelectorAll('.mockup-svg').forEach(el => el.classList.remove('active'));
-      // Reset to front view on product switch
-      state.tshirtView = 'front';
-      document.querySelectorAll('.view-toggle-btn').forEach(btn => {
-        btn.classList.toggle('active', btn.dataset.view === 'front');
-      });
-
-      if (product === 'tshirt' || product === 'sweatshirt') {
-        const prefix = product === 'tshirt' ? 'svg-tshirt' : 'svg-sweatshirt';
-        document.getElementById(prefix).classList.add('active');
-        document.getElementById('view-toggle').classList.add('visible');
-        document.getElementById('design-placement-group').classList.add('visible');
-      } else {
-        const svg = document.getElementById('svg-' + product);
-        if (svg) svg.classList.add('active');
-        document.getElementById('view-toggle').classList.remove('visible');
-        document.getElementById('design-placement-group').classList.remove('visible');
-      }
-
-      updateTextPositionButtons(product);
-      applyCustomText(state.customText);
+      // Placement options only make sense for clothing (t-shirt/sweatshirt)
+      const placementGroup = document.getElementById('design-placement-group');
+      if (placementGroup) placementGroup.classList.toggle('visible', product === 'tshirt' || product === 'sweatshirt');
 
       // Sticker Pack: designs shown as "all included", colour step skipped entirely
       const step2 = document.getElementById('mobile-step-2');
@@ -2800,60 +2029,9 @@
       if (step5) step5.classList.toggle('hidden-for-sticker', product === 'sticker');
     }
 
-    // ─── Toggle front/back view (t-shirt + sweatshirt) ───
-    function applyView(view) {
-      state.tshirtView = view;
-      document.querySelectorAll('.view-toggle-btn').forEach(btn => {
-        btn.classList.toggle('active', btn.dataset.view === view);
-      });
-      if (state.product === 'tshirt') {
-        document.getElementById('svg-tshirt').classList.toggle('active', view === 'front');
-        document.getElementById('svg-tshirt-back').classList.toggle('active', view === 'back');
-      } else if (state.product === 'sweatshirt') {
-        document.getElementById('svg-sweatshirt').classList.toggle('active', view === 'front');
-        document.getElementById('svg-sweatshirt-back').classList.toggle('active', view === 'back');
-      }
-      applyCustomText(state.customText);
-    }
-
-    // ─── Y positions for text by product/view and top/middle/bottom ───
-    const TEXT_Y = {
-      'tshirt-front-text':     { top: 92,  middle: 142, bottom: 200 },
-      'tshirt-back-text':      { top: 92,  middle: 147, bottom: 200 },
-      'sweatshirt-front-text': { top: 100, middle: 148, bottom: 198 },
-      'sweatshirt-back-text':  { top: 100, middle: 148, bottom: 198 },
-      'cap-text':              { top: 38,  middle: 56,  bottom: 75  },
-    };
-
-    // ─── Custom text: update SVG text elements ───
+    // ─── Custom text state ───
     function applyCustomText(text) {
       state.customText = text;
-      Object.keys(TEXT_Y).concat(['tshirt-sleeve-text']).forEach(id => {
-        const el = document.getElementById(id);
-        if (el) { el.textContent = ''; el.setAttribute('display', 'none'); }
-      });
-
-      if (!text) { syncUI(); return; }
-      const upper = text.toUpperCase();
-
-      let activeId = null;
-      if (state.product === 'tshirt') {
-        activeId = state.tshirtView === 'back' ? 'tshirt-back-text' : 'tshirt-front-text';
-      } else if (state.product === 'sweatshirt') {
-        activeId = state.tshirtView === 'back' ? 'sweatshirt-back-text' : 'sweatshirt-front-text';
-      } else if (state.product === 'cap') {
-        activeId = 'cap-text';
-      }
-
-      if (activeId) {
-        const el = document.getElementById(activeId);
-        if (el) {
-          const yVal = (TEXT_Y[activeId] || {})[state.textPosition] || TEXT_Y[activeId].middle;
-          el.setAttribute('y', yVal);
-          el.textContent = upper;
-          el.setAttribute('display', 'inline');
-        }
-      }
       syncUI();
     }
 
@@ -2864,11 +2042,6 @@
         btn.classList.toggle('active', btn.dataset.pos === pos);
       });
       applyCustomText(state.customText);
-    }
-
-    // ─── Show/hide text position buttons per product ───
-    function updateTextPositionButtons(product) {
-      // All three positions (top/middle/bottom) work for all products — nothing to hide
     }
 
     // ─── Design names ───
@@ -2883,9 +2056,6 @@
       const posNames = { top: 'Top', middle: 'Centre', bottom: 'Bottom' };
       const pName = productNames[state.product];
       const dName = designNames[state.design] || ('Design ' + state.design);
-
-      document.getElementById('preview-label-design').textContent = dName;
-      document.getElementById('preview-label-detail').textContent = `${pName} · ${state.colourName} · ${state.size}`;
 
       // Sticky order bar
       const stickyText = document.getElementById('sticky-summary-text');
@@ -2959,7 +2129,6 @@
         document.querySelectorAll('.design-option').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         state.design = btn.dataset.design;
-        applyDesign(state.design);
         syncUI();
       });
     });
@@ -2972,7 +2141,6 @@
         state.colour     = btn.dataset.colour;
         state.colourValue = btn.dataset.colourValue;
         state.colourName  = btn.dataset.colourName;
-        applyColour(state.colourValue, state.colourName);
         syncUI();
       });
     });
@@ -2990,18 +2158,12 @@
     }
     bindSizeButtons();
 
-    // ─── Event: front/back view toggle ───
-    document.querySelectorAll('.view-toggle-btn').forEach(btn => {
-      btn.addEventListener('click', () => applyView(btn.dataset.view));
-    });
-
     // ─── Event: design placement ───
     document.querySelectorAll('.placement-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         document.querySelectorAll('.placement-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         state.designPlacement = btn.dataset.placement;
-        applyPlacement();
         syncUI();
       });
     });
@@ -3132,7 +2294,17 @@
     updateProgressDots();
     document.getElementById('progress-label').textContent = 'Step 1 of ' + TOTAL_STEPS;
 
-    // ─── Mobile nav toggle ───
+    // ─── Nav (identical on every page) ───
+    (function () {
+      const segments = location.pathname.split('/').filter(Boolean);
+      const path = (segments[segments.length - 1] || 'index').replace(/.html$/, '');
+      document.querySelectorAll('.nav-links a, .nav-mobile a').forEach(a => {
+        const href = a.getAttribute('href') || '';
+        if (href.includes('#')) return; // anchor links aren't page-level
+        if (href.replace(/.html$/, '') === path) a.classList.add('active');
+      });
+    })();
+
     const burger = document.querySelector('.nav-burger');
     const mobileNav = document.getElementById('nav-mobile');
     const navOverlay = document.getElementById('nav-overlay');
@@ -3245,8 +2417,6 @@
     });
 
     // ─── Initialise ───
-    applyColour(state.colourValue, state.colourName);
-    applyDesign(state.design);
     applyProduct(state.product);
     syncUI();
   </script>
