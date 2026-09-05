@@ -190,6 +190,127 @@
       max-width: 640px;
     }
 
+    /* ─── LIVE PREVIEW CARD ─── */
+    .live-preview-card {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      background: var(--dark);
+      border: 1px solid var(--magenta-dim);
+      padding: 1rem;
+      margin-bottom: 2rem;
+    }
+    .live-preview-visual {
+      position: relative;
+      flex: 0 0 auto;
+      width: 84px;
+      height: 84px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(240,234,224,0.03);
+      border: 1px solid rgba(240,234,224,0.1);
+    }
+    .live-preview-silhouette {
+      width: 62%;
+      height: 62%;
+      color: rgba(240,234,224,0.25);
+      transition: color 0.25s ease;
+    }
+    .live-preview-visual.empty .live-preview-silhouette { color: rgba(240,234,224,0.18); }
+    .live-preview-placeholder {
+      display: none;
+      position: absolute;
+      inset: 0;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.5rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 0.4rem;
+      line-height: 1.3;
+    }
+    .live-preview-visual.empty .live-preview-placeholder { display: flex; }
+    .live-preview-visual.empty .live-preview-design-overlay,
+    .live-preview-visual.empty .live-preview-text-overlay { display: none !important; }
+    .live-preview-design-overlay {
+      position: absolute;
+      width: 34%;
+      top: 26%;
+      left: 50%;
+      transform: translateX(-50%);
+      pointer-events: none;
+    }
+    .live-preview-design-overlay img {
+      width: 100%;
+      height: auto;
+      display: block;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
+    }
+    .live-preview-visual[data-product="cap"] .live-preview-design-overlay {
+      width: 24%;
+      top: 44%;
+    }
+    .live-preview-visual[data-product="sticker"] .live-preview-design-overlay {
+      display: none;
+    }
+    .live-preview-text-overlay {
+      display: none;
+      position: absolute;
+      left: 8%;
+      right: 8%;
+      text-align: center;
+      font-family: 'Bebas Neue', sans-serif;
+      color: var(--magenta);
+      letter-spacing: 0.02em;
+      font-size: 0.62rem;
+      line-height: 1;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+      word-break: break-word;
+      pointer-events: none;
+    }
+    .live-preview-text-overlay.pos-top { top: 12%; }
+    .live-preview-text-overlay.pos-middle { top: 46%; transform: translateY(-50%); }
+    .live-preview-text-overlay.pos-bottom { bottom: 10%; }
+    .live-preview-info {
+      flex: 1;
+      min-width: 0;
+    }
+    .live-preview-eyebrow {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.58rem;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--magenta);
+      margin: 0 0 0.35rem;
+    }
+    .live-preview-summary {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.1rem;
+      letter-spacing: 0.01em;
+      color: var(--off-white);
+      margin: 0 0 0.2rem;
+      line-height: 1.05;
+    }
+    .live-preview-price {
+      font-family: 'Syne Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin: 0;
+    }
+    @media (min-width: 769px) {
+      .live-preview-card { padding: 1.6rem 2rem; gap: 2rem; margin-bottom: 2.8rem; }
+      .live-preview-visual { width: 140px; height: 140px; }
+      .live-preview-placeholder { font-size: 0.62rem; }
+      .live-preview-text-overlay { font-size: 0.9rem; }
+      .live-preview-eyebrow { font-size: 0.68rem; }
+      .live-preview-summary { font-size: 1.7rem; }
+      .live-preview-price { font-size: 0.85rem; }
+    }
+
     /* ─── CONFIG GROUPS ─── */
     .config-group {
       margin-bottom: 2.5rem;
@@ -843,6 +964,11 @@
       .mobile-step-progress { display: block; margin-bottom: 1.6rem; }
       .mobile-step { display: none; }
       .mobile-step.active { display: block; }
+      /* Sticky (not static) so the Back/Next bar always clears the floating
+         sticky-order-bar (~65px tall) by a fixed margin, no matter how long
+         a given step's content is — a scroll-dependent bottom padding can't
+         guarantee this since a user can always scroll the nav bar flush with
+         the viewport edge, right under the floating bar. */
       .mobile-step-nav {
         display: flex;
         align-items: center;
@@ -850,6 +976,10 @@
         margin-top: 2rem;
         padding-top: 1.5rem;
         border-top: 1px solid rgba(240,234,224,0.08);
+        position: sticky;
+        bottom: 165px;
+        background: var(--dark);
+        z-index: 150;
       }
 
       /* Product cards — 2x2 grid on mobile, large tap targets */
@@ -1282,16 +1412,18 @@
     }
     .success-btn-primary:hover { opacity: 0.88; }
 
-    /* push chat toggle above the sticky order bar on mobile */
+    /* merch.html only: chat toggle lives top-right so it never clashes
+       with the step Next/Back bar pinned at the bottom on mobile */
     @media (max-width: 768px) {
-      #chat-widget { bottom: calc(1.2rem + 74px); }
       #chat-panel { bottom: 74px; height: calc(85svh - 74px); }
     }
 
     /* ─── MOBILE STEP FLOW ─── */
-    .mobile-step-progress {
-      display: none;
-    }
+    /* NOTE: .mobile-step-progress / .mobile-step-nav visibility is controlled
+       entirely by the max-width:768px (show) and min-width:769px (hide)
+       breakpoints below — no unconditional display rule here, since an
+       unconditional rule at this point in the cascade would win over the
+       earlier mobile breakpoint regardless of viewport width. */
     .progress-label {
       font-family: 'Syne Mono', monospace;
       font-size: 0.6rem;
@@ -1299,9 +1431,6 @@
       text-transform: uppercase;
       color: var(--muted);
       margin: 0;
-    }
-    .mobile-step-nav {
-      display: none;
     }
     .step-back-btn {
       font-family: 'Syne Mono', monospace;
@@ -1343,14 +1472,15 @@
       .mobile-step-nav { display: none !important; }
     }
 
-    /* ─── CHAT WIDGET ─── */
+    /* ─── CHAT WIDGET (merch.html: pinned top-right, not bottom-right,
+       so it never sits over the step Next/Back bar) ─── */
     #chat-widget {
       position: fixed;
-      bottom: 1.8rem;
+      top: 96px; /* clears the ~80px fixed nav plus a small gap */
       right: 1.8rem;
       z-index: 500;
       display: flex;
-      flex-direction: column;
+      flex-direction: column-reverse;
       align-items: flex-end;
       gap: 0.75rem;
       pointer-events: none;
@@ -1364,10 +1494,10 @@
       overflow: hidden;
       box-shadow: 0 24px 64px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,29,188,0.08);
       opacity: 0;
-      transform: translateY(12px) scale(0.97);
+      transform: translateY(-12px) scale(0.97);
       pointer-events: none;
       transition: opacity 0.25s ease, transform 0.25s ease;
-      transform-origin: bottom right;
+      transform-origin: top right;
     }
     #chat-panel.open {
       opacity: 1;
@@ -1465,7 +1595,7 @@
     #chat-toggle.open .toggle-open { display: none; }
     #chat-toggle.open .toggle-close { display: inline; }
     @media (max-width: 900px) {
-      #chat-widget { bottom: 1.2rem; right: 1.2rem; }
+      #chat-widget { top: 88px; right: 1.2rem; }
     }
     @media (max-width: 768px) {
       #chat-panel {
@@ -1621,6 +1751,25 @@
     <!-- LEFT: OPTIONS -->
     <div class="merch-configurator">
 
+      <!-- Live product preview — stays visible above every step -->
+      <div class="live-preview-card" id="live-preview-card">
+        <div class="live-preview-visual" id="live-preview-visual" data-product="tshirt">
+          <svg class="live-preview-silhouette" id="live-preview-silhouette" viewBox="0 0 56 62" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M18 3C20 9 28 11 28 11C28 11 36 9 38 3L46 6.5L56 3.5L56 21L43 23.5L43 62L13 62L13 23.5L0 21L0 3.5Z" fill="currentColor"/>
+          </svg>
+          <p class="live-preview-placeholder" id="live-preview-placeholder">Your item will appear here</p>
+          <div class="live-preview-design-overlay" id="live-preview-design-overlay">
+            <img id="live-preview-design-img" src="images/design1.png" alt="" loading="lazy" />
+          </div>
+          <p class="live-preview-text-overlay" id="live-preview-text-overlay"></p>
+        </div>
+        <div class="live-preview-info">
+          <p class="live-preview-eyebrow">Your Order So Far</p>
+          <p class="live-preview-summary" id="live-preview-summary">Black T-Shirt · The Pig</p>
+          <p class="live-preview-price" id="live-preview-price">£25</p>
+        </div>
+      </div>
+
       <!-- Mobile progress indicator -->
       <div class="mobile-step-progress" id="mobile-step-progress">
         <div class="progress-dots" id="progress-dots" role="tablist" aria-label="Configurator progress">
@@ -1719,6 +1868,18 @@
               <img src="images/design6.png" alt="Graham's Pick" loading="lazy" />
               <span class="design-label">Graham's Pick</span>
             </button>
+            <button class="design-option" data-design="7" aria-label="Geometric">
+              <img src="images/design7-dark.png" alt="Geometric" loading="lazy" />
+              <span class="design-label">Geometric</span>
+            </button>
+            <button class="design-option" data-design="8" aria-label="Suffolk">
+              <img src="images/design8-dark.png" alt="Suffolk" loading="lazy" />
+              <span class="design-label">Suffolk</span>
+            </button>
+            <button class="design-option" data-design="9" aria-label="The Face">
+              <img src="images/design9-dark.png" alt="The Face" loading="lazy" />
+              <span class="design-label">The Face</span>
+            </button>
           </div>
 
           <!-- Sticker Pack: all designs included, nothing to select -->
@@ -1731,6 +1892,9 @@
               <div class="design-scatter-item"><img src="images/design4.png" alt="Pig Out" loading="lazy" /><span>Pig Out</span></div>
               <div class="design-scatter-item"><img src="images/design5.png" alt="Brewing Co" loading="lazy" /><span>Brewing Co</span></div>
               <div class="design-scatter-item"><img src="images/design6.png" alt="Graham's Pick" loading="lazy" /><span>Graham's Pick</span></div>
+              <div class="design-scatter-item"><img src="images/design7-dark.png" alt="Geometric" loading="lazy" /><span>Geometric</span></div>
+              <div class="design-scatter-item"><img src="images/design8-dark.png" alt="Suffolk" loading="lazy" /><span>Suffolk</span></div>
+              <div class="design-scatter-item"><img src="images/design9-dark.png" alt="The Face" loading="lazy" /><span>The Face</span></div>
             </div>
           </div>
         </div>
@@ -2045,7 +2209,85 @@
     }
 
     // ─── Design names ───
-    const designNames = { '1': 'The Pig', '2': 'Hops & Glory', '3': 'Suffolk Bred', '4': 'Pig Out', '5': 'Brewing Co', '6': "Graham's Pick" };
+    const designNames = {
+      '1': 'The Pig', '2': 'Hops & Glory', '3': 'Suffolk Bred', '4': 'Pig Out', '5': 'Brewing Co', '6': "Graham's Pick",
+      '7': 'Geometric', '8': 'Suffolk', '9': 'The Face'
+    };
+
+    // ─── Designs 7–9 have colour-matched artwork: dark version for Black/Magenta
+    // products, white version for White. The picker thumbnail always shows the
+    // dark version — only the live mockup swaps with the selected colour. ───
+    const COLOUR_SWAP_DESIGNS = new Set(['7', '8', '9']);
+    function designImageSrc(design, colour) {
+      if (COLOUR_SWAP_DESIGNS.has(design)) {
+        return `images/design${design}-${colour === 'white' ? 'white' : 'dark'}.png`;
+      }
+      return `images/design${design}.png`;
+    }
+
+    // ─── Live preview silhouettes (same paths as the step-1 product icons, just bigger) ───
+    const SILHOUETTES = {
+      tshirt: {
+        viewBox: '0 0 56 62',
+        markup: '<path d="M18 3C20 9 28 11 28 11C28 11 36 9 38 3L46 6.5L56 3.5L56 21L43 23.5L43 62L13 62L13 23.5L0 21L0 3.5Z" fill="currentColor"/>'
+      },
+      sweatshirt: {
+        viewBox: '0 0 56 66',
+        markup: '<path d="M20 3C22 12 26 16 28 16C30 16 34 12 36 3L44 6L56 2.5L56 19L45 21.5L44 61L12 61L11 21.5L0 19L0 2.5Z" fill="currentColor"/><rect x="11" y="57" width="34" height="6" rx="1.5" fill="currentColor" opacity="0.45"/>'
+      },
+      cap: {
+        viewBox: '0 0 56 40',
+        markup: '<path d="M5 26C5 12 15 2 28 2C41 2 51 12 51 26Z" fill="currentColor"/><path d="M2 27Q28 32 54 27L52 35Q28 39 4 35Z" fill="currentColor" opacity="0.7"/>'
+      },
+      sticker: {
+        viewBox: '0 0 56 56',
+        markup: '<path d="M4 4H40L52 16V52H4Z" fill="currentColor"/><path d="M40 4V16H52Z" fill="currentColor" opacity="0.45"/>'
+      }
+    };
+
+    // ─── Live preview card: silhouette + design overlay + colour tint + text overlay ───
+    function updateLivePreview() {
+      const visual = document.getElementById('live-preview-visual');
+      const svg = document.getElementById('live-preview-silhouette');
+      const designOverlay = document.getElementById('live-preview-design-overlay');
+      const designImg = document.getElementById('live-preview-design-img');
+      const textOverlay = document.getElementById('live-preview-text-overlay');
+      const summary = document.getElementById('live-preview-summary');
+      const price = document.getElementById('live-preview-price');
+      if (!visual || !svg) return;
+
+      const productNames = { tshirt: 'T-Shirt', sweatshirt: 'Sweatshirt', cap: 'Cap', sticker: 'Sticker Pack' };
+      const sil = SILHOUETTES[state.product];
+
+      visual.classList.toggle('empty', !sil);
+      if (!sil) {
+        summary.textContent = 'Your item will appear here';
+        price.textContent = '';
+        return;
+      }
+
+      visual.dataset.product = state.product;
+      svg.setAttribute('viewBox', sil.viewBox);
+      svg.innerHTML = sil.markup;
+      svg.style.color = state.colourValue;
+
+      const isSticker = state.product === 'sticker';
+      designOverlay.style.display = isSticker ? 'none' : 'block';
+      if (!isSticker) {
+        designImg.src = designImageSrc(state.design, state.colour);
+        designImg.alt = designNames[state.design] || '';
+      }
+
+      const hasText = !!state.customText && !isSticker;
+      textOverlay.style.display = hasText ? 'block' : 'none';
+      if (hasText) {
+        textOverlay.textContent = state.customText;
+        textOverlay.className = 'live-preview-text-overlay pos-' + state.textPosition;
+      }
+
+      summary.textContent = `${state.colourName} ${productNames[state.product]} · ${designNames[state.design] || ''}`;
+      price.textContent = PRICES[state.product];
+    }
 
     // ─── Sync preview label + order summary + hidden form fields + sticky bar ───
     const PRICES = { tshirt: '£25', sweatshirt: '£45', cap: '£30', sticker: '£8' };
@@ -2090,6 +2332,8 @@
       document.getElementById('form-text-position').value = state.customText ? posNames[state.textPosition] : 'None';
       document.getElementById('form-placement').value =
         (state.product === 'tshirt' || state.product === 'sweatshirt') ? placementNames[state.designPlacement] : 'N/A';
+
+      updateLivePreview();
     }
 
     // ─── Size button renderer ───
