@@ -19,7 +19,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/global.css?v=2" />
-  <link rel="preload" as="image" imagesrcset="/images/hero-lineup-800.webp 800w, /images/hero-lineup.webp 1600w" imagesizes="100vw">
+  <link rel="preload" as="image" imagesrcset="/images/hero-lineup-800.webp 800w, /images/hero-lineup.webp 1600w" imagesizes="(min-width: 769px) 55vw, 100vw">
   <style>
     :root {
       --page-pad: 1.25rem;
@@ -28,11 +28,17 @@
     body { font-family: 'Syne', sans-serif; }
 
     /* ─── HERO ───
-       Same structure at every width: dark intro block, then the lineup
-       image full-bleed directly below it. No crop, no overlay. */
+       Mobile: the lineup image is the full-bleed hero background, with a
+       dark scrim so bottom-aligned text stays readable. Desktop (below):
+       two-column grid, text left / image right, image filling the full
+       hero height — no overlay, just a soft seam into the dark background. */
     .hero {
       position: relative;
       overflow: hidden;
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
       max-width: 1600px;
       margin: 0 auto;
     }
@@ -46,10 +52,32 @@
       z-index: 5;
     }
 
+    /* Mobile: full-bleed background image, behind everything */
+    .hero-lineup {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+    .hero-lineup img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: 50% 40%;
+    }
+    .hero-lineup::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(11,11,12,0.92) 0%, rgba(11,11,12,0.65) 45%, rgba(11,11,12,0) 75%);
+      pointer-events: none;
+    }
+
     .hero-intro {
       position: relative;
+      z-index: 1;
       overflow: hidden;
-      padding: 6rem var(--page-pad) 2.5rem;
+      padding: 2.5rem var(--page-pad) 3rem;
     }
 
     /* Hero bubbles — scoped to the intro block, never drift over the photo */
@@ -151,23 +179,28 @@
       box-shadow: 5px 5px 0 var(--off-white);
     }
 
-    /* Lineup image — full-bleed, natural 2:1 ratio, never cropped */
-    .hero-lineup {
-      position: relative;
-    }
-    .hero-lineup::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 72px;
-      background: linear-gradient(to bottom, var(--bg) 0%, transparent 100%);
-      pointer-events: none;
-      z-index: 1;
-    }
-    .hero-lineup img {
-      display: block;
-      width: 100%;
-      height: auto;
+    /* Desktop hero: two-column grid, text left / image right */
+    @media (min-width: 769px) {
+      .hero {
+        display: grid;
+        grid-template-columns: 45% 55%;
+        justify-content: normal;
+      }
+      .hero-intro {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 6rem 4rem;
+      }
+      .hero-lineup {
+        position: relative;
+        inset: auto;
+        z-index: auto;
+      }
+      .hero-lineup img { object-position: 50% 50%; }
+      .hero-lineup::after {
+        background: linear-gradient(to right, var(--bg) 0%, transparent 12%);
+      }
     }
 
     /* ─── MARQUEE ─── */
@@ -211,6 +244,18 @@
       margin-bottom: 0;
     }
     .beers-header .section-title { margin-bottom: 0; }
+
+    /* "The Range" strip — the full uncropped lineup, never cropped */
+    .range-strip {
+      padding: 2rem var(--page-pad);
+    }
+    .range-strip .section-label { margin-bottom: 0.9rem; }
+    .range-strip img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border: 1px solid var(--border);
+    }
 
     /* Mobile: plain vertical list — no flip, no horizontal scroller */
     .beers-carousel {
@@ -281,20 +326,16 @@
     .beer-card[data-beer="lip-slapping"] .beer-abv { color: var(--lip-slapping-accent); }
 
     .beer-photo {
+      display: block;
       width: 100%;
+      height: auto;
       aspect-ratio: 4 / 3;
       object-fit: cover;
-      object-position: center 40%;
+      object-position: center 45%;
       border: 1px solid var(--border);
       margin-bottom: 1.2rem;
-      display: block;
       flex-shrink: 0;
     }
-    /* Fanny Buffet's source is a tall can-only shot, not a wide bar scene —
-       bias the crop up so the whole label shows, not just the illustration. */
-    .beer-card[data-beer="fanny-buffet"] .beer-photo { object-position: center 30%; }
-    .beer-card[data-beer="fish-wagon"] .beer-photo,
-    .beer-card[data-beer="lip-slapping"] .beer-photo { object-position: center 45%; }
 
     .beer-style {
       font-family: var(--font-mono);
@@ -434,16 +475,18 @@
     @media (min-width: 769px) {
       .beers { padding: 7rem 0 3rem; }
       .beers-header { padding: 0 5rem 3rem; }
+      .range-strip { padding: 2.5rem 5rem; }
       .beers-carousel {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
+        align-items: start;
         overflow: visible;
         gap: 1px;
         background: var(--border);
         padding: 0 5rem;
       }
 
-      .beer-card { perspective: 1000px; cursor: pointer; }
+      .beer-card { align-self: start; perspective: 1000px; cursor: pointer; }
       .beer-card-inner {
         display: grid;
         transform-style: preserve-3d;
@@ -1142,7 +1185,7 @@
       <img
         src="images/hero-lineup.webp"
         srcset="images/hero-lineup-800.webp 800w, images/hero-lineup.webp 1600w"
-        sizes="100vw"
+        sizes="(min-width: 769px) 55vw, 100vw"
         width="1600" height="800"
         alt="Five Belly Pork cans in a row: Narcoleptic DIPA, Reverse Weave Pale Ale, Fanny Buffet West Coast IPA, Fish Wagon Pilsner and Lip Slapping Cu#t Double IPA"
         loading="eager"
@@ -1174,6 +1217,18 @@
     <div class="beers-header">
       <p class="section-label">// On The Tap List</p>
       <h2 class="section-title">The Beers</h2>
+    </div>
+
+    <div class="range-strip">
+      <p class="section-label">// The Range</p>
+      <img
+        src="images/hero-lineup.webp"
+        srcset="images/hero-lineup-800.webp 800w, images/hero-lineup.webp 1600w"
+        sizes="100vw"
+        width="1600" height="800"
+        alt="All five Belly Pork cans"
+        loading="lazy"
+      />
     </div>
 
     <div class="beers-carousel">
