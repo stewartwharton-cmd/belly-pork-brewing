@@ -43,6 +43,25 @@ const JOBS = [
     src: 'belly_pork_pouring_scene.png',
     outputs: [{ name: 'merch-pour', widths: [1600, 800] }],
   },
+  {
+    // ~1536px wide source — never upscale past native resolution.
+    src: 'Fish Wagon Pilsner by the Seaside.png',
+    outputs: [{ name: 'beer-fish-wagon', widths: [1600, 800] }],
+    withoutEnlargement: true,
+  },
+  {
+    // ~1536px wide source — never upscale past native resolution.
+    src: 'Lip-Smacking Double IPA Can.png',
+    outputs: [{ name: 'beer-lip-slapping', widths: [1600, 800] }],
+    withoutEnlargement: true,
+  },
+  {
+    // ~1774px wide source — never upscale past native resolution.
+    src: 'Vibrant Belly Pork Brewery Can Lineup.png',
+    outputs: [{ name: 'hero-lineup', widths: [1600, 800] }],
+    withoutEnlargement: true,
+    quality: 82,
+  },
 ];
 
 function outFilename(name, width, isPrimary) {
@@ -67,10 +86,14 @@ async function run() {
       continue;
     }
 
+    const withoutEnlargement = job.withoutEnlargement === true;
     const meta = await sharp(srcPath).metadata();
-    const upscaling = job.outputs.some(o => o.widths.some(w => w > meta.width));
+    const upscaling = !withoutEnlargement && job.outputs.some(o => o.widths.some(w => w > meta.width));
     if (upscaling) {
       console.log(`  note  ${job.src} is only ${meta.width}px wide — some outputs below will be upscaled (softer than native resolution)`);
+    }
+    if (withoutEnlargement && job.outputs.some(o => o.widths.some(w => w > meta.width))) {
+      console.log(`  note  ${job.src} is only ${meta.width}px wide — capped there, not upscaled (withoutEnlargement: true)`);
     }
 
     for (const output of job.outputs) {
@@ -80,8 +103,8 @@ async function run() {
         const outPath = path.join(OUT_DIR, outFilename(output.name, width, isPrimary));
 
         await sharp(srcPath)
-          .resize({ width, withoutEnlargement: false, kernel: sharp.kernel.lanczos3 })
-          .webp({ quality: QUALITY })
+          .resize({ width, withoutEnlargement, kernel: sharp.kernel.lanczos3 })
+          .webp({ quality: job.quality || QUALITY })
           .toFile(outPath);
 
         console.log(`  ok    ${path.relative(path.join(__dirname, '..'), outPath)} (${width}w)`);

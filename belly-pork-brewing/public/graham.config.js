@@ -358,6 +358,32 @@ ABSOLUTE RULES
         pairsWith: 'Everything on the menu, obviously',
       },
     },
+    {
+      name: 'Fish Wagon',
+      style: 'Pilsner',
+      abv: 4.9,
+      tagline: 'The best pilsner in Suffolk. Browny called it "a bit fizzy."',
+      description: "Crisp, clean and gone before the chips go cold. Graham calls it the best pilsner in Suffolk. Browny called it 'a bit fizzy.'",
+      tastingNotes: {
+        appearance: 'Bright pale straw, crystal clear, tight white head',
+        aroma: 'Lemon zest, cut grass, cracker malt and a suspicious hint of salt and vinegar',
+        taste: 'Snappy, dry and clean, with a gentle bitter bite that makes the next one inevitable',
+        pairsWith: 'Chips on the pier, with Browny nowhere near the fryer',
+      },
+    },
+    {
+      name: 'Lip Slapping Cu#t',
+      style: 'Double IPA',
+      abv: 10.2,
+      tagline: "Ten percent of big, sticky and dangerously smooth.",
+      description: 'Ten percent of big, sticky and dangerously smooth. It leaves your lips tingling and your legs weak. Browny managed half and needed a lie down.',
+      tastingNotes: {
+        appearance: 'Deep golden with a soft haze and a thick, clingy head',
+        aroma: 'Pineapple, mango, pine resin and sticky orange peel',
+        taste: "Huge hop hit, syrupy malt backbone, warming finish. It's too easy to drink, which is rather the point",
+        pairsWith: 'A cab home and a clear diary tomorrow',
+      },
+    },
   ],
 
   // ── EVENTS ────────────────────────────────────────────────────────────────

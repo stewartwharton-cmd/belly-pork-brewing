@@ -54,6 +54,10 @@
   --weave-accent: #F2C31B;         /* banner gold */
   --fanny: #F2792E;                /* sunset-orange can body */
   --fanny-accent: #8E1F38;         /* maroon banner */
+  --fish-wagon: #1B2A4A;           /* navy can body */
+  --fish-wagon-accent: #F5C518;    /* golden accent */
+  --lip-slapping: #141015;         /* near-black can body */
+  --lip-slapping-accent: #B6F500;  /* acid lime accent */
 
   /* ─── Section theme defaults (dark) ───
      .section--dark/--light/--magenta below override these five so
@@ -218,11 +222,15 @@ img { max-width: 100%; display: block; }
   font-family: var(--font-display);
   font-size: var(--text-3xl);
   line-height: 0.9;
+  margin-bottom: 1rem;
   color: var(--fg);
 }
 
 @media (max-width: 768px) {
   .section-title { font-size: clamp(2.5rem, 8vw, 4rem); }
+  /* Label → title → body → button rhythm */
+  .section-label { margin-bottom: 0.75rem; }
+  .section-title { margin-bottom: 1rem; }
 }
 
 /* ─── Card ─── */
@@ -413,4 +421,31 @@ nav.site-nav {
   text-align: center;
   justify-content: center;
   border-bottom: none !important;
+}
+
+/* ─── Chat button (mobile) ───
+   Shared so every page gets the same 56px round icon button, offset for the
+   home-indicator safe area, with the text label reserved for desktop. Pages
+   with their own #chat-toggle sizing in an inline <style> (loaded after this
+   file) can still win on specificity ties, hence !important on the geometry
+   that must hold regardless. */
+@media (max-width: 768px) {
+  #chat-widget {
+    bottom: calc(1rem + env(safe-area-inset-bottom)) !important;
+    right: 1rem !important;
+    transition: transform 0.3s ease;
+  }
+  #chat-widget.chat-hide { transform: translateY(calc(100% + 1.5rem)); }
+
+  #chat-toggle {
+    width: 56px !important;
+    height: 56px !important;
+    min-height: 56px !important;
+    padding: 0 !important;
+    border-radius: 50% !important;
+    justify-content: center !important;
+    gap: 0 !important;
+  }
+  #chat-toggle .toggle-open,
+  #chat-toggle .toggle-close { display: none !important; }
 }
