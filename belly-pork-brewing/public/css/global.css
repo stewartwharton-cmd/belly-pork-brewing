@@ -273,7 +273,7 @@ nav.site-nav {
 }
 
 .site-nav .nav-logo { display: flex; min-height: 48px; align-items: center; }
-.site-nav .nav-logo img { display: block; width: auto; }
+.site-nav .nav-logo img { display: block; width: auto; height: 44px; }
 
 .site-nav .nav-links {
   display: none;
@@ -326,6 +326,7 @@ nav.site-nav {
 
 @media (min-width: 900px) {
   nav.site-nav { padding: 0.85rem 2.5rem; }
+  .site-nav .nav-logo img { height: 52px; }
   .site-nav .nav-links { display: flex; }
   .site-nav .nav-cta { display: inline-flex; }
   .site-nav .nav-burger { display: none; }

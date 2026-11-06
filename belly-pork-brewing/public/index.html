@@ -18,8 +18,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/global.css?v=2" />
-  <link rel="preload" as="image" imagesrcset="/images/hero-lineup-800.webp 800w, /images/hero-lineup.webp 1600w" imagesizes="(min-width: 769px) 55vw, 100vw">
+  <link rel="stylesheet" href="css/global.css?v=4" />
   <style>
     :root {
       --page-pad: 1.25rem;
@@ -28,10 +27,9 @@
     body { font-family: 'Syne', sans-serif; }
 
     /* ─── HERO ───
-       Mobile: the lineup image is the full-bleed hero background, with a
-       dark scrim so bottom-aligned text stays readable. Desktop (below):
-       two-column grid, text left / image right, image filling the full
-       hero height — no overlay, just a soft seam into the dark background. */
+       Typographic hero: no photo. Dark section, left-aligned content column
+       (bottom-aligned on mobile, vertically centred on desktop), bubbles
+       drifting behind the text. */
     .hero {
       position: relative;
       overflow: hidden;
@@ -39,6 +37,7 @@
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
+      background: var(--black);
       max-width: 1600px;
       margin: 0 auto;
     }
@@ -52,110 +51,126 @@
       z-index: 5;
     }
 
-    /* Mobile: full-bleed background image, behind everything */
-    .hero-lineup {
+    /* ─── Bubbles — behind the text (z-index 0), text sits at z-index 1 ─── */
+    .hero-bubbles {
+      --bubble-scale: 1;
       position: absolute;
       inset: 0;
-      z-index: 0;
-    }
-    .hero-lineup img {
-      display: block;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: 50% 40%;
-    }
-    .hero-lineup::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to top, rgba(11,11,12,0.92) 0%, rgba(11,11,12,0.65) 45%, rgba(11,11,12,0) 75%);
       pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .bubble {
+      position: absolute;
+      left: var(--left);
+      bottom: var(--bottom);
+      width: calc(var(--size) * var(--bubble-scale));
+      height: calc(var(--size) * var(--bubble-scale));
+      border-radius: 50%;
+      border: 1.5px solid var(--bubble-color);
+      background: radial-gradient(circle at 28% 25%, rgba(255,255,255,0.4), transparent 60%);
+      opacity: var(--bubble-opacity);
+      will-change: transform;
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .bubble {
+        animation-name: bubbleFloat;
+        animation-duration: var(--duration);
+        animation-delay: var(--delay);
+        animation-timing-function: ease-in-out;
+        animation-iteration-count: infinite;
+      }
+      .hero-bubbles.is-paused .bubble { animation-play-state: paused; }
+    }
+    @keyframes bubbleFloat {
+      0%   { transform: translate(0, 20vh); opacity: 0; }
+      15%  { opacity: var(--bubble-opacity); }
+      50%  { transform: translate(var(--drift), -70vh); opacity: var(--bubble-opacity); }
+      85%  { opacity: var(--bubble-opacity); }
+      100% { transform: translate(0, -120vh); opacity: 0; }
+    }
+
+    /* Per-bubble size / position / timing / drift / colour */
+    .bubble:nth-child(1)  { --size: 34px;  --left: 3%;  --bottom: 8%;  --duration: 11s; --delay: -2s;  --drift: 18px;  --bubble-color: var(--cream);   --bubble-opacity: 0.22; }
+    .bubble:nth-child(2)  { --size: 52px;  --left: 9%;  --bottom: 22%; --duration: 14s; --delay: -7s;  --drift: -24px; --bubble-color: var(--magenta); --bubble-opacity: 0.3; }
+    .bubble:nth-child(3)  { --size: 28px;  --left: 16%; --bottom: 55%; --duration: 9s;  --delay: -1s;  --drift: 14px;  --bubble-color: #B6F500;        --bubble-opacity: 0.25; }
+    .bubble:nth-child(4)  { --size: 110px; --left: 22%; --bottom: 2%;  --duration: 19s; --delay: -12s; --drift: -30px; --bubble-color: var(--cream);   --bubble-opacity: 0.18; }
+    .bubble:nth-child(5)  { --size: 40px;  --left: 31%; --bottom: 35%; --duration: 12s; --delay: -4s;  --drift: 20px;  --bubble-color: #F5C518;        --bubble-opacity: 0.3; }
+    .bubble:nth-child(6)  { --size: 66px;  --left: 40%; --bottom: 12%; --duration: 15s; --delay: -9s;  --drift: -18px; --bubble-color: var(--magenta); --bubble-opacity: 0.22; }
+    .bubble:nth-child(7)  { --size: 30px;  --left: 48%; --bottom: 60%; --duration: 10s; --delay: -3s;  --drift: 16px;  --bubble-color: var(--cream);   --bubble-opacity: 0.35; }
+    .bubble:nth-child(8)  { --size: 100px; --left: 57%; --bottom: 5%;  --duration: 20s; --delay: -15s; --drift: -26px; --bubble-color: #B6F500;        --bubble-opacity: 0.2; }
+    .bubble:nth-child(9)  { --size: 46px;  --left: 65%; --bottom: 40%; --duration: 13s; --delay: -6s;  --drift: 22px;  --bubble-color: #F5C518;        --bubble-opacity: 0.28; }
+    .bubble:nth-child(10) { --size: 24px;  --left: 73%; --bottom: 18%; --duration: 9s;  --delay: -2s;  --drift: -14px; --bubble-color: var(--magenta); --bubble-opacity: 0.4; }
+    .bubble:nth-child(11) { --size: 120px; --left: 80%; --bottom: 0%;  --duration: 18s; --delay: -10s; --drift: 28px;  --bubble-color: var(--cream);   --bubble-opacity: 0.18; }
+    .bubble:nth-child(12) { --size: 58px;  --left: 87%; --bottom: 28%; --duration: 16s; --delay: -8s;  --drift: -20px; --bubble-color: #B6F500;        --bubble-opacity: 0.25; }
+    .bubble:nth-child(13) { --size: 36px;  --left: 93%; --bottom: 50%; --duration: 11s; --delay: -5s;  --drift: 18px;  --bubble-color: #F5C518;        --bubble-opacity: 0.32; }
+    .bubble:nth-child(14) { --size: 72px;  --left: 97%; --bottom: 10%; --duration: 14s; --delay: -13s; --drift: -24px; --bubble-color: var(--magenta); --bubble-opacity: 0.2; }
+
+    /* 9 on mobile — hide the rest */
+    @media (max-width: 768px) {
+      .bubble:nth-child(n+10) { display: none; }
+    }
+
+    /* Visually hidden but announced to screen readers */
+    .visually-hidden {
+      position: absolute;
+      width: 1px; height: 1px;
+      padding: 0; margin: -1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+      border: 0;
     }
 
     .hero-intro {
       position: relative;
       z-index: 1;
-      overflow: hidden;
-      padding: 2.5rem var(--page-pad) 3rem;
-    }
-
-    /* Hero bubbles — scoped to the intro block, never drift over the photo */
-    .hero-bubbles {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      z-index: 1;
-      overflow: hidden;
-    }
-    .bubble {
-      position: absolute;
-      bottom: -24px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 35% 30%, rgba(255,255,255,0.22), rgba(255,255,255,0.04));
-      border: 1px solid rgba(255,255,255,0.14);
-    }
-    @media (prefers-reduced-motion: no-preference) {
-      .bubble { animation: bubbleRise linear infinite; }
-    }
-    @keyframes bubbleRise {
-      0%   { transform: translateY(0);       opacity: 0; }
-      8%   { opacity: 0.55; }
-      88%  { opacity: 0.25; }
-      100% { transform: translateY(-105vh);  opacity: 0; }
+      padding: 6.5rem var(--page-pad) 2.5rem;
     }
 
     .hero-eyebrow {
-      position: relative;
-      z-index: 2;
       font-family: var(--font-mono);
       font-weight: 600;
       font-size: 0.75rem;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: var(--magenta);
+      color: var(--muted);
       margin-bottom: 1.2rem;
       opacity: 0;
-      animation: fadeUp 0.7s ease forwards 0.3s;
     }
 
-    .hero-h1 {
-      position: relative;
-      z-index: 2;
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(3.5rem, 9vw, 8rem);
-      line-height: 0.88;
-      letter-spacing: 0.01em;
-      margin-bottom: 1.6rem;
-      opacity: 0;
-      animation: fadeUp 0.7s ease forwards 0.5s;
-    }
-    .hero-h1 .outline {
-      -webkit-text-stroke: 2px var(--magenta);
-      color: transparent;
+    .hero-h1 { margin-bottom: 1.6rem; }
+    .hero-line {
       display: block;
+      font-family: 'Bebas Neue', sans-serif;
+      text-transform: uppercase;
+      line-height: 0.86;
+      letter-spacing: 0.01em;
+      overflow-wrap: break-word;
+      opacity: 0;
     }
-    .hero-h1 .solid { display: block; }
+    .hero-line-1 { font-size: clamp(2.75rem, 15vw, 11rem); color: #F6EFE3; }
+    .hero-line-2 { font-size: clamp(2.25rem, 12.5vw, 11rem); color: #FF1DBC; }
+    .hero-line-3 {
+      font-size: clamp(2.5rem, 20vw, 11rem);
+      color: transparent;
+      -webkit-text-stroke: 2px #F6EFE3;
+    }
+    @supports not (-webkit-text-stroke: 1px #000) {
+      .hero-line-3 { color: #F6EFE3; }
+    }
 
     .hero-sub {
-      position: relative;
-      z-index: 2;
-      font-size: clamp(1rem, 1.6vw, 1.1rem);
+      font-size: 1rem;
       line-height: 1.75;
       color: var(--muted);
       max-width: 480px;
-      margin-bottom: 2.5rem;
+      margin-bottom: 2rem;
       opacity: 0;
-      animation: fadeUp 0.7s ease forwards 0.7s;
     }
     .hero-sub strong { color: var(--magenta); font-weight: 700; }
 
-    .hero-buttons {
-      position: relative;
-      z-index: 2;
-      opacity: 0;
-      animation: fadeUp 0.7s ease forwards 0.9s;
-    }
+    .hero-buttons { opacity: 0; }
 
     .btn-primary {
       display: inline-flex;
@@ -179,28 +194,70 @@
       box-shadow: 5px 5px 0 var(--off-white);
     }
 
-    /* Desktop hero: two-column grid, text left / image right */
+    .scroll-hint {
+      display: none;
+      align-items: center;
+      gap: 0.8rem;
+      margin-top: 2.5rem;
+      opacity: 0;
+    }
+    .scroll-hint span {
+      font-family: var(--font-mono);
+      font-weight: 600;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .scroll-line {
+      width: 40px;
+      height: 1px;
+      background: var(--magenta);
+      position: relative;
+      overflow: hidden;
+    }
+    .scroll-line::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--off-white);
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .scroll-line::after { animation: scanline 2s ease-in-out infinite; }
+    }
+    @keyframes scanline {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(200%); }
+    }
+
+    /* Entrance: headline lines rise and fade in, staggered, then the rest
+       fades in. Only when the user hasn't asked for reduced motion —
+       otherwise everything is simply visible, no animation at all. */
+    @media (prefers-reduced-motion: no-preference) {
+      .hero-eyebrow { animation: fadeUp 0.7s ease forwards 0.1s; }
+      .hero-line {
+        transform: translateY(40px);
+        animation: heroLineRise 0.7s cubic-bezier(.2,.8,.2,1) forwards;
+      }
+      .hero-line-1 { animation-delay: 0.15s; }
+      .hero-line-2 { animation-delay: 0.27s; }
+      .hero-line-3 { animation-delay: 0.39s; }
+      .hero-sub { animation: fadeUp 0.7s ease forwards 0.55s; }
+      .hero-buttons { animation: fadeUp 0.7s ease forwards 0.7s; }
+      .scroll-hint { animation: fadeUp 0.7s ease forwards 0.85s; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .hero-eyebrow, .hero-line, .hero-sub, .hero-buttons, .scroll-hint { opacity: 1; }
+    }
+    @keyframes heroLineRise {
+      from { opacity: 0; transform: translateY(40px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
     @media (min-width: 769px) {
-      .hero {
-        display: grid;
-        grid-template-columns: 45% 55%;
-        justify-content: normal;
-      }
-      .hero-intro {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        padding: 6rem 4rem;
-      }
-      .hero-lineup {
-        position: relative;
-        inset: auto;
-        z-index: auto;
-      }
-      .hero-lineup img { object-position: 50% 50%; }
-      .hero-lineup::after {
-        background: linear-gradient(to right, var(--bg) 0%, transparent 12%);
-      }
+      .hero { justify-content: center; }
+      .hero-intro { padding: 2.5rem 4rem; }
+      .scroll-hint { display: flex; }
     }
 
     /* ─── MARQUEE ─── */
@@ -257,20 +314,19 @@
       border: 1px solid var(--border);
     }
 
-    /* Mobile: plain vertical list — no flip, no horizontal scroller */
+    /* Mobile: plain vertical list, cards size to content. Desktop (below)
+       wraps into rows with equal-height cards — the same flex chain here
+       (card -> inner -> front, each flex:1) only does anything once a row
+       stretches a card taller than its own content, so mobile is unaffected. */
     .beers-carousel {
       display: flex;
       flex-direction: column;
-      gap: 1.2rem;
+      gap: 1.25rem;
       padding: 2rem var(--page-pad) 1.5rem;
     }
 
-    /* Beer cards — mobile: plain blocks in normal flow, no flip, no fixed/max
-       height, no overflow:hidden on the card itself. Desktop (below) restores
-       the flip, with both faces sharing one grid cell so the card is as tall
-       as the taller face and nothing clips. */
-    .beer-card { width: 100%; }
-    .beer-card-inner { position: relative; width: 100%; }
+    .beer-card { width: 100%; display: flex; flex-direction: column; }
+    .beer-card-inner { position: relative; width: 100%; display: flex; flex-direction: column; flex: 1; }
 
     .beer-card-front,
     .beer-card-back {
@@ -280,11 +336,14 @@
       border: 1px solid var(--border);
       border-top: 4px solid var(--border);
     }
+    .beer-card-front { flex: 1; }
     .beer-card-back {
       border-top: none;
       overflow: hidden;
       max-height: 0;
-      transition: max-height 0.35s ease;
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .beer-card-back { transition: max-height 0.25s ease; }
     }
 
     /* Each beer's can colour + accent top edge, both faces — name and ABV
@@ -310,7 +369,16 @@
     .beer-card[data-beer="fanny-buffet"] .beer-card-back { border-top-color: var(--fanny-accent); }
     .beer-card[data-beer="fanny-buffet"] .beer-name,
     .beer-card[data-beer="fanny-buffet"] .beer-abv { color: var(--fanny-accent); }
-
+    /* Cream fails 4.5:1 on this orange — dark ink for body text, name/ABV keep the accent. */
+    .beer-card[data-beer="fanny-buffet"] .beer-style,
+    .beer-card[data-beer="fanny-buffet"] .beer-desc,
+    .beer-card[data-beer="fanny-buffet"] .beer-back-title,
+    .beer-card[data-beer="fanny-buffet"] .tasting-label,
+    .beer-card[data-beer="fanny-buffet"] .tasting-value,
+    .beer-card[data-beer="fanny-buffet"] .beer-back-footer {
+      color: #1A0F0A;
+      opacity: 1;
+    }
     .beer-card[data-beer="fish-wagon"] .beer-card-front,
     .beer-card[data-beer="fish-wagon"] .beer-card-back { background: var(--fish-wagon); }
     .beer-card[data-beer="fish-wagon"] .beer-card-front,
@@ -324,6 +392,19 @@
     .beer-card[data-beer="lip-slapping"] .beer-card-back { border-top-color: var(--magenta); }
     .beer-card[data-beer="lip-slapping"] .beer-name,
     .beer-card[data-beer="lip-slapping"] .beer-abv { color: var(--lip-slapping-accent); }
+
+    /* Tasting-notes button colour per card — must never match the card's own
+       background. Narcoleptic/Fish Wagon/Lip Slapping use their existing
+       brand accent (already ≥4.5:1 on their own background); Reverse Weave's
+       gold and Fanny Buffet's maroon are lightened/darkened from the brand
+       accent used for the large name/ABV text, because that accent only
+       clears the lower 3:1 bar WCAG allows for large text — a 14px button
+       label needs the full 4.5:1, so it gets its own tuned shade here. */
+    .beer-card[data-beer="narcoleptic-neipa"] { --card-accent: var(--narcoleptic-accent); --card-bg: var(--narcoleptic); }
+    .beer-card[data-beer="reverse-weave"]     { --card-accent: #F9E498;                   --card-bg: var(--weave); }
+    .beer-card[data-beer="fanny-buffet"]      { --card-accent: #4E111F;                   --card-bg: var(--fanny); }
+    .beer-card[data-beer="fish-wagon"]        { --card-accent: var(--fish-wagon-accent);  --card-bg: var(--fish-wagon); }
+    .beer-card[data-beer="lip-slapping"]      { --card-accent: var(--lip-slapping-accent); --card-bg: var(--lip-slapping); }
 
     .beer-photo {
       display: block;
@@ -363,34 +444,33 @@
       font-size: 0.88rem;
       line-height: 1.7;
       color: var(--cream);
-      margin-bottom: 1.5rem;
     }
-    /* Ghost number watermark — hidden on mobile so it never sits over the
-       photo; repositioned clear of the photo on desktop (see below). */
-    .beer-num { display: none; }
-
     .tasting-toggle {
       width: 100%;
-      min-height: 52px;
+      height: 52px;
+      margin-top: 1.5rem;
       background: transparent;
-      border: 1px solid var(--cream);
-      color: var(--cream);
-      font-family: var(--font-mono);
-      font-weight: 600;
-      font-size: 0.75rem;
+      border: 2px solid var(--card-accent);
+      color: var(--card-accent);
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
       letter-spacing: 0.12em;
       text-transform: uppercase;
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
+      justify-content: space-between;
+      padding: 0 1.2rem;
       cursor: pointer;
-      transition: background 0.18s ease;
+      transition: background 0.18s ease, color 0.18s ease, transform 0.1s ease;
     }
     .tasting-toggle:hover,
-    .tasting-toggle[aria-expanded="true"] { background: rgba(255,255,255,0.1); }
-    .tasting-toggle-plus { display: inline-block; transition: transform 0.25s ease; }
-    .tasting-toggle[aria-expanded="true"] .tasting-toggle-plus { transform: rotate(45deg); }
+    .tasting-toggle:focus-visible {
+      background: var(--card-accent);
+      color: var(--card-bg);
+    }
+    .tasting-toggle:active { transform: scale(0.98); }
+    .tasting-toggle-plus { display: inline-block; font-size: 20px; line-height: 1; }
 
     /* Back face / tasting-notes panel */
     .beer-back-title {
@@ -471,60 +551,29 @@
       margin-top: 0.5rem;
     }
 
-    /* Desktop beers: 3-column grid, flip restored */
+    /* Desktop beers: wraps into rows of three, last row (two cards) centred.
+       A flex row (not grid) so an incomplete last row can be centred without
+       empty filler cards; align-items:stretch equalises each row's height,
+       and the flex chain above (card/inner/front all flex:1) carries that
+       extra height down to .beer-front so the button's margin-top:auto
+       lands at the same place in every card on the row. */
     @media (min-width: 769px) {
       .beers { padding: 7rem 0 3rem; }
       .beers-header { padding: 0 5rem 3rem; }
       .range-strip { padding: 2.5rem 5rem; }
       .beers-carousel {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        align-items: start;
-        overflow: visible;
-        gap: 1px;
-        background: var(--border);
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: stretch;
+        gap: 1.25rem;
         padding: 0 5rem;
       }
+      .beer-card { flex: 0 1 calc((100% - 2.5rem) / 3); }
 
-      .beer-card { align-self: start; perspective: 1000px; cursor: pointer; }
-      .beer-card-inner {
-        display: grid;
-        transform-style: preserve-3d;
-        transition: transform 0.65s cubic-bezier(0.4,0,0.2,1);
-        will-change: transform;
-      }
-      .beer-card.flipped .beer-card-inner { transform: rotateY(180deg); }
-
-      /* Both faces share the same grid cell — the card is as tall as the
-         taller face, and nothing clips. */
       .beer-card-front,
-      .beer-card-back {
-        grid-area: 1 / 1 / 2 / 2;
-        position: relative;
-        padding: 3rem 2.5rem;
-        backface-visibility: hidden;
-        -webkit-backface-visibility: hidden;
-      }
-      .beer-card-back {
-        border-top: 4px solid var(--border);
-        transform: rotateY(180deg);
-        justify-content: space-between;
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
-        max-height: none !important; /* ignore any mobile accordion state */
-      }
+      .beer-card-back { padding: 3rem 2.5rem; }
       .beer-name { font-size: 2.8rem; }
-      .tasting-toggle { display: none; }
-      .beer-num {
-        display: block;
-        position: absolute;
-        bottom: 1rem; right: 1.4rem;
-        font-family: 'Bebas Neue', sans-serif;
-        font-size: 5rem;
-        color: var(--border);
-        line-height: 1;
-        user-select: none;
-      }
     }
 
     /* Beers footer — "Find your pint" CTA */
@@ -809,7 +858,7 @@
       grid-template-columns: 1fr;
       gap: 2.5rem;
     }
-    .footer-brand img { height: 44px; margin-bottom: 1rem; display: block; }
+    .footer-brand img { height: 72px; width: auto; margin-bottom: 1rem; display: block; }
     .footer-brand p { font-size: 0.88rem; line-height: 1.7; color: var(--muted); max-width: 280px; }
     .footer-col h4 {
       font-family: 'Bebas Neue', sans-serif;
@@ -1121,8 +1170,14 @@
 
   <!-- NAV -->
   <nav class="site-nav">
-    <a href="index.html" class="nav-logo">
-      <img src="/images/logo.png" alt="Belly Pork Brewing Co." height="39" />
+    <a href="/" class="nav-logo">
+      <img
+        src="/images/wordmark-cream.png"
+        srcset="/images/wordmark-cream-600.png 600w, /images/wordmark-cream.png 1200w"
+        sizes="142px"
+        width="1200" height="438"
+        alt="Belly Pork Brewing"
+      />
     </a>
     <ul class="nav-links">
       <li><a href="index.html#about">About</a></li>
@@ -1152,26 +1207,24 @@
   <!-- HERO -->
   <section class="hero section--dark">
 
-    <div class="hero-intro">
-      <div class="hero-bubbles" aria-hidden="true">
-        <span class="bubble" style="left:4%;  width:6px; height:6px; animation-duration:8s;  animation-delay:-2s;"></span>
-        <span class="bubble" style="left:11%; width:10px;height:10px;animation-duration:11s; animation-delay:-7s;"></span>
-        <span class="bubble" style="left:18%; width:5px; height:5px; animation-duration:6s;  animation-delay:-1s;"></span>
-        <span class="bubble" style="left:28%; width:14px;height:14px;animation-duration:13s; animation-delay:-9s;"></span>
-        <span class="bubble" style="left:38%; width:7px; height:7px; animation-duration:7s;  animation-delay:-4s;"></span>
-        <span class="bubble" style="left:52%; width:12px;height:12px;animation-duration:12s; animation-delay:-3s;"></span>
-        <span class="bubble" style="left:65%; width:6px; height:6px; animation-duration:8s;  animation-delay:-8s;"></span>
-        <span class="bubble" style="left:72%; width:16px;height:16px;animation-duration:14s; animation-delay:-2s;"></span>
-        <span class="bubble" style="left:84%; width:9px; height:9px; animation-duration:9s;  animation-delay:-7s;"></span>
-        <span class="bubble" style="left:91%; width:7px; height:7px; animation-duration:7s;  animation-delay:-3s;"></span>
-      </div>
+    <div class="hero-bubbles" aria-hidden="true">
+      <span class="bubble"></span><span class="bubble"></span><span class="bubble"></span>
+      <span class="bubble"></span><span class="bubble"></span><span class="bubble"></span>
+      <span class="bubble"></span><span class="bubble"></span><span class="bubble"></span>
+      <span class="bubble"></span><span class="bubble"></span><span class="bubble"></span>
+      <span class="bubble"></span><span class="bubble"></span>
+    </div>
 
+    <div class="hero-intro">
       <p class="hero-eyebrow">Craft Beer · Est. 2024 · Suffolk</p>
+
       <h1 class="hero-h1">
-        <span class="solid">Belly</span>
-        <span class="solid">Pork</span>
-        <span class="outline">Brewing</span>
+        <span class="visually-hidden">Belly Pork Brewing. </span>
+        <span class="hero-line hero-line-1">Born in Suffolk.</span>
+        <span class="hero-line hero-line-2">Graham recommends.</span>
+        <span class="hero-line hero-line-3">Est. 2024.</span>
       </h1>
+
       <p class="hero-sub">
         Independent craft beer born from passion, an obsession with vapes, and
         <strong>Graham's impeccable taste</strong>.
@@ -1179,18 +1232,11 @@
       <div class="hero-buttons">
         <a href="#beers" class="btn-primary">See the Beers</a>
       </div>
-    </div>
 
-    <div class="hero-lineup">
-      <img
-        src="images/hero-lineup.webp"
-        srcset="images/hero-lineup-800.webp 800w, images/hero-lineup.webp 1600w"
-        sizes="(min-width: 769px) 55vw, 100vw"
-        width="1600" height="800"
-        alt="Five Belly Pork cans in a row: Narcoleptic DIPA, Reverse Weave Pale Ale, Fanny Buffet West Coast IPA, Fish Wagon Pilsner and Lip Slapping Cu#t Double IPA"
-        loading="eager"
-        fetchpriority="high"
-      />
+      <div class="scroll-hint">
+        <span>Scroll</span>
+        <div class="scroll-line"></div>
+      </div>
     </div>
 
   </section>
@@ -1233,7 +1279,7 @@
 
     <div class="beers-carousel">
 
-      <div class="beer-card" data-beer="narcoleptic-neipa" tabindex="0" role="button" aria-label="Narcoleptic NEIPA — flip for tasting notes">
+      <div class="beer-card" data-beer="narcoleptic-neipa">
         <div class="beer-card-inner">
           <div class="beer-card-front">
             <img class="beer-photo"
@@ -1244,13 +1290,13 @@
               alt="A can of Narcoleptic DIPA on the bar, with the Belly Pork Brewing sign behind it"
               loading="lazy"
             />
-            <div class="beer-num">01</div>
-            <p class="beer-style">DIPA</p>
+            <p class="beer-style">01 · DIPA</p>
             <h3 class="beer-name">Narcoleptic<br>NEIPA</h3>
             <span class="beer-abv">8.4% ABV</span>
             <p class="beer-desc">Where it all started. Hazy, heavy, and guaranteed to put you to sleep. Don't make plans after this one.</p>
             <button type="button" class="tasting-toggle" aria-expanded="false" aria-controls="tasting-narcoleptic-neipa">
-              Tasting notes <span class="tasting-toggle-plus" aria-hidden="true">+</span>
+              <span class="tasting-toggle-label">Tasting notes</span>
+              <span class="tasting-toggle-plus" aria-hidden="true">+</span>
             </button>
           </div>
           <div class="beer-card-back" id="tasting-narcoleptic-neipa">
@@ -1273,12 +1319,12 @@
                 <span class="tasting-value">A good sofa and absolutely no plans</span>
               </div>
             </div>
-            <p class="beer-back-footer">Graham's rating: ★★★★★ &nbsp;·&nbsp; Tap to flip back</p>
+            <p class="beer-back-footer">Graham's rating: ★★★★★</p>
           </div>
         </div>
       </div>
 
-      <div class="beer-card" data-beer="reverse-weave" tabindex="0" role="button" aria-label="Reverse Weave — flip for tasting notes">
+      <div class="beer-card" data-beer="reverse-weave">
         <div class="beer-card-inner">
           <div class="beer-card-front">
             <img class="beer-photo"
@@ -1289,13 +1335,13 @@
               alt="A can of Reverse Weave Pale Ale on the bar, with the Belly Pork Brewing sign behind it"
               loading="lazy"
             />
-            <div class="beer-num">02</div>
-            <p class="beer-style">Pale Ale</p>
+            <p class="beer-style">02 · Pale Ale</p>
             <h3 class="beer-name">Reverse<br>Weave</h3>
             <span class="beer-abv">5.7% ABV</span>
             <p class="beer-desc">Don't conform to the vertical — think horizontal. Smooth, easy-drinking, and does things its own way.</p>
             <button type="button" class="tasting-toggle" aria-expanded="false" aria-controls="tasting-reverse-weave">
-              Tasting notes <span class="tasting-toggle-plus" aria-hidden="true">+</span>
+              <span class="tasting-toggle-label">Tasting notes</span>
+              <span class="tasting-toggle-plus" aria-hidden="true">+</span>
             </button>
           </div>
           <div class="beer-card-back" id="tasting-reverse-weave">
@@ -1318,12 +1364,12 @@
                 <span class="tasting-value">Whatever you fancy — it's that kind of beer</span>
               </div>
             </div>
-            <p class="beer-back-footer">Graham's rating: ★★★★★ &nbsp;·&nbsp; Tap to flip back</p>
+            <p class="beer-back-footer">Graham's rating: ★★★★★</p>
           </div>
         </div>
       </div>
 
-      <div class="beer-card" data-beer="fanny-buffet" tabindex="0" role="button" aria-label="Fanny Buffet — flip for tasting notes">
+      <div class="beer-card" data-beer="fanny-buffet">
         <div class="beer-card-inner">
           <div class="beer-card-front">
             <img class="beer-photo"
@@ -1334,13 +1380,13 @@
               alt="A can of Fanny Buffet West Coast IPA"
               loading="lazy"
             />
-            <div class="beer-num">03</div>
-            <p class="beer-style">West Coast</p>
+            <p class="beer-style">03 · West Coast</p>
             <h3 class="beer-name">Fanny<br>Buffet</h3>
             <span class="beer-abv">6.8% ABV</span>
             <p class="beer-desc">Don't choose one — take the lot. A West Coast IPA loaded with everything, for people who don't believe in moderation.</p>
             <button type="button" class="tasting-toggle" aria-expanded="false" aria-controls="tasting-fanny-buffet">
-              Tasting notes <span class="tasting-toggle-plus" aria-hidden="true">+</span>
+              <span class="tasting-toggle-label">Tasting notes</span>
+              <span class="tasting-toggle-plus" aria-hidden="true">+</span>
             </button>
           </div>
           <div class="beer-card-back" id="tasting-fanny-buffet">
@@ -1363,12 +1409,12 @@
                 <span class="tasting-value">Everything on the menu, obviously</span>
               </div>
             </div>
-            <p class="beer-back-footer">Graham's rating: ★★★★★ &nbsp;·&nbsp; Tap to flip back</p>
+            <p class="beer-back-footer">Graham's rating: ★★★★★</p>
           </div>
         </div>
       </div>
 
-      <div class="beer-card" data-beer="fish-wagon" tabindex="0" role="button" aria-label="Fish Wagon — flip for tasting notes">
+      <div class="beer-card" data-beer="fish-wagon">
         <div class="beer-card-inner">
           <div class="beer-card-front">
             <img class="beer-photo"
@@ -1379,13 +1425,13 @@
               alt="A can of Fish Wagon Pilsner on the bar, with the Belly Pork Brewing sign behind it"
               loading="lazy"
             />
-            <div class="beer-num">04</div>
-            <p class="beer-style">Pilsner</p>
+            <p class="beer-style">04 · Pilsner</p>
             <h3 class="beer-name">Fish<br>Wagon</h3>
             <span class="beer-abv">4.9% ABV</span>
             <p class="beer-desc">Crisp, clean and gone before the chips go cold. Graham calls it the best pilsner in Suffolk. Browny called it "a bit fizzy."</p>
             <button type="button" class="tasting-toggle" aria-expanded="false" aria-controls="tasting-fish-wagon">
-              Tasting notes <span class="tasting-toggle-plus" aria-hidden="true">+</span>
+              <span class="tasting-toggle-label">Tasting notes</span>
+              <span class="tasting-toggle-plus" aria-hidden="true">+</span>
             </button>
           </div>
           <div class="beer-card-back" id="tasting-fish-wagon">
@@ -1408,12 +1454,12 @@
                 <span class="tasting-value">Chips on the pier, with Browny nowhere near the fryer</span>
               </div>
             </div>
-            <p class="beer-back-footer">Graham's rating: ★★★★★ &nbsp;·&nbsp; Tap to flip back</p>
+            <p class="beer-back-footer">Graham's rating: ★★★★★</p>
           </div>
         </div>
       </div>
 
-      <div class="beer-card" data-beer="lip-slapping" tabindex="0" role="button" aria-label="Lip Slapping Cu#t — flip for tasting notes">
+      <div class="beer-card" data-beer="lip-slapping">
         <div class="beer-card-inner">
           <div class="beer-card-front">
             <img class="beer-photo"
@@ -1424,13 +1470,13 @@
               alt="Lip Slapping Cu#t double IPA can"
               loading="lazy"
             />
-            <div class="beer-num">05</div>
-            <p class="beer-style">Double IPA</p>
+            <p class="beer-style">05 · Double IPA</p>
             <h3 class="beer-name">Lip Slapping<br>Cu#t</h3>
             <span class="beer-abv">10.2% ABV</span>
             <p class="beer-desc">Ten percent of big, sticky and dangerously smooth. It leaves your lips tingling and your legs weak. Browny managed half and needed a lie down.</p>
             <button type="button" class="tasting-toggle" aria-expanded="false" aria-controls="tasting-lip-slapping">
-              Tasting notes <span class="tasting-toggle-plus" aria-hidden="true">+</span>
+              <span class="tasting-toggle-label">Tasting notes</span>
+              <span class="tasting-toggle-plus" aria-hidden="true">+</span>
             </button>
           </div>
           <div class="beer-card-back" id="tasting-lip-slapping">
@@ -1453,7 +1499,7 @@
                 <span class="tasting-value">A cab home and a clear diary tomorrow</span>
               </div>
             </div>
-            <p class="beer-back-footer">Graham's rating: ★★★★★ (he's had four) &nbsp;·&nbsp; Tap to flip back</p>
+            <p class="beer-back-footer">Graham's rating: ★★★★★ (he's had four)</p>
           </div>
         </div>
       </div>
@@ -1525,9 +1571,11 @@
   <footer>
     <div class="footer-brand">
       <img
-        src="/images/logo.png"
-        alt="Belly Pork Brewing Co."
-        height="44"
+        src="/images/wordmark-cream.png"
+        srcset="/images/wordmark-cream-600.png 600w, /images/wordmark-cream.png 1200w"
+        sizes="197px"
+        width="1200" height="438"
+        alt="Belly Pork Brewing"
         loading="lazy"
       />
       <p>Independent craft beer from Graham's kitchen to your glass. One batch at a time.</p>
@@ -1595,6 +1643,18 @@
   </div>
 
   <script>
+    // ─── Hero bubbles: pause the animation while the hero is off-screen ───
+    (function () {
+      const hero = document.querySelector('.hero');
+      const bubbles = document.querySelector('.hero-bubbles');
+      if (!hero || !bubbles || !('IntersectionObserver' in window)) return;
+      const observer = new IntersectionObserver(
+        entries => entries.forEach(entry => bubbles.classList.toggle('is-paused', !entry.isIntersecting)),
+        { threshold: 0 }
+      );
+      observer.observe(hero);
+    })();
+
     // ─── Chat button: hide on scroll down, show on scroll up (mobile) ───
     (function () {
       const widget = document.getElementById('chat-widget');
@@ -1751,34 +1811,19 @@
       });
     })();
 
-    // ─── Beer cards: mobile accordion + desktop flip ───
+    // ─── Beer cards: "Tasting notes" button opens/closes the panel below it ───
     (function () {
-      const isDesktop = () => window.matchMedia('(min-width: 769px)').matches;
-
-      // Mobile: the "Tasting notes" button opens/closes the panel below it.
-      // Hidden via CSS on desktop, so it never receives a click there.
       document.querySelectorAll('.tasting-toggle').forEach(btn => {
         const panel = document.getElementById(btn.getAttribute('aria-controls'));
+        const label = btn.querySelector('.tasting-toggle-label');
+        const icon = btn.querySelector('.tasting-toggle-plus');
         if (!panel) return;
         btn.addEventListener('click', () => {
           const open = btn.getAttribute('aria-expanded') === 'true';
           btn.setAttribute('aria-expanded', String(!open));
           panel.style.maxHeight = open ? '0px' : panel.scrollHeight + 'px';
-        });
-      });
-
-      // Desktop: the card itself is a focusable button that flips on
-      // click, Enter or Space. No-op on mobile — only the button above taps.
-      document.querySelectorAll('.beer-card').forEach(card => {
-        card.addEventListener('click', () => {
-          if (isDesktop()) card.classList.toggle('flipped');
-        });
-        card.addEventListener('keydown', e => {
-          if (!isDesktop()) return;
-          if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') {
-            e.preventDefault();
-            card.classList.toggle('flipped');
-          }
+          if (label) label.textContent = open ? 'Tasting notes' : 'Hide notes';
+          if (icon) icon.textContent = open ? '+' : '−';
         });
       });
     })();

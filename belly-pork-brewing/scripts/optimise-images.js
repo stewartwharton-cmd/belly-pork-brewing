@@ -36,8 +36,10 @@ const JOBS = [
     outputs: [{ name: 'beer-reverse-weave', widths: [1600, 800] }],
   },
   {
-    src: 'belly_pork_fanny_buffet_can.png',
+    // ~1536px wide source — never upscale past native resolution.
+    src: 'Fanny Buffet West Coast IPA Can.png',
     outputs: [{ name: 'beer-fanny-buffet', widths: [1600, 800] }],
+    withoutEnlargement: true,
   },
   {
     src: 'belly_pork_pouring_scene.png',
