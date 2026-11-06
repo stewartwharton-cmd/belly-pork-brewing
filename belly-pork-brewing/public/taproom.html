@@ -4,9 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Tap Room — Belly Pork Brewing Co.</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐷</text></svg>">
-  <link rel="shortcut icon" href="images/logo.png" type="image/png">
-  <link rel="apple-touch-icon" href="images/logo.png">
+  <link rel="icon" href="/images/logo.png" type="image/png">
+  <link rel="shortcut icon" href="/images/logo.png" type="image/png">
+  <link rel="apple-touch-icon" href="/images/logo.png">
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-15VJKBJSRB"></script>
   <script>
@@ -17,7 +17,7 @@
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&family=Syne+Mono&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/global.css" />
   <style>
     /* ─── PAGE HEADER ─── */
@@ -25,14 +25,7 @@
       padding: 14rem 5rem 8rem;
       position: relative;
       overflow: hidden;
-      border-bottom: 1px solid var(--magenta-dim);
-    }
-    .page-header::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse 70% 60% at 30% 60%, rgba(255,29,188,0.07) 0%, transparent 70%);
-      pointer-events: none;
+      border-bottom: 1px solid var(--border);
     }
     .page-header-bg-text {
       position: absolute;
@@ -100,9 +93,10 @@
 
     /* ─── SHARED ─── */
     .section-label {
-      font-family: 'Syne Mono', monospace;
-      font-size: 0.68rem;
-      letter-spacing: 0.38em;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
       color: var(--magenta);
       margin-bottom: 1.2rem;
@@ -132,11 +126,13 @@
     .hours-note {
       margin-top: 2rem;
       padding: 1.2rem 1.6rem;
-      border-left: 2px solid var(--magenta);
-      background: var(--magenta-dim);
-      font-family: 'Syne Mono', monospace;
+      border-left: 2px solid var(--border);
+      background: var(--border);
+      font-family: var(--font-mono);
+      font-weight: 600;
       font-size: 0.78rem;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
       line-height: 1.7;
       color: var(--off-white);
     }
@@ -156,9 +152,10 @@
     }
     .hours-row:first-child { border-top: 1px solid rgba(240,234,224,0.07); }
     .hours-day {
-      font-family: 'Syne Mono', monospace;
+      font-family: var(--font-mono);
+      font-weight: 600;
       font-size: 0.75rem;
-      letter-spacing: 0.2em;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
       color: var(--muted);
       min-width: 140px;
@@ -173,8 +170,9 @@
     .hours-time.closed {
       color: var(--muted);
       font-size: 1rem;
-      font-family: 'Syne Mono', monospace;
-      letter-spacing: 0.2em;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
     }
     .hours-row.today .hours-day {
@@ -184,9 +182,10 @@
       color: var(--magenta);
     }
     .today-badge {
-      font-family: 'Syne Mono', monospace;
-      font-size: 0.6rem;
-      letter-spacing: 0.18em;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
       background: var(--magenta);
       color: var(--black);
@@ -207,7 +206,7 @@
       width: 100%;
       aspect-ratio: 16 / 7;
       background: var(--mid);
-      border: 1px solid var(--magenta-dim);
+      border: 1px solid var(--border);
       overflow: hidden;
     }
     .map-wrapper iframe {
@@ -222,7 +221,7 @@
       bottom: 1.5rem;
       left: 1.5rem;
       background: rgba(8,8,8,0.92);
-      border: 1px solid var(--magenta-dim);
+      border: 1px solid var(--border);
       padding: 1.2rem 1.6rem;
       backdrop-filter: blur(12px);
       z-index: 10;
@@ -235,9 +234,11 @@
       margin-bottom: 0.3rem;
     }
     .map-overlay-corner p {
-      font-family: 'Syne Mono', monospace;
-      font-size: 0.72rem;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      font-size: 0.75rem;
       letter-spacing: 0.12em;
+      text-transform: uppercase;
       color: var(--muted);
       line-height: 1.6;
     }
@@ -245,7 +246,7 @@
     /* ─── FOOTER ─── */
     footer {
       background: var(--dark);
-      border-top: 1px solid var(--magenta-dim);
+      border-top: 1px solid var(--border);
       padding: 4rem 5rem 3rem;
       display: grid;
       grid-template-columns: 1.5fr 1fr 1fr;
@@ -272,9 +273,11 @@
     .footer-col ul { list-style: none; }
     .footer-col ul li { margin-bottom: 0.6rem; }
     .footer-col ul a {
-      font-family: 'Syne Mono', monospace;
-      font-size: 0.72rem;
-      letter-spacing: 0.15em;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
       color: var(--muted);
       text-decoration: none;
       transition: color 0.2s;
@@ -290,9 +293,11 @@
       align-items: center;
     }
     .footer-bottom p {
-      font-family: 'Syne Mono', monospace;
-      font-size: 0.65rem;
-      letter-spacing: 0.18em;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
       color: var(--muted);
     }
     .footer-bottom span { color: var(--magenta); }
@@ -330,7 +335,7 @@
   <!-- NAV -->
   <nav class="site-nav">
     <a href="index.html" class="nav-logo">
-      <img src="https://img1.wsimg.com/isteam/ip/c5f4da44-74a7-4ebd-b7a0-a83c516ecd85/Belly%20Pork%20Brewing-37b48db.PNG/:/rs=h:200,cg:true,m/qt=q:100/ll" alt="Belly Pork Brewing Co." height="39" />
+      <img src="/images/logo.png" alt="Belly Pork Brewing Co." height="39" />
     </a>
     <ul class="nav-links">
       <li><a href="index.html#about">About</a></li>
@@ -467,7 +472,7 @@
   <footer>
     <div class="footer-brand">
       <img
-        src="https://img1.wsimg.com/isteam/ip/c5f4da44-74a7-4ebd-b7a0-a83c516ecd85/Belly%20Pork%20Brewing-37b48db.PNG/:/rs=h:200,cg:true,m/qt=q:100/ll"
+        src="/images/logo.png"
         alt="Belly Pork Brewing Co."
         height="44"
         loading="lazy"
@@ -478,27 +483,27 @@
     <div class="footer-col">
       <h4>Navigate</h4>
       <ul>
-        <li><a href="index.html#about">About Us</a></li>
-        <li><a href="index.html#beers">The Beers</a></li>
-        <li><a href="index.html#process">How We Brew</a></li>
-        <li><a href="index.html#graham">Graham</a></li>
-        <li><a href="taproom.html">Tap Room</a></li>
-        <li><a href="merch.html">Merch</a></li>
+        <li><a href="/#about">About Us</a></li>
+        <li><a href="/#beers">The Beers</a></li>
+        <li><a href="/#graham">Graham</a></li>
+        <li><a href="/taproom">Tap Room</a></li>
+        <li><a href="/reviews">Reviews</a></li>
+        <li><a href="/discover">Discover</a></li>
+        <li><a href="/merch">Merch</a></li>
       </ul>
     </div>
 
     <div class="footer-col">
       <h4>Connect</h4>
       <ul>
-        <li><a href="https://bellyporkbrewing.com" target="_blank" rel="noopener">bellyporkbrewing.com</a></li>
-        <li><a href="index.html#newsletter">Newsletter</a></li>
-        <li><a href="#">Instagram</a></li>
-        <li><a href="#">Facebook</a></li>
+        <li><a href="/">bellyporkbrewing.com</a></li>
+        <li><a href="/#newsletter">Newsletter</a></li>
+        <!-- TODO: add Instagram/Facebook URLs -->
       </ul>
     </div>
 
     <div class="footer-bottom">
-      <p>© 2024 Belly Pork Brewing Co. — All Rights Reserved.</p>
+      <p>&copy; 2024 Belly Pork Brewing Co. &mdash; All Rights Reserved.</p>
       <p>Powered by <span>vapes</span> and Graham's questionable decisions.</p>
     </div>
   </footer>

@@ -7,31 +7,64 @@
    ═══════════════════════════════════════════════════════════ */
 
 :root {
-  /* ─── Typography ─── */
+  /* ─── Typography ───
+     Two families only: Bebas Neue for display, Syne for everything
+     else. --font-mono is kept as a name (lots of components key off
+     it) but now renders as Syne 600, uppercase, 0.12em tracking —
+     never an actual monospace face. */
   --font-display: 'Bebas Neue', sans-serif;
   --font-body: 'Syne', sans-serif;
-  --font-mono: 'Syne Mono', monospace;
+  --font-mono: 'Syne', sans-serif;
+  --tracking-mono: 0.12em;
 
-  --text-xs: 0.65rem;
-  --text-sm: 0.8rem;
-  --text-base: 1rem;
+  --text-xs: 0.75rem;   /* 12px — floor for labels */
+  --text-sm: 0.875rem;
+  --text-base: 1rem;    /* 16px — floor for body copy */
   --text-lg: 1.2rem;
   --text-2xl: 3.5rem;
   --text-3xl: 5rem;
   --text-4xl: 8rem;
   --text-hero: clamp(4rem, 14vw, 12rem);
 
-  /* ─── Colour ─── */
-  --magenta: #FF1DBC;
+  /* ─── Brand colour ─── */
+  --magenta: #FF1DBC;              /* brand colour — unchanged */
+  --magenta-ink: #C4008F;          /* magenta text on cream — 4.91:1 */
   --magenta-dim: rgba(255,29,188,0.12);
   --magenta-glow: rgba(255,29,188,0.25);
-  --black: #080808;
-  --dark: #111111;
+
+  --black: #0B0B0C;
+  --dark: #141415;
   --mid: #1a1a1a;
-  --border: rgba(255,255,255,0.08);
-  --off-white: #F0EAE0;
-  --muted: rgba(240,234,224,0.55);
+  --cream: #F6EFE3;
+  --ink: #121212;
   --white: #ffffff;
+
+  /* Legacy names kept so the hundreds of existing `var(--off-white)` /
+     `var(--muted)` references site-wide pick up the refreshed values
+     without every page needing to be touched. */
+  --off-white: var(--cream);
+  --muted: rgba(246,239,227,0.72);
+
+  /* ─── Beer colours ───
+     Matched by eye against the can photography in public/images/
+     (Narcoleptic DIPA, Reverse Weave, Fanny Buffet cans). */
+  --narcoleptic: #4A1F72;          /* deep violet-purple can body */
+  --narcoleptic-accent: #FFD21F;   /* banner gold */
+  --weave: #1C6E72;                /* dark teal can body */
+  --weave-accent: #F2C31B;         /* banner gold */
+  --fanny: #F2792E;                /* sunset-orange can body */
+  --fanny-accent: #8E1F38;         /* maroon banner */
+
+  /* ─── Section theme defaults (dark) ───
+     .section--dark/--light/--magenta below override these five so
+     section-label, section-title, .card, .tag, .btn-ghost and the
+     .section--magenta button treatment can just read the variables
+     instead of being rewritten per section. */
+  --bg: var(--black);
+  --fg: var(--cream);
+  --fg-muted: rgba(246,239,227,0.72);
+  --accent-text: var(--magenta);
+  --border: rgba(255,255,255,0.08);
 
   /* ─── Spacing ─── */
   --space-1: 0.5rem;
@@ -45,12 +78,58 @@
   --space-24: 12rem;
 }
 
+/* ─── Section themes ───
+   Scoped on a <section> (or any wrapper): set the five semantic
+   variables, everything inside inherits through the cascade. */
+.section--dark {
+  --bg: var(--black);
+  --fg: var(--cream);
+  --fg-muted: rgba(246,239,227,0.72);
+  --accent-text: var(--magenta);
+  --border: rgba(255,255,255,0.08);
+  background: var(--bg);
+  color: var(--fg);
+}
+.section--light {
+  --bg: var(--cream);
+  --fg: var(--ink);
+  --fg-muted: rgba(18,18,18,0.72);
+  --accent-text: var(--magenta-ink);
+  --border: rgba(18,18,18,0.12);
+  background: var(--bg);
+  color: var(--fg);
+}
+.section--magenta {
+  --bg: var(--magenta);
+  --fg: var(--black);
+  --fg-muted: rgba(11,11,12,0.8);
+  --accent-text: var(--black);
+  --border: rgba(11,11,12,0.18);
+  background: var(--bg);
+  color: var(--fg);
+}
+/* Buttons invert on the magenta section — a magenta button would
+   disappear against a magenta background. */
+.section--magenta .btn-primary,
+.section--magenta .btn-ghost {
+  background: var(--black);
+  color: var(--cream);
+  border-color: var(--black);
+}
+.section--magenta .btn-primary:hover,
+.section--magenta .btn-ghost:hover {
+  background: var(--cream);
+  color: var(--black);
+  box-shadow: none;
+}
+
 /* ─── Base ─── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 
 body {
   font-family: var(--font-body);
+  font-size: var(--text-base);
   background: var(--black);
   color: var(--off-white);
   overflow-x: hidden;
@@ -73,7 +152,9 @@ select:focus-visible,
 
 img { max-width: 100%; display: block; }
 
-/* ─── Buttons ─── */
+/* ─── Buttons ───
+   Primary stays magenta everywhere by design (brand colour is kept
+   for primary CTAs) except inside .section--magenta, handled above. */
 .btn-primary {
   display: inline-flex;
   align-items: center;
@@ -96,7 +177,7 @@ img { max-width: 100%; display: block; }
 }
 .btn-primary:hover {
   transform: translate(-3px, -3px);
-  box-shadow: 4px 4px 0 var(--white);
+  box-shadow: 4px 4px 0 var(--fg);
 }
 .btn-primary:active { transform: translate(-1px, -1px); }
 
@@ -107,28 +188,29 @@ img { max-width: 100%; display: block; }
   gap: 0.6rem;
   min-height: 48px;
   background: transparent;
-  color: var(--magenta);
+  color: var(--accent-text);
   font-family: var(--font-display);
   font-size: 1rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   padding: 1rem 2.5rem;
-  border: 1px solid var(--magenta);
+  border: 1px solid var(--accent-text);
   border-radius: 0;
   text-decoration: none;
   font-weight: 700;
   cursor: pointer;
   transition: background 0.18s ease, color 0.18s ease;
 }
-.btn-ghost:hover { background: var(--magenta); color: var(--black); }
+.btn-ghost:hover { background: var(--accent-text); color: var(--bg); }
 
 /* ─── Section headings ─── */
 .section-label {
   font-family: var(--font-mono);
+  font-weight: 600;
   font-size: var(--text-xs);
-  letter-spacing: 0.4em;
+  letter-spacing: var(--tracking-mono);
   text-transform: uppercase;
-  color: var(--magenta);
+  color: var(--accent-text);
   margin-bottom: var(--space-3);
 }
 
@@ -136,6 +218,7 @@ img { max-width: 100%; display: block; }
   font-family: var(--font-display);
   font-size: var(--text-3xl);
   line-height: 0.9;
+  color: var(--fg);
 }
 
 @media (max-width: 768px) {
@@ -144,8 +227,9 @@ img { max-width: 100%; display: block; }
 
 /* ─── Card ─── */
 .card {
-  background: var(--dark);
+  background: var(--bg);
   border: 1px solid var(--border);
+  color: var(--fg);
   border-radius: 0;
 }
 
@@ -153,11 +237,12 @@ img { max-width: 100%; display: block; }
 .tag {
   display: inline-block;
   font-family: var(--font-mono);
-  font-size: 0.65rem;
-  letter-spacing: 0.2em;
+  font-weight: 600;
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-mono);
   text-transform: uppercase;
-  color: var(--muted);
-  border: 1px solid var(--magenta-dim);
+  color: var(--fg-muted);
+  border: 1px solid var(--border);
   padding: 0.3rem 0.8rem;
 }
 
@@ -173,10 +258,10 @@ nav.site-nav {
   justify-content: space-between;
   gap: var(--space-3);
   padding: 0.85rem 1.5rem;
-  background: rgba(8,8,8,0.92);
+  background: rgba(11,11,12,0.92);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--magenta-dim);
+  border-bottom: 1px solid var(--border);
 }
 
 .site-nav .nav-logo { display: flex; min-height: 48px; align-items: center; }
@@ -190,8 +275,9 @@ nav.site-nav {
 }
 .site-nav .nav-links a {
   font-family: var(--font-mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.22em;
+  font-weight: 600;
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-mono);
   text-transform: uppercase;
   color: var(--muted);
   text-decoration: none;
@@ -261,7 +347,7 @@ nav.site-nav {
   height: 100%;
   z-index: 250;
   background: var(--dark);
-  border-left: 1px solid var(--magenta-dim);
+  border-left: 1px solid var(--border);
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -315,13 +401,13 @@ nav.site-nav {
 
 .nav-mobile-cta {
   font-family: var(--font-mono) !important;
-  font-size: 0.72rem !important;
-  letter-spacing: 0.18em;
+  font-weight: 600;
+  font-size: var(--text-xs) !important;
+  letter-spacing: var(--tracking-mono);
   text-transform: uppercase;
   background: var(--magenta);
   color: var(--black) !important;
   padding: 0.9rem 1.8rem;
-  font-weight: 700;
   margin-top: 1.5rem;
   width: 100%;
   text-align: center;

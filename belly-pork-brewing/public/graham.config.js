@@ -348,7 +348,7 @@ ABSOLUTE RULES
     {
       name: 'Fanny Buffet',
       style: 'West Coast IPA',
-      abv: 5.7,
+      abv: 6.8,
       tagline: "Don't choose one. Take the lot.",
       description: 'A West Coast IPA loaded with everything, for people who don\'t believe in moderation.',
       tastingNotes: {

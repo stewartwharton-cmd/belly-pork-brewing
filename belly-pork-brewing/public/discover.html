@@ -4,9 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Discover — Belly Pork Brewing Co.</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐷</text></svg>">
-  <link rel="shortcut icon" href="images/logo.png" type="image/png">
-  <link rel="apple-touch-icon" href="images/logo.png">
+  <link rel="icon" href="/images/logo.png" type="image/png">
+  <link rel="shortcut icon" href="/images/logo.png" type="image/png">
+  <link rel="apple-touch-icon" href="/images/logo.png">
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-15VJKBJSRB"></script>
   <script>
@@ -17,14 +17,14 @@
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&family=Syne+Mono&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/global.css" />
   <style>
 
     /* ─── FOOTER ─── */
     footer {
       background: var(--dark);
-      border-top: 1px solid var(--magenta-dim);
+      border-top: 1px solid var(--border);
       padding: 4rem 5rem 3rem;
       display: grid;
       grid-template-columns: 1.5fr 1fr 1fr;
@@ -36,9 +36,11 @@
     .footer-col ul { list-style: none; }
     .footer-col ul li { margin-bottom: 0.6rem; }
     .footer-col ul a {
-      font-family: 'Syne Mono', monospace;
-      font-size: 0.72rem;
-      letter-spacing: 0.15em;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
       color: var(--muted);
       text-decoration: none;
       transition: color 0.2s;
@@ -54,9 +56,11 @@
       align-items: center;
     }
     .footer-bottom p {
-      font-family: 'Syne Mono', monospace;
-      font-size: 0.65rem;
-      letter-spacing: 0.18em;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
       color: var(--muted);
     }
     .footer-bottom span { color: var(--magenta); }
@@ -99,9 +103,10 @@
     .discover-hero-content { position: relative; z-index: 10; }
 
     .discover-eyebrow {
-      font-family: 'Syne Mono', monospace;
-      font-size: 0.7rem;
-      letter-spacing: 0.28em;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
       color: var(--magenta);
       margin-bottom: 1.4rem;
@@ -141,11 +146,12 @@
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
-      font-family: 'Syne Mono', monospace;
-      font-size: 0.62rem;
-      letter-spacing: 0.22em;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
-      border: 1px solid var(--magenta-dim);
+      border: 1px solid var(--border);
       padding: 0.4rem 0.9rem;
       color: var(--magenta);
     }
@@ -165,9 +171,10 @@
     }
 
     .hero-brewery-count {
-      font-family: 'Syne Mono', monospace;
-      font-size: 0.62rem;
-      letter-spacing: 0.18em;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
       color: var(--muted);
       border: 1px solid rgba(240,234,224,0.1);
@@ -191,8 +198,8 @@
 
     /* ─── BELLY PORK PIN ─── */
     .bpb-pin {
-      background: linear-gradient(135deg, var(--dark) 0%, rgba(255,29,188,0.07) 100%);
-      border: 1px solid var(--magenta);
+      background: var(--dark);
+      border: 1px solid var(--border);
       padding: 2rem 2.5rem;
       margin-bottom: 3rem;
       position: relative;
@@ -221,9 +228,10 @@
 
     .local-legend-badge {
       display: inline-block;
-      font-family: 'Syne Mono', monospace;
-      font-size: 0.6rem;
-      letter-spacing: 0.28em;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
       background: var(--magenta);
       color: var(--black);
@@ -241,9 +249,10 @@
     }
 
     .bpb-meta {
-      font-family: 'Syne Mono', monospace;
-      font-size: 0.68rem;
-      letter-spacing: 0.14em;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
       color: var(--muted);
       margin-bottom: 1rem;
@@ -253,12 +262,14 @@
       align-items: center;
     }
 
-    .bpb-meta-sep { color: rgba(255,29,188,0.3); }
+    .bpb-meta-sep { color: var(--fg-muted); }
 
     .bpb-site {
-      font-family: 'Syne Mono', monospace;
-      font-size: 0.65rem;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      font-size: 0.75rem;
       letter-spacing: 0.12em;
+      text-transform: uppercase;
       color: var(--muted);
       text-decoration: none;
       transition: color 0.2s;
@@ -286,9 +297,10 @@
     }
 
     .bpb-rating-label {
-      font-family: 'Syne Mono', monospace;
-      font-size: 0.55rem;
-      letter-spacing: 0.2em;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
       color: var(--muted);
       display: block;
@@ -328,11 +340,13 @@
     .search-wrap input {
       width: 100%;
       background: var(--dark);
-      border: 1px solid rgba(255,29,188,0.2);
+      border: 1px solid var(--border);
       color: var(--off-white);
-      font-family: 'Syne Mono', monospace;
+      font-family: var(--font-mono);
+      font-weight: 600;
       font-size: 0.76rem;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
       padding: 0.78rem 1rem 0.78rem 2.4rem;
       outline: none;
       transition: border-color 0.2s;
@@ -354,11 +368,13 @@
 
     .controls-bar select {
       background: var(--dark);
-      border: 1px solid rgba(255,29,188,0.2);
+      border: 1px solid var(--border);
       color: var(--off-white);
-      font-family: 'Syne Mono', monospace;
-      font-size: 0.72rem;
-      letter-spacing: 0.08em;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
       padding: 0.78rem 2rem 0.78rem 0.9rem;
       outline: none;
       cursor: pointer;
@@ -370,9 +386,10 @@
     .controls-bar select option { background: var(--dark); }
 
     .results-count {
-      font-family: 'Syne Mono', monospace;
-      font-size: 0.62rem;
-      letter-spacing: 0.18em;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
       color: var(--muted);
       white-space: nowrap;
@@ -394,7 +411,7 @@
     /* ─── BREWERY CARD ─── */
     .brewery-card {
       background: var(--dark);
-      border: 1px solid rgba(255,29,188,0.12);
+      border: 1px solid var(--border);
       padding: 1.5rem;
       display: flex;
       flex-direction: column;
@@ -411,11 +428,12 @@
 
     .card-type-badge {
       display: inline-block;
-      font-family: 'Syne Mono', monospace;
-      font-size: 0.54rem;
-      letter-spacing: 0.22em;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
-      border: 1px solid var(--magenta-dim);
+      border: 1px solid var(--border);
       color: var(--magenta);
       padding: 0.2rem 0.55rem;
       margin-bottom: 0.9rem;
@@ -431,9 +449,10 @@
     }
 
     .card-location {
-      font-family: 'Syne Mono', monospace;
-      font-size: 0.65rem;
-      letter-spacing: 0.13em;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
       color: var(--muted);
       margin-bottom: 1.1rem;
@@ -441,14 +460,15 @@
 
     .card-divider {
       border: none;
-      border-top: 1px solid rgba(255,29,188,0.08);
+      border-top: 1px solid var(--border);
       margin: 0 0 1rem;
     }
 
     .card-graham-label {
-      font-family: 'Syne Mono', monospace;
-      font-size: 0.52rem;
-      letter-spacing: 0.25em;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
       color: var(--muted);
       margin-bottom: 0.45rem;
@@ -461,7 +481,7 @@
     }
 
     .star-filled { color: var(--magenta); }
-    .star-empty { color: rgba(255,29,188,0.18); }
+    .star-empty { color: var(--border); }
 
     .card-comment {
       font-size: 0.82rem;
@@ -474,16 +494,17 @@
     .card-footer {
       margin-top: 1.1rem;
       padding-top: 0.9rem;
-      border-top: 1px solid rgba(255,29,188,0.06);
+      border-top: 1px solid var(--border);
     }
 
     .card-website {
       display: inline-flex;
       align-items: center;
       gap: 0.35rem;
-      font-family: 'Syne Mono', monospace;
-      font-size: 0.6rem;
-      letter-spacing: 0.14em;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
       color: var(--muted);
       text-decoration: none;
@@ -522,7 +543,7 @@
     .bubble {
       position: absolute;
       border-radius: 50%;
-      background: radial-gradient(circle at 35% 35%, rgba(255,29,188,0.75), rgba(255,29,188,0.1));
+
       animation: bubble-rise var(--dur, 2s) var(--delay, 0s) ease-in infinite;
     }
 
@@ -533,9 +554,10 @@
     }
 
     .loading-text {
-      font-family: 'Syne Mono', monospace;
+      font-family: var(--font-mono);
+      font-weight: 600;
       font-size: 0.78rem;
-      letter-spacing: 0.22em;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
       color: var(--muted);
       animation: text-fade 1.6s ease-in-out infinite;
@@ -571,21 +593,24 @@
     }
 
     .error-msg {
-      font-family: 'Syne Mono', monospace;
+      font-family: var(--font-mono);
+      font-weight: 600;
       font-size: 0.78rem;
       letter-spacing: 0.12em;
+      text-transform: uppercase;
       color: var(--muted);
       max-width: 420px;
       line-height: 1.7;
     }
 
     .error-retry {
-      font-family: 'Syne Mono', monospace;
-      font-size: 0.68rem;
-      letter-spacing: 0.18em;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
       background: none;
-      border: 1px solid var(--magenta-dim);
+      border: 1px solid var(--border);
       color: var(--magenta);
       padding: 0.6rem 1.4rem;
       cursor: pointer;
@@ -612,9 +637,11 @@
     }
 
     .empty-sub {
-      font-family: 'Syne Mono', monospace;
-      font-size: 0.7rem;
-      letter-spacing: 0.15em;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
       color: var(--muted);
     }
   </style>
@@ -624,7 +651,7 @@
   <!-- NAV -->
   <nav class="site-nav">
     <a href="index.html" class="nav-logo">
-      <img src="https://img1.wsimg.com/isteam/ip/c5f4da44-74a7-4ebd-b7a0-a83c516ecd85/Belly%20Pork%20Brewing-37b48db.PNG/:/rs=h:200,cg:true,m/qt=q:100/ll" alt="Belly Pork Brewing Co." height="39" />
+      <img src="/images/logo.png" alt="Belly Pork Brewing Co." height="39" />
     </a>
     <ul class="nav-links">
       <li><a href="index.html#about">About</a></li>
@@ -752,7 +779,7 @@
   <footer>
     <div class="footer-brand">
       <img
-        src="https://img1.wsimg.com/isteam/ip/c5f4da44-74a7-4ebd-b7a0-a83c516ecd85/Belly%20Pork%20Brewing-37b48db.PNG/:/rs=h:200,cg:true,m/qt=q:100/ll"
+        src="/images/logo.png"
         alt="Belly Pork Brewing Co."
         height="44"
         loading="lazy"
@@ -763,27 +790,27 @@
     <div class="footer-col">
       <h4>Navigate</h4>
       <ul>
-        <li><a href="index.html#about">About Us</a></li>
-        <li><a href="index.html#beers">The Beers</a></li>
-        <li><a href="index.html#process">How We Brew</a></li>
-        <li><a href="index.html#graham">Graham</a></li>
-        <li><a href="reviews.html">Reviews</a></li>
-        <li><a href="discover.html">Discover</a></li>
+        <li><a href="/#about">About Us</a></li>
+        <li><a href="/#beers">The Beers</a></li>
+        <li><a href="/#graham">Graham</a></li>
+        <li><a href="/taproom">Tap Room</a></li>
+        <li><a href="/reviews">Reviews</a></li>
+        <li><a href="/discover">Discover</a></li>
+        <li><a href="/merch">Merch</a></li>
       </ul>
     </div>
 
     <div class="footer-col">
       <h4>Connect</h4>
       <ul>
-        <li><a href="https://bellyporkbrewing.com" target="_blank" rel="noopener">bellyporkbrewing.com</a></li>
-        <li><a href="index.html#newsletter">Newsletter</a></li>
-        <li><a href="#">Instagram</a></li>
-        <li><a href="#">Facebook</a></li>
+        <li><a href="/">bellyporkbrewing.com</a></li>
+        <li><a href="/#newsletter">Newsletter</a></li>
+        <!-- TODO: add Instagram/Facebook URLs -->
       </ul>
     </div>
 
     <div class="footer-bottom">
-      <p>© 2024 Belly Pork Brewing Co. — All Rights Reserved.</p>
+      <p>&copy; 2024 Belly Pork Brewing Co. &mdash; All Rights Reserved.</p>
       <p>Powered by <span>vapes</span> and Graham's questionable decisions.</p>
     </div>
   </footer>
@@ -1011,7 +1038,7 @@
 
         if (payload.source === 'fallback') {
           const banner = document.createElement('div');
-          banner.style.cssText = 'grid-column:1/-1;font-family:"Syne Mono",monospace;font-size:0.65rem;letter-spacing:0.16em;text-transform:uppercase;color:rgba(240,234,224,0.55);padding:0.6rem 0;margin-bottom:0.5rem;border-bottom:1px solid rgba(255,29,188,0.08);';
+          banner.style.cssText = 'grid-column:1/-1;font-family:"Syne",sans-serif;font-weight:600;font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--fg-muted);padding:0.6rem 0;margin-bottom:0.5rem;border-bottom:1px solid var(--border);';
           banner.textContent = '⚠ Live data unavailable — showing a selection of UK craft breweries';
           grid.prepend(banner);
         }

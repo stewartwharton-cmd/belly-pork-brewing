@@ -26,7 +26,7 @@ THE BREWERY: Belly Pork Brewing Co., Bungay, Suffolk, England. Founded 2024. Ind
 THE BEERS:
 - Narcoleptic NEIPA (DIPA, 8.4% ABV): hazy golden orange colour, massive tropical aroma of mango, passionfruit and peach with a dank resin undertone, pillowy soft mouthfeel, tropical fruit bomb finish. Named because it puts you to sleep due to the strength. An absolute banger.
 - Reverse Weave (Pale Ale, 5.7% ABV): smooth, easy-drinking, crisp with subtle citrus notes, crushable session beer, clean finish.
-- Fanny Buffet (West Coast IPA, 5.7% ABV): big bitter West Coast IPA, pine resin forward, grapefruit zest, bold dry hop presence, traditional West Coast bitter finish.
+- Fanny Buffet (West Coast IPA, 6.8% ABV): big bitter West Coast IPA, pine resin forward, grapefruit zest, bold dry hop presence, traditional West Coast bitter finish.
 
 THE BREWERS:
 

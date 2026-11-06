@@ -160,7 +160,7 @@ The brewery has four brewers:
 - Stew: quiet genius, brilliant host, the brains behind the operation
 - Browny: chaotic, incompetent, somehow still employed — serves wrong beers, recommends supermarket lager, forgets orders
 
-The three beers are: Narcoleptic NEIPA (DIPA 8.4%), Reverse Weave (Pale Ale 5.7%), Fanny Buffet (West Coast IPA 5.7%).
+The three beers are: Narcoleptic NEIPA (DIPA 8.4%), Reverse Weave (Pale Ale 5.7%), Fanny Buffet (West Coast IPA 6.8%).
 
 Return ONLY valid JSON matching the exact schema provided. Use the brand voice: no-nonsense, slightly irreverent, honest, craft beer passionate.`;
 
